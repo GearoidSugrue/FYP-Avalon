@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">The Resistance: Avalon</string>
+    <string name="app_name_short">Avalon</string>
+    <string name="action_settings">Settings</string>
+    <string name="button_host">Host Game</string>
+    <string name="button_join">Join Game</string>
+    <string name="button_edit_name">Edit Name</string>
+    <string name="button_setup_game">Continue To Setup</string>
+    <string name="text_view_player_text">Player Name: </string>
+    <string name="OK">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="name_here">Name here</string>
+    <string name="name_saved">Name Saved</string>
+    <string name="please_enter_name">Please Enter Your Name</string>
+    <string name="name_when_playing">This name will be used when playing the game.</string>
+    <string name="enter_name">Enter Your Name</string>
+    <string name="title_activity_host">Host Game</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_join">Join Game</string>
+    <string name="title_activity_setup">Game Setup</string>
+    <string name="total_players_marker">Players: </string>
+    <string name="good_players_marker">Good Players: </string>
+    <string name="evil_players_marker">Evil Players: </string>
+    <string name="button_start_game">Start Game</string>
+    <string name="title_activity_wi_fi_direct">WiFiDirectActivity</string>
+
+    <string name="enable_p2p_button">P2P On/Off</string>
+    <string name="discover_peers_button">Discover</string>
+    <string name="connect_peer_button">Connect</string>
+    <string name="disconnect_peer_button">Disconnect</string>
+    <string name="empty"></string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="client_text">This device will act as a client. Click on Gallery button to pick a local(stored) file</string>
+    <string name="empty_message">No devices found. Turn on P2P and perform discovery from the Action Bar</string>
+    <string name="p2p_off_warning">Enable P2P from action bar button above or system settings</string>
+    <string name="group_owner_text">"Am I the Group Owner? "</string>
+    <string name="label_me">ME</string>
+    <string name="label_peers">PEERS</string>
+    <string name="get_file_button">Launch Gallery</string>
+
+
+</resources>
