@@ -40,6 +40,7 @@
     <string name="label_me">ME</string>
     <string name="label_peers">PEERS</string>
     <string name="get_file_button">Launch Gallery</string>
+    <string name="finding_service">Finding Service...</string>
 
 
 </resources>

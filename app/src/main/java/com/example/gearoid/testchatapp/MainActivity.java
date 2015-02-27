@@ -53,6 +53,9 @@ public class MainActivity extends ActionBarActivity {
         Button button_hostGame = (Button) findViewById(R.id.button_Host);
         Button button_joinGame = (Button) findViewById(R.id.button_Join);
 
+        Button button_hostService = (Button) findViewById(R.id.button_host_service);
+        Button button_joinService = (Button) findViewById(R.id.button_join_service);
+
         button_editName.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -74,6 +77,20 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 //startJoinActivity();
                 startJoinWiFiActivity();
+            }
+        });
+        button_joinService.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startJoinServiceActivity();
+            }
+        });
+        button_hostService.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startHostServiceActivity();
             }
         });
     }
@@ -125,6 +142,18 @@ public class MainActivity extends ActionBarActivity {
         WiFiDirectActivity.groupOwnerIntent = 15; //wants to be group owner
         Intent intent = new Intent(this, WiFiDirectActivity.class);
         //intent.putExtra("USER_LIST", userList);
+        startActivity(intent);
+    }
+
+    public void startJoinServiceActivity() {
+        WiFiDirectActivity.groupOwnerIntent = 0; //doesn't want to be group owner
+        Intent intent = new Intent(this, WiFiDirectServiceActivity.class);
+        startActivity(intent);
+    }
+
+    public void startHostServiceActivity() {
+        WiFiDirectActivity.groupOwnerIntent = 15; //wants to be group owner
+        Intent intent = new Intent(this, WiFiDirectServiceActivity.class);
         startActivity(intent);
     }
 

@@ -51,5 +51,23 @@
         android:layout_toRightOf="@+id/textViewPlayerNameText"
         android:layout_toEndOf="@+id/textViewPlayerNameText" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Host Service"
+        android:id="@+id/button_host_service"
+        android:layout_alignBottom="@+id/button_Host"
+        android:layout_toRightOf="@+id/button_Host"
+        android:layout_toEndOf="@+id/button_Host" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Join Service"
+        android:id="@+id/button_join_service"
+        android:layout_alignTop="@+id/button_Join"
+        android:layout_toRightOf="@+id/button_Join"
+        android:layout_toEndOf="@+id/button_Join" />
+
 
 </RelativeLayout>

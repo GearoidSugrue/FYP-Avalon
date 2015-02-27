@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gearoid.testchatapp" >
 
+
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -61,6 +62,15 @@
         </activity>
         <activity
             android:name=".WiFiDirectActivity"
+            android:label="@string/title_activity_wi_fi_direct"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/ToolbarTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.gearoid.testchatapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".WiFiDirectServiceActivity"
             android:label="@string/title_activity_wi_fi_direct"
             android:parentActivityName=".MainActivity"
             android:theme="@style/ToolbarTheme" >
