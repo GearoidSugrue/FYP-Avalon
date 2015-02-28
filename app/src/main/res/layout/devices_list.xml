@@ -3,17 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_gravity="top"
-    android:gravity="top" >
+    android:paddingTop="3dp" >
 
     <ListView
-        android:id="@+id/list"
+        android:id="@id/android:list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </ListView>
 
     <LinearLayout
-        android:id="@android:id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dip">

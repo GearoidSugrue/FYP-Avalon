@@ -1,6 +1,7 @@
 package com.example.gearoid.testchatapp;
 
-import android.app.Fragment;
+
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
@@ -12,8 +13,7 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceInfo;
 import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceRequest;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -52,7 +52,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
     private WifiP2pDnsSdServiceRequest serviceRequest;
     private WiFiDirectServicesList servicesList;
 
-    public static final String SERVICE_INSTANCE = "_AvalonService";
+    public static final String SERVICE_INSTANCE = "_avalonservice";//has to be lower case
 
     final HashMap<String, String> buddies = new HashMap<String, String>();
 
@@ -72,7 +72,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         setContentView(R.layout.wifi_direct_service);
 
         //crashes app if manifest file does not include what theme is being used
-        Toolbar toolbar = (Toolbar) findViewById(R.id.wifidirect_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.wifidirect_service_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -96,7 +96,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
         startRegistration();//registers local service to manager
 
-        servicesList = new WiFiDirectServicesList();
+        //servicesList = new WiFiDirectServicesList();
 
 //        getFragmentManager().beginTransaction()
 //                .add(R.id.container_root, servicesList, "services").commit();
@@ -149,7 +149,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             public void onSuccess() {
                 // Command successful! Code isn't necessarily needed here,
                 // Unless you want to update the UI or add logging statements.
-                ApplicationContext.showToast("Successfully added local service");
+                //ApplicationContext.showToast("Successfully added local service");
                 appendStatus("Added Local Service");
                 Log.d(TAG, "Local service added");
             }
@@ -157,7 +157,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             @Override
             public void onFailure(int reasonCode) {
                 final String errFinal = getWiFiP2pFailureMessage(reasonCode);
-                ApplicationContext.showToast("Failed to add local service:" + errFinal);
+                //ApplicationContext.showToast("Failed to add local service:" + errFinal);
                 appendStatus("Failed to add a service");
                 Log.e(TAG, "Failed to add local service:" + errFinal);
                 // Command failed.  Check for P2P_UNSUPPORTED, ERROR, or BUSY
@@ -177,9 +177,13 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
          */
             //May need to filter using fullDomain...and groupOwnerIntent
             public void onDnsSdTxtRecordAvailable(String fullDomain, Map record, WifiP2pDevice device) {
-                Log.d(TAG, "DnsSdTxtRecord available -" + record.toString());
-                ApplicationContext.showToast("DnsSdTxtRecord found: " + record.get("buddyname").toString());
-                buddies.put(device.deviceAddress, record.get("buddyname").toString());
+
+                if(fullDomain.startsWith(SERVICE_INSTANCE)) {
+                    //ApplicationContext.showToast("DnsSdTxtRecord found: " + fullDomain);
+                    buddies.put(device.deviceAddress, record.get("buddyname").toString());
+                    appendStatus("DnsSdTxtRecord found: " + record.get("buddyname").toString() + " - " + fullDomain);
+                    Log.d(TAG, "DnsSdTxtRecord available -" + record.toString());
+                }
             }
         };
 
@@ -198,12 +202,16 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                             .get(srcDevice.deviceAddress) : srcDevice.deviceName;
 
                     ApplicationContext.showToast("DnsSdService found: " + srcDevice.deviceName);
+                    appendStatus("DnsSdService found: " + srcDevice.deviceName + " - " + buddies.get(srcDevice.deviceAddress));
+
 
 
                     // Add to the custom adapter defined specifically for showing
                     // wifi devices.
-                    WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager()
-                            .findFragmentByTag("services");
+                   // WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager()
+                            //.findFragmentByTag("services");
+                    WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager().findFragmentById(R.id.frag_service_list);
+
                     if (fragment != null) {
                         WiFiDirectServicesList.WiFiDevicesAdapter adapter = ((WiFiDirectServicesList.WiFiDevicesAdapter) fragment
                                 .getListAdapter());
@@ -236,7 +244,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                     @Override
                     public void onSuccess() {
                         // Success!
-                        ApplicationContext.showToast("Successfully added service request");
+                        //ApplicationContext.showToast("Successfully added service request");
                         appendStatus("Added service discovery request");
                         Log.d(TAG, "Service request added");
                     }
@@ -245,7 +253,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                     public void onFailure(int reasonCode) {
                         // Command failed.  Check for P2P_UNSUPPORTED, ERROR, or BUSY
                         final String errFinal = getWiFiP2pFailureMessage(reasonCode);
-                        ApplicationContext.showToast("Failed to add service request:" + errFinal);
+                        //ApplicationContext.showToast("Failed to add service request:" + errFinal);
                         appendStatus("Failed adding service discovery request");
                         Log.e(TAG, "Failed to add service request:" + errFinal);
                     }
@@ -256,7 +264,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             @Override
             public void onSuccess() {
                 // Success!
-                ApplicationContext.showToast("Successfully started service discovery");
+                //ApplicationContext.showToast("Successfully started service discovery");
                 appendStatus("Service discovery initiated");
                 Log.d(TAG, "Service request added");
             }
@@ -265,8 +273,8 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             public void onFailure(int reasonCode) {
                 // Command failed.  Check for P2P_UNSUPPORTED, ERROR, or BUSY
                 final String errFinal = getWiFiP2pFailureMessage(reasonCode);
-                ApplicationContext.showToast("Failed to start discover service:" + errFinal);
-                appendStatus("Service discovery failed");
+                //ApplicationContext.showToast("Failed to start discover service:" + errFinal);
+                appendStatus("Service discovery failed: " + errFinal);
                 Log.d(TAG, "Failed to start discover service:" + errFinal);
             }
         });
@@ -345,7 +353,9 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
     @Override
     protected void onRestart() {
-        Fragment frag = getFragmentManager().findFragmentByTag("services");
+        //Fragment frag = getFragmentManager().findFragmentByTag("services");
+        WiFiDirectServicesList frag = (WiFiDirectServicesList) getFragmentManager().findFragmentById(R.id.frag_service_list);
+
         if (frag != null) {
             getFragmentManager().beginTransaction().remove(frag).commit();
         }

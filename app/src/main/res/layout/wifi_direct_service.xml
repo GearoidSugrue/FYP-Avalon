@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/wifidirect_toolbar"
+        android:id="@+id/wifidirect_service_toolbar"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:minHeight="?attr/actionBarSize"
@@ -17,18 +17,14 @@
 
     <LinearLayout
         android:id="@+id/container_root"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-
-
 
         <fragment
             android:id="@+id/frag_service_list"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
             class="com.example.gearoid.testchatapp.WiFiDirectServicesList">
 
             <!-- Preview: layout=@layout/row_devices -->
@@ -39,7 +35,9 @@
             android:id="@+id/status_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"></TextView>
+            android:layout_gravity="bottom">
+
+        </TextView>
     </LinearLayout>
 
 </LinearLayout>
