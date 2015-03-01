@@ -2,6 +2,7 @@ package com.example.gearoid.testchatapp;
 
 import android.app.ListFragment;
 
+import android.app.ProgressDialog;
 import android.support.v4.app.Fragment;
 
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import java.util.List;
  */
 public class WiFiDirectServicesList extends ListFragment {
     WiFiDevicesAdapter listAdapter = null;
+    private View mContentView = null;
 
     interface DeviceClickListener {
         public void connectP2p(WiFiP2pService wifiP2pService);
@@ -35,7 +38,9 @@ public class WiFiDirectServicesList extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.devices_list, null);
+        //progressBar = container.findViewById(R.id.discoveryProgressBar);
+        mContentView = inflater.inflate(R.layout.devices_list, null);
+        return mContentView;
     }
 
     @Override
@@ -71,16 +76,41 @@ public class WiFiDirectServicesList extends ListFragment {
             if (service != null) {
                 TextView nameText = (TextView) v.findViewById(android.R.id.text1);
                 if (nameText != null) {
-                    nameText.setText(service.device.deviceName + " - " + service.instanceName);
+                    nameText.setText(service.device.deviceName + service.instanceName);
                 }
                 TextView statusText = (TextView) v.findViewById(android.R.id.text2);
                 statusText.setText(getDeviceStatus(service.device.status));
             }
             return v;
         }
+
     }
 
-    public static String getDeviceStatus(int statusCode) {
+    public void updateThisDevice(WifiP2pDevice device){
+
+        TextView view = (TextView) mContentView.findViewById(R.id.my_device_name);
+        view.setText(device.deviceName);
+        view = (TextView) mContentView.findViewById(R.id.my_device_status);
+        view.setText(getDeviceStatus(device.status));
+    }
+
+    public void setFindingTextView(String text){
+        TextView view = (TextView) mContentView.findViewById(R.id.finding_text);
+        view.setText(text);
+    }
+
+    public void dismissProgressBar(){
+        mContentView.findViewById(R.id.discoveryProgressBar).setVisibility(View.GONE);
+        //(R.id.discoveryProgressBar).setVisibility(View.GONE);
+    }
+
+    public void showProgressBar(){
+        mContentView.findViewById(R.id.discoveryProgressBar).setVisibility(View.VISIBLE);
+        //(R.id.discoveryProgressBar).setVisibility(View.GONE);
+    }
+
+
+    public static String getDeviceStatus(int statusCode) {//Move...
         switch (statusCode) {
             case WifiP2pDevice.CONNECTED:
                 return "Connected";

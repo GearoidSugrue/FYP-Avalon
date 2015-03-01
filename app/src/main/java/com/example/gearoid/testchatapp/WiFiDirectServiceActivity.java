@@ -1,9 +1,9 @@
 package com.example.gearoid.testchatapp;
 
 
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
@@ -24,6 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gearoid.testchatapp.kryoPack.KryoRegisterAndPort;
+import com.example.gearoid.testchatapp.kryoPack.Packet;
+import com.example.gearoid.testchatapp.kryoPack.PacketFactory;
+import com.example.gearoid.testchatapp.singletons.ClientInstance;
 import com.example.gearoid.testchatapp.singletons.ServerInstance;
 
 import java.util.HashMap;
@@ -48,11 +51,16 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
     private WifiP2pManager.Channel channel;
     private BroadcastReceiver receiver = null;
 
+    private boolean isHost = false;
+
     //Service discovery stuff...
     private WifiP2pDnsSdServiceRequest serviceRequest;
+    WifiP2pDnsSdServiceInfo serviceInfo;
     private WiFiDirectServicesList servicesList;
 
-    public static final String SERVICE_INSTANCE = "_avalonservice";//has to be lower case
+    public static final String SERVICE_INSTANCE_HOST = "_avalonhost";//has to be lower case
+    public static final String SERVICE_INSTANCE_JOIN = "_avalonjoin";//has to be lower case
+
 
     final HashMap<String, String> buddies = new HashMap<String, String>();
 
@@ -76,46 +84,66 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         statusTxtView = (TextView) findViewById(R.id.status_text);
 
         // add necessary intent values to be matched.
-
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
-        //WIFI_P2P_SERVICE
-        //WifiP2pManager.
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_DISCOVERY_CHANGED_ACTION);
+
+
 
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
 
         //manager.addLocalService();   //Add host service to device so clients can see it.............???
         channel = manager.initialize(this, getMainLooper(), null);
 
-        startRegistration();//registers local service to manager
+        Intent intent = getIntent();
+        isHost = intent.getBooleanExtra("isHost", false);
 
-        //servicesList = new WiFiDirectServicesList();
+        if(isHost){
+            groupOwnerIntent = 15;
+            ServerInstance.getServerInstance();
+            WiFiDirectServicesList fragment = (WiFiDirectServicesList) this.getFragmentManager()
+                        .findFragmentById(R.id.frag_service_list);
+                fragment.setFindingTextView(getString(R.string.finding_players));
+            /*
+            manager.createGroup(channel,new WifiP2pManager.ActionListener() {//Create group as group owner.
+                @Override
+                public void onSuccess() {
+                    // Success!
+                    //ApplicationContext.showToast("Successfully added service request");
+                    appendStatus("[Host] Successfully created group");
+                    Log.d(TAG, "[Host] Successfully created group");
+                }
 
-//        getFragmentManager().beginTransaction()
-//                .add(R.id.container_root, servicesList, "services").commit();
-//
-//        final WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager()
-//                .findFragmentById(R.id.frag_list);
-
-//        FragmentManager fm = getSupportFragmentManager();
-//        Fragment fragment = fm.findFragmentByTag("services");
-//        if (fragment == null) {
-//            FragmentTransaction ft = fm.beginTransaction();
-//            ft.replace(android.R.id.content, new WiFiDirectServicesList(), "services");
-//            ft.commit();
-//        }
-
-        if (groupOwnerIntent == 15) {
-            ServerInstance.getServerInstance();//Start server
+                @Override
+                public void onFailure(int reasonCode) {
+                    final String errFinal = getWiFiP2pFailureMessage(reasonCode);
+                    //ApplicationContext.showToast("Failed to add service request:" + errFinal);
+                    appendStatus("[Host] Failed to create group");
+                    Log.e(TAG, "[Host] Failed to create group:" + errFinal);
+                }
+            });
+            */
         }
 
+        Thread discoverServiceThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    sleep(3000);
+                    startRegistration();//registers local service to manager
+                    discoverService();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        discoverServiceThread.start();
     }
 
     public void appendStatus(String status) {
@@ -127,23 +155,188 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
      * Adds local service too the WifiP2pManager
      */
     private void startRegistration() {
-        //  Create a string map containing information about your service.
-        Map record = new HashMap();
-        record.put("TCPport", String.valueOf(KryoRegisterAndPort.TCP_PORT));
-        record.put("UDPport", String.valueOf(KryoRegisterAndPort.UDP_PORT));
-        record.put("buddyname", SharedPrefManager.getStringDefaults("USERNAME", this));
-        record.put("groupOwnerIntent", "" + groupOwnerIntent);
-        record.put("available", "visible");
 
-        // Service information.  Pass it an instance name, service type
-        // _protocol._transportlayer , and the map containing
-        // information other devices will want once they connect to this one.
-        WifiP2pDnsSdServiceInfo serviceInfo =
-                WifiP2pDnsSdServiceInfo.newInstance(SERVICE_INSTANCE, "_presence._tcp", record);//may need to change full domain
+        if (!isWifiP2pEnabled) {
+            ApplicationContext.showToast("P2P not enabled. Ensure WiFi is turned on.");
+        } else {
+            Log.d(TAG, "method called: startRegistration");
 
-        // Add the local service, sending the service info, network channel,
-        // and listener that will be used to indicate success or failure of
-        // the request.
+
+            //  Create a string map containing information about your service.
+            Map record = new HashMap();
+            record.put("TCPport", String.valueOf(KryoRegisterAndPort.TCP_PORT));
+            record.put("UDPport", String.valueOf(KryoRegisterAndPort.UDP_PORT));
+            record.put("buddyname", SharedPrefManager.getStringDefaults("USERNAME", this));
+            record.put("groupOwnerIntent", "" + groupOwnerIntent);
+            record.put("available", "visible");
+
+            // Service information.  Pass it an instance name, service type
+            // _protocol._transportlayer , and the map containing
+            // information other devices will want once they connect to this one.
+
+            if (isHost) {
+                serviceInfo = WifiP2pDnsSdServiceInfo.newInstance(SERVICE_INSTANCE_HOST, "_presence._tcp", record);
+
+            } else {
+                serviceInfo = WifiP2pDnsSdServiceInfo.newInstance(SERVICE_INSTANCE_JOIN, "_presence._tcp", record);//may need to change full domain
+            }
+            //may need to change full domain
+            addLocalService(serviceInfo);
+
+            // Add the local service, sending the service info, network channel,
+            // and listener that will be used to indicate success or failure of
+            // the request.
+
+            // discoverService();//Move to onCreate/ on button push???...............................
+        }
+    }
+
+    private void discoverService() {
+        if (!isWifiP2pEnabled) {
+            ApplicationContext.showToast("Error: P2P not enabled. Ensure WiFi is turned on.");//Make this a long toast...
+
+        } else {
+            Log.d(TAG, "method called: discoverService");
+
+            WifiP2pManager.DnsSdTxtRecordListener txtListener = new WifiP2pManager.DnsSdTxtRecordListener() {
+                @Override
+        /* Callback includes:
+         * fullDomain: full domain name: e.g "printer._ipp._tcp.local."
+         * record: TXT record dta as a map of key/value pairs.
+         * device: The device running the advertised service.
+         */
+                //May need to filter using fullDomain...and groupOwnerIntent
+                public void onDnsSdTxtRecordAvailable(String fullDomain, Map record, WifiP2pDevice device) {
+
+                    Log.d(TAG, "DnsSdTxtRecord available -" + fullDomain);
+
+                    if (!isHost && fullDomain.startsWith(SERVICE_INSTANCE_HOST)) {//...SERVICE_INSTANCE_JOIN
+                        ApplicationContext.showToast("DnsSdTxtRecord found: " + record.get("buddyname").toString());
+                        buddies.put(device.deviceAddress, record.get("buddyname").toString());
+                        appendStatus("DnsSdTxtRecord found: " + record.get("buddyname").toString());
+
+                        Log.d(TAG, "DnsSdTxtRecord available -" + record.get("buddyname").toString() + fullDomain);
+
+                    } else if (isHost && fullDomain.startsWith(SERVICE_INSTANCE_JOIN)) {
+                        ApplicationContext.showToast("[Host] DnsSdTxtRecord found: " + record.get("buddyname").toString());
+                        buddies.put(device.deviceAddress, record.get("buddyname").toString());
+                        appendStatus("DnsSdTxtRecord found: " + record.get("buddyname").toString() + " - " + fullDomain);
+
+                        Log.d(TAG, "DnsSdTxtRecord available -" + record.get("buddyname").toString() + fullDomain);
+                    }
+                }
+            };
+
+            //May need to filter by instanceName....
+            WifiP2pManager.DnsSdServiceResponseListener servListener = new WifiP2pManager.DnsSdServiceResponseListener() {
+                @Override
+                public void onDnsSdServiceAvailable(String instanceName, String registrationType, WifiP2pDevice srcDevice) {
+
+                    Log.d(TAG, "onBonjourServiceAvailable " + instanceName);
+
+                    if (!isHost && instanceName.equalsIgnoreCase(SERVICE_INSTANCE_HOST)) {//May need to change to diff between host and join...
+                        // Update the device name with the human-friendly version from
+                        // the DnsTxtRecord, assuming one arrived.
+                        srcDevice.deviceName = buddies
+                                .containsKey(srcDevice.deviceAddress) ? buddies
+                                .get(srcDevice.deviceAddress) : srcDevice.deviceName;
+
+                        ApplicationContext.showToast("DnsSdService found: " + srcDevice.deviceName);
+                        appendStatus("DnsSdService found: " + srcDevice.deviceName);
+
+                        // Add to the custom adapter defined specifically for showing
+                        // wifi devices.
+                        WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager().findFragmentById(R.id.frag_service_list);
+
+                        if (fragment != null) {
+                            WiFiDirectServicesList.WiFiDevicesAdapter adapter = ((WiFiDirectServicesList.WiFiDevicesAdapter) fragment
+                                    .getListAdapter());
+                            WiFiP2pService service = new WiFiP2pService();
+                            service.device = srcDevice;
+                            service.instanceName = instanceName;
+                            service.serviceRegistrationType = registrationType;
+                            adapter.add(service);
+                            adapter.notifyDataSetChanged();
+                        }
+                    } else if (isHost && instanceName.equalsIgnoreCase(SERVICE_INSTANCE_JOIN)) {
+
+                        // Update the device name with the human-friendly version from
+                        // the DnsTxtRecord, assuming one arrived.
+                        srcDevice.deviceName = buddies
+                                .containsKey(srcDevice.deviceAddress) ? buddies
+                                .get(srcDevice.deviceAddress) : srcDevice.deviceName;
+
+                        ApplicationContext.showToast("[Host] DnsSdService found: " + srcDevice.deviceName);
+                        appendStatus("[Host] DnsSdService found: " + srcDevice.deviceName + " - " + buddies.get(srcDevice.deviceAddress));
+
+                        // Add to the custom adapter defined specifically for showing
+                        // wifi devices.
+                        WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager().findFragmentById(R.id.frag_service_list);
+
+                        if (fragment != null) {
+                            WiFiDirectServicesList.WiFiDevicesAdapter adapter = ((WiFiDirectServicesList.WiFiDevicesAdapter) fragment
+                                    .getListAdapter());
+                            WiFiP2pService service = new WiFiP2pService();
+                            service.device = srcDevice;
+                            service.instanceName = instanceName;
+                            service.serviceRegistrationType = registrationType;
+                            adapter.add(service);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+
+                }
+
+            };
+
+            manager.setDnsSdResponseListeners(channel, servListener, txtListener);
+            // After attaching listeners, create a service request and initiate discovery.
+
+            serviceRequest = WifiP2pDnsSdServiceRequest.newInstance();
+            manager.addServiceRequest(channel,
+                    serviceRequest,
+                    new WifiP2pManager.ActionListener() {
+                        @Override
+                        public void onSuccess() {
+                            // Success!
+                            //ApplicationContext.showToast("Successfully added service request");
+                            appendStatus("Added service discovery request");
+                            Log.d(TAG, "Added service discovery request");
+                        }
+
+                        @Override
+                        public void onFailure(int reasonCode) {
+                            // Command failed.  Check for P2P_UNSUPPORTED, ERROR, or BUSY
+                            final String errFinal = getWiFiP2pFailureMessage(reasonCode);
+                            //ApplicationContext.showToast("Failed to add service request:" + errFinal);
+                            appendStatus("Failed adding service discovery request");
+                            Log.e(TAG, "Failed to add service request:" + errFinal);
+                        }
+                    });
+
+            manager.discoverServices(channel, new WifiP2pManager.ActionListener() {
+
+                @Override
+                public void onSuccess() {
+                    // Success!
+                    //ApplicationContext.showToast("Successfully started service discovery");
+                    appendStatus("Service discovery initiated");
+                    Log.d(TAG, "Service discovery initiated");
+                }
+
+                @Override
+                public void onFailure(int reasonCode) {
+                    // Command failed.  Check for P2P_UNSUPPORTED, ERROR, or BUSY
+                    final String errFinal = getWiFiP2pFailureMessage(reasonCode);
+                    ApplicationContext.showToast("Failed to initiate service discovery: " + errFinal);
+                    appendStatus("Failed to initiate service discovery: " + errFinal);
+                    Log.d(TAG, "Failed to initiate service discovery: " + errFinal);
+                }
+            });
+        }
+    }
+
+    public void addLocalService(final WifiP2pDnsSdServiceInfo serviceInfo) {
         manager.addLocalService(channel, serviceInfo, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
@@ -158,126 +351,35 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             public void onFailure(int reasonCode) {
                 final String errFinal = getWiFiP2pFailureMessage(reasonCode);
                 //ApplicationContext.showToast("Failed to add local service:" + errFinal);
-                appendStatus("Failed to add a service");
+                appendStatus("Failed to add local service:" + errFinal);
                 Log.e(TAG, "Failed to add local service:" + errFinal);
                 // Command failed.  Check for P2P_UNSUPPORTED, ERROR, or BUSY
             }
         });
-
-        discoverService();//Move to onCreate???...............................
     }
 
-    private void discoverService() {
-        WifiP2pManager.DnsSdTxtRecordListener txtListener = new WifiP2pManager.DnsSdTxtRecordListener() {
-            @Override
-        /* Callback includes:
-         * fullDomain: full domain name: e.g "printer._ipp._tcp.local."
-         * record: TXT record dta as a map of key/value pairs.
-         * device: The device running the advertised service.
-         */
-            //May need to filter using fullDomain...and groupOwnerIntent
-            public void onDnsSdTxtRecordAvailable(String fullDomain, Map record, WifiP2pDevice device) {
-
-                if(fullDomain.startsWith(SERVICE_INSTANCE)) {
-                    //ApplicationContext.showToast("DnsSdTxtRecord found: " + fullDomain);
-                    buddies.put(device.deviceAddress, record.get("buddyname").toString());
-                    appendStatus("DnsSdTxtRecord found: " + record.get("buddyname").toString() + " - " + fullDomain);
-                    Log.d(TAG, "DnsSdTxtRecord available -" + record.toString());
+    public void removeLocalServices(final WifiP2pDnsSdServiceInfo serviceInfo) {
+        if (serviceInfo != null) {
+            manager.removeLocalService(channel, serviceInfo, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    // Command successful! Code isn't necessarily needed here,
+                    // Unless you want to update the UI or add logging statements.
+                    //ApplicationContext.showToast("Successfully added local service");
+                    appendStatus("Removed Local Service");
+                    Log.d(TAG, "Removed Local Service ");
                 }
-            }
-        };
 
-        //May need to filter by instanceName....
-        WifiP2pManager.DnsSdServiceResponseListener servListener = new WifiP2pManager.DnsSdServiceResponseListener() {
-            @Override
-            public void onDnsSdServiceAvailable(String instanceName, String registrationType, WifiP2pDevice srcDevice) {
-
-                if (instanceName.equalsIgnoreCase(SERVICE_INSTANCE)) {//May need to change to diff between host and join...
-
-
-                    // Update the device name with the human-friendly version from
-                    // the DnsTxtRecord, assuming one arrived.
-                    srcDevice.deviceName = buddies
-                            .containsKey(srcDevice.deviceAddress) ? buddies
-                            .get(srcDevice.deviceAddress) : srcDevice.deviceName;
-
-                    ApplicationContext.showToast("DnsSdService found: " + srcDevice.deviceName);
-                    appendStatus("DnsSdService found: " + srcDevice.deviceName + " - " + buddies.get(srcDevice.deviceAddress));
-
-
-
-                    // Add to the custom adapter defined specifically for showing
-                    // wifi devices.
-                   // WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager()
-                            //.findFragmentByTag("services");
-                    WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager().findFragmentById(R.id.frag_service_list);
-
-                    if (fragment != null) {
-                        WiFiDirectServicesList.WiFiDevicesAdapter adapter = ((WiFiDirectServicesList.WiFiDevicesAdapter) fragment
-                                .getListAdapter());
-                        WiFiP2pService service = new WiFiP2pService();
-                        service.device = srcDevice;
-                        service.instanceName = instanceName;
-                        service.serviceRegistrationType = registrationType;
-                        adapter.add(service);
-
-//                WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager()
-//                        .findFragmentById(R.id.frag_peerlist);
-//                WiFiDirectServicesList.WiFiDevicesAdapter adapter = ((WiFiDirectServicesList.WiFiDevicesAdapter) fragment
-//                        .getListAdapter());
-//
-//                adapter.add(resourceType);
-                        adapter.notifyDataSetChanged();
-                    }
-                    Log.d(TAG, "onBonjourServiceAvailable " + instanceName);
+                @Override
+                public void onFailure(int reasonCode) {
+                    final String errFinal = getWiFiP2pFailureMessage(reasonCode);
+                    //ApplicationContext.showToast("Failed to add local service:" + errFinal);
+                    appendStatus("Failed to remove service");
+                    Log.e(TAG, "Failed to remove service: " + errFinal);
+                    // Command failed.  Check for P2P_UNSUPPORTED, ERROR, or BUSY
                 }
-            }
-        };
-
-        manager.setDnsSdResponseListeners(channel, servListener, txtListener);
-        // After attaching listeners, create a service request and initiate discovery.
-
-        serviceRequest = WifiP2pDnsSdServiceRequest.newInstance();
-        manager.addServiceRequest(channel,
-                serviceRequest,
-                new WifiP2pManager.ActionListener() {
-                    @Override
-                    public void onSuccess() {
-                        // Success!
-                        //ApplicationContext.showToast("Successfully added service request");
-                        appendStatus("Added service discovery request");
-                        Log.d(TAG, "Service request added");
-                    }
-
-                    @Override
-                    public void onFailure(int reasonCode) {
-                        // Command failed.  Check for P2P_UNSUPPORTED, ERROR, or BUSY
-                        final String errFinal = getWiFiP2pFailureMessage(reasonCode);
-                        //ApplicationContext.showToast("Failed to add service request:" + errFinal);
-                        appendStatus("Failed adding service discovery request");
-                        Log.e(TAG, "Failed to add service request:" + errFinal);
-                    }
-                });
-
-        manager.discoverServices(channel, new WifiP2pManager.ActionListener() {
-
-            @Override
-            public void onSuccess() {
-                // Success!
-                //ApplicationContext.showToast("Successfully started service discovery");
-                appendStatus("Service discovery initiated");
-                Log.d(TAG, "Service request added");
-            }
-
-            @Override
-            public void onFailure(int reasonCode) {
-                // Command failed.  Check for P2P_UNSUPPORTED, ERROR, or BUSY
-                final String errFinal = getWiFiP2pFailureMessage(reasonCode);
-                //ApplicationContext.showToast("Failed to start discover service:" + errFinal);
-                appendStatus("Service discovery failed: " + errFinal);
-                Log.d(TAG, "Failed to start discover service:" + errFinal);
-            }
-        });
+            });
+        }
     }
 
     @Override
@@ -285,6 +387,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = service.device.deviceAddress;
         config.wps.setup = WpsInfo.PBC;
+        config.groupOwnerIntent = groupOwnerIntent;//this value is ignored by remembered groups
         if (serviceRequest != null)
             manager.removeServiceRequest(channel, serviceRequest,
                     new WifiP2pManager.ActionListener() {
@@ -295,7 +398,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
                         @Override
                         public void onFailure(int errorCode) {
-                            Log.d(TAG, "Failed to remove service: " + errorCode);
+                            Log.d(TAG, "Failed to remove service: " + getWiFiP2pFailureMessage(errorCode));
                         }
                     });
 
@@ -310,9 +413,9 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
             @Override
             public void onFailure(int errorCode) {
-                ApplicationContext.showToast("Failed connecting to service" + errorCode);
+                ApplicationContext.showToast("Failed connecting to service" + getWiFiP2pFailureMessage(errorCode));
                 appendStatus("Failed connecting to service");
-                Log.d(TAG, "Failed connecting to service: " + errorCode);
+                Log.d(TAG, "Failed connecting to service: " + getWiFiP2pFailureMessage(errorCode));
                 //appendStatus("Failed connecting to service");
             }
         });
@@ -323,15 +426,21 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
         if (p2pInfo.isGroupOwner) {
             ApplicationContext.showToast("Connected as Group Owner");
+//            WiFiDirectServicesList fragment = (WiFiDirectServicesList) activity.getFragmentManager()
+//                    .findFragmentById(R.id.frag_service_list);
+//            fragment.updateThisDevice(device);//Update each device status using our own service class/adapter class
+
             Log.d(TAG, "Connected as group owner");
-        } else {
+        } else if(p2pInfo.groupFormed) {
             ApplicationContext.showToast("Connected as Peer");
             Log.d(TAG, "Connected as peer");
+            //statusTxtView.setVisibility(View.GONE);
+
 
             //Start client....????
+
         }
 
-        statusTxtView.setVisibility(View.GONE);
     }
 
 
@@ -351,33 +460,61 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         unregisterReceiver(receiver);
     }
 
-    @Override
-    protected void onRestart() {
-        //Fragment frag = getFragmentManager().findFragmentByTag("services");
-        WiFiDirectServicesList frag = (WiFiDirectServicesList) getFragmentManager().findFragmentById(R.id.frag_service_list);
+//    @Override
+//    protected void onRestart() {
+//        //Fragment frag = getFragmentManager().findFragmentByTag("services");
+//
+//        Log.d(TAG, "onRestart() called");
+//        ApplicationContext.showToast("onRestart() called");
+//
+//        WiFiDirectServicesList frag = (WiFiDirectServicesList) getFragmentManager().findFragmentById(R.id.frag_service_list);
+//
+//        if (frag != null) {
+//            getFragmentManager().beginTransaction().remove(frag).commit();
+//        }
+//        super.onRestart();
+//    }
 
-        if (frag != null) {
-            getFragmentManager().beginTransaction().remove(frag).commit();
-        }
-        super.onRestart();
-    }
-
     @Override
-    protected void onStop() {
+    protected void onDestroy() {
+        Log.d(TAG, "onDestroy() Called");
+        ApplicationContext.showToast("onDestroy() Called");
+
         if (manager != null && channel != null) {
+            removeLocalServices(serviceInfo);//Removes local service.
             manager.removeGroup(channel, new WifiP2pManager.ActionListener() {
                 @Override
                 public void onFailure(int reasonCode) {
-                    Log.d(TAG, "Disconnect failed. Reason :" + reasonCode);
+                    Log.d(TAG, "Failed to Remove Group: " + getWiFiP2pFailureMessage(reasonCode));
                 }
 
                 @Override
                 public void onSuccess() {
+                    Log.d(TAG, "Successfully Removed Group");
                 }
             });
         }
-        super.onStop();
+        super.onDestroy();
     }
+
+//    @Override
+//    protected void onStop() {
+//        if (manager != null && channel != null) {
+//            removeLocalServices(serviceInfo);//Removes local service.
+//            manager.removeGroup(channel, new WifiP2pManager.ActionListener() {
+//                @Override
+//                public void onFailure(int reasonCode) {
+//                    Log.d(TAG, "Failed to Remove Group: " + getWiFiP2pFailureMessage(reasonCode));
+//                }
+//
+//                @Override
+//                public void onSuccess() {
+//                    Log.d(TAG, "Successfully Removed Group");
+//                }
+//            });
+//        }
+//        super.onStop();
+//    }
 
 /*
 
@@ -471,6 +608,9 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.option_direct_discover) {
+            removeLocalServices(serviceInfo);
+            startRegistration();
+            discoverService();
             //initiateDiscoverPeers();
         }
 
@@ -518,28 +658,26 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             }
         });
     }
-
-    @Override
-    public void disconnect() {
-        final DeviceDetailFragment fragment = (DeviceDetailFragment) getFragmentManager()
-                .findFragmentById(R.id.frag_detail);
-        fragment.resetViews();
-        manager.removeGroup(channel, new WifiP2pManager.ActionListener() {
-
-            @Override
-            public void onFailure(int reasonCode) {
-                Log.d(TAG, "Disconnect failed. Reason:" + reasonCode);
-            }
-
-            @Override
-            public void onSuccess() {
-                fragment.getView().setVisibility(View.GONE);
-            }
-
-        });
-    }
-
-    */
+*/
+//    @Override
+//    public void disconnect() {
+//        final DeviceDetailFragment fragment = (DeviceDetailFragment) getFragmentManager()
+//                .findFragmentById(R.id.frag_detail);
+//        fragment.resetViews();
+//        manager.removeGroup(channel, new WifiP2pManager.ActionListener() {
+//
+//            @Override
+//            public void onFailure(int reasonCode) {
+//                Log.d(TAG, "Disconnect failed. Reason:" + reasonCode);
+//            }
+//
+//            @Override
+//            public void onSuccess() {
+//                fragment.getView().setVisibility(View.GONE);
+//            }
+//
+//        });
+//    }
 
     @Override //ChannelListener
     public void onChannelDisconnected() {//for disconnects

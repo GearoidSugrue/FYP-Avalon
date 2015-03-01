@@ -148,12 +148,14 @@ public class MainActivity extends ActionBarActivity {
     public void startJoinServiceActivity() {
         WiFiDirectActivity.groupOwnerIntent = 0; //doesn't want to be group owner
         Intent intent = new Intent(this, WiFiDirectServiceActivity.class);
+        intent.putExtra("isHost", false);
         startActivity(intent);
     }
 
     public void startHostServiceActivity() {
         WiFiDirectActivity.groupOwnerIntent = 15; //wants to be group owner
         Intent intent = new Intent(this, WiFiDirectServiceActivity.class);
+        intent.putExtra("isHost", true);
         startActivity(intent);
     }
 

@@ -3,34 +3,100 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="3dp" >
+    android:paddingTop="3dp"
+    android:paddingBottom="3dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:textStyle="bold"
+        android:text="@string/label_me"
+        android:gravity="center_vertical"
+        />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/blue06" />
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/textview_label_name"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/abc_text_size_medium_material"
+            android:text="@string/label_name"
+            />
+        <TextView
+            android:id="@+id/textview_label_status"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textview_label_name"
+            android:textSize="@dimen/abc_text_size_medium_material"
+            android:text="@string/label_status"
+            />
+        <TextView
+            android:id="@+id/my_device_name"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/textview_label_name"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/abc_text_size_medium_material"
+            />
+        <TextView
+            android:id="@+id/my_device_status"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/textview_label_status"
+            android:layout_below="@id/my_device_name"
+            android:singleLine="true"
+            android:textSize="@dimen/abc_text_size_medium_material"
+            />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/finding_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:textStyle="bold"
+        android:text="@string/finding_host">
+    </TextView>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/blue06" />
+
 
     <ListView
         android:id="@id/android:list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
+
     </ListView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dip">
+    <ProgressBar
+        android:id="@+id/discoveryProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        style="@android:style/Widget.ProgressBar.Small">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="@string/finding_service" >
-        </TextView>
+    </ProgressBar>
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginLeft="20dip"
-            style="@android:style/Widget.ProgressBar.Small" >
-        </ProgressBar>
-
-    </LinearLayout>
 </LinearLayout>
 
