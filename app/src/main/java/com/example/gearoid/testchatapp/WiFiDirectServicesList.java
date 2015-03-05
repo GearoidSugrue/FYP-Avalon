@@ -3,11 +3,14 @@ package com.example.gearoid.testchatapp;
 import android.app.ListFragment;
 
 import android.app.ProgressDialog;
+import android.net.wifi.p2p.WifiP2pDeviceList;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.support.v4.app.Fragment;
 
 import android.content.Context;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +32,9 @@ import java.util.List;
  */
 public class WiFiDirectServicesList extends ListFragment {
     WiFiDevicesAdapter listAdapter = null;
+    private List<WiFiP2pService> peers = new ArrayList<WiFiP2pService>();
     private View mContentView = null;
+    private WifiP2pDevice myDevice;
 
     interface DeviceClickListener {
         public void connectP2p(WiFiP2pService wifiP2pService);
@@ -40,6 +45,8 @@ public class WiFiDirectServicesList extends ListFragment {
                              Bundle savedInstanceState) {
         //progressBar = container.findViewById(R.id.discoveryProgressBar);
         mContentView = inflater.inflate(R.layout.devices_list, null);
+        TextView tv = (TextView) mContentView.findViewById(R.id.my_device_friendly_name);
+        tv.setText(SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext()));
         return mContentView;
     }
 
@@ -47,7 +54,7 @@ public class WiFiDirectServicesList extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         listAdapter = new WiFiDevicesAdapter(getActivity(), android.R.layout.simple_list_item_2, android.R.id.text1,
-                new ArrayList<WiFiP2pService>()); //R.layout.row_devices
+                peers); //Was new ArrayList<WiFiP2pService>()
         this.setListAdapter(listAdapter);
     }
 
@@ -75,19 +82,70 @@ public class WiFiDirectServicesList extends ListFragment {
             WiFiP2pService service = items.get(position);
             if (service != null) {
                 TextView nameText = (TextView) v.findViewById(android.R.id.text1);
+
                 if (nameText != null) {
-                    nameText.setText(service.device.deviceName + service.instanceName);
+                    nameText.setText(service.device.deviceName); // + service.instanceName);
                 }
                 TextView statusText = (TextView) v.findViewById(android.R.id.text2);
-                statusText.setText(getDeviceStatus(service.device.status));
+
+                if(statusText != null ) {
+                    statusText.setText(getDeviceStatus(service.device.status));
+                }
+//                if(statusText != null ) {
+//                    if(service.isConnected) {
+//                        statusText.setText("Connected");
+//                    } else {
+//                        statusText.setText(getDeviceStatus(service.device.status));
+//                    }
+//                }
             }
             return v;
         }
 
     }
 
-    public void updateThisDevice(WifiP2pDevice device){
+//    @Override
+//    public void onPeersAvailable(WifiP2pDeviceList peerList) {//called by manager.requestPeers(...) in broadcast receiver
+////        if (progressDialog != null && progressDialog.isShowing()) {
+////            progressDialog.dismiss();
+////        }
+//
+//        peers.clear();
+//        peers.addAll(peerList.getDeviceList());
+//
+//        ((WiFiDevicesAdapter) getListAdapter()).notifyDataSetChanged();
+//        if (peers.size() == 0) {
+//            Log.d(WiFiDirectActivity.TAG, "No devices found");
+//            ApplicationContext.showToast("No devices found!!");
+//        }
+//
+//    }
 
+    public void clearPeers() {
+        peers.clear();
+        ((WiFiDevicesAdapter) getListAdapter()).notifyDataSetChanged();
+    }
+
+    public void clearNonConnectedPeers() {
+        //peers.clear();
+
+        for(int i=0; i < peers.size(); i++){
+            WiFiP2pService p = peers.get(i);
+            if(p.device.status != WifiP2pDevice.CONNECTED){
+                Log.d(WiFiDirectActivity.TAG, "Device is not connected. Removing from list."  + p.device.deviceName);
+                peers.remove(i);
+            }
+        }
+
+        ((WiFiDevicesAdapter) getListAdapter()).notifyDataSetChanged();
+    }
+
+    public void refreshList(){
+        ((WiFiDevicesAdapter) getListAdapter()).notifyDataSetChanged();
+    }
+
+    public void updateThisDevice(WifiP2pDevice device){
+        this.myDevice = device;
         TextView view = (TextView) mContentView.findViewById(R.id.my_device_name);
         view.setText(device.deviceName);
         view = (TextView) mContentView.findViewById(R.id.my_device_status);

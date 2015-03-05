@@ -64,7 +64,8 @@
             android:name=".WiFiDirectActivity"
             android:label="@string/title_activity_wi_fi_direct"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/ToolbarTheme" >
+            android:theme="@style/ToolbarTheme"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.gearoid.testchatapp.MainActivity" />
@@ -73,7 +74,8 @@
             android:name=".WiFiDirectServiceActivity"
             android:label="@string/title_activity_wi_fi_direct"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/ToolbarTheme" >
+            android:theme="@style/ToolbarTheme"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.gearoid.testchatapp.MainActivity" />

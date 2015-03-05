@@ -14,4 +14,5 @@ public class WiFiP2pService {
     WifiP2pDevice device;
     String instanceName = null;
     String serviceRegistrationType = null;
+    boolean isConnected = false;
 }

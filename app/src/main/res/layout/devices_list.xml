@@ -9,14 +9,17 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
         android:textSize="@dimen/abc_text_size_medium_material"
         android:textStyle="bold"
+        android:textColor="@color/blue06"
         android:text="@string/label_me"
         android:gravity="center_vertical"
         />
     <View
         android:layout_width="fill_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:gravity="center_vertical"
         android:background="@color/blue06" />
 
@@ -25,19 +28,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/textview_label_name"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
+            android:id="@+id/textview_label_friendly_name"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:textSize="@dimen/abc_text_size_medium_material"
-            android:text="@string/label_name"
+            android:text="@string/label_friendly_name"
+            />
+
+        <TextView
+            android:id="@+id/textview_label_name"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textview_label_friendly_name"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/abc_text_size_medium_material"
+            android:text="@string/label_ID"
             />
         <TextView
             android:id="@+id/textview_label_status"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/textview_label_name"
@@ -45,19 +60,30 @@
             android:text="@string/label_status"
             />
         <TextView
-            android:id="@+id/my_device_name"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:id="@+id/my_device_friendly_name"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/textview_label_friendly_name"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/abc_text_size_medium_material"
+            />
+        <TextView
+            android:id="@+id/my_device_name"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textview_label_friendly_name"
             android:layout_toRightOf="@id/textview_label_name"
             android:gravity="center_vertical"
             android:textSize="@dimen/abc_text_size_medium_material"
             />
         <TextView
             android:id="@+id/my_device_status"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/textview_label_status"
@@ -71,13 +97,16 @@
         android:id="@+id/finding_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
         android:textSize="@dimen/abc_text_size_medium_material"
         android:textStyle="bold"
+        android:textColor="@color/blue06"
         android:text="@string/finding_host">
     </TextView>
     <View
         android:layout_width="fill_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:gravity="center_vertical"
         android:background="@color/blue06" />
 

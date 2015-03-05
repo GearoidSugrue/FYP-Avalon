@@ -53,6 +53,21 @@ public class WiFiDirectBroadcastReceiverService extends BroadcastReceiver {
 
                 //activity.resetData();//clears details like UI, lists...
             }
+        } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
+
+            // The peer list has changed!  We should probably do something about
+            // that.
+
+            // request available peers from the wifi p2p manager. This is an
+            // asynchronous call and the calling activity is notified with a
+            // callback on PeerListListener.onPeersAvailable()
+            if (manager != null) {
+                manager.requestPeers(channel, (WifiP2pManager.PeerListListener) activity.getFragmentManager()
+                        .findFragmentById(R.id.frag_list));
+                ApplicationContext.showToast("P2P peers changed");//Delete later..........
+            }
+            Log.d(WiFiDirectActivity.TAG, "P2P peers changed");
+
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
             if (manager == null) {
                 return;
@@ -68,8 +83,11 @@ public class WiFiDirectBroadcastReceiverService extends BroadcastReceiver {
                 WiFiDirectServicesList fragment = (WiFiDirectServicesList) activity.getFragmentManager()
                         .findFragmentById(R.id.frag_service_list);//hides progress bar
                 fragment.dismissProgressBar();
+                //fragment.refreshList();
             } else {
                 // It's a disconnect
+                Log.d(WiFiDirectServiceActivity.TAG, "Someone disconnected from the p2p network.");
+
             }
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
             WifiP2pDevice device = (WifiP2pDevice) intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE);
@@ -78,13 +96,13 @@ public class WiFiDirectBroadcastReceiverService extends BroadcastReceiver {
                     .findFragmentById(R.id.frag_service_list);
             fragment.updateThisDevice(device);//Say were connected, available etc...
 
-            Log.d(WiFiDirectServiceActivity.TAG, "Device status -" + WiFiDirectServicesList.getDeviceStatus(device.status));
-        } else if(WifiP2pManager.WIFI_P2P_DISCOVERY_CHANGED_ACTION.equals(action)) {
+            Log.d(WiFiDirectServiceActivity.TAG, "Device status - " + WiFiDirectServicesList.getDeviceStatus(device.status));
+        } else if(WifiP2pManager.WIFI_P2P_DISCOVERY_CHANGED_ACTION.equals(action)) {//delete...doesn't work for services
 
             final int discoveryState = intent.getIntExtra(WifiP2pManager.EXTRA_DISCOVERY_STATE, 0);
 
             if(discoveryState == 1){
-                ApplicationContext.showToast("P2P discovery has stopped");
+                //ApplicationContext.showToast("P2P discovery has stopped");
 //                WiFiDirectServicesList fragment = (WiFiDirectServicesList) activity.getFragmentManager()
 //                        .findFragmentById(R.id.frag_service_list);
 //                fragment.dismissProgressBar();
