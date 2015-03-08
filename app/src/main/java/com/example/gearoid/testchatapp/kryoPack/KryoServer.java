@@ -35,7 +35,7 @@ public class KryoServer {
 			e.printStackTrace();
 		}
 
-		server.start();
+		//server.start();
 
 	}
 
@@ -65,7 +65,13 @@ public class KryoServer {
 		 return connections;
 	 }
 
+    public void startServer() {
+        System.out.println("[Server] Starting Server.");
+        server.start();
+    }
+
     public void closeServer() {
+        System.out.println("[Server] Closing Server.");
         server.close();
     }
 

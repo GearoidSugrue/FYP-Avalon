@@ -4,6 +4,7 @@ import android.app.ListFragment;
 
 import android.app.ProgressDialog;
 import android.net.wifi.p2p.WifiP2pDeviceList;
+import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.support.v4.app.Fragment;
 
@@ -30,11 +31,14 @@ import java.util.List;
  * A simple ListFragment that shows the available services as published by the
  * peers
  */
-public class WiFiDirectServicesList extends ListFragment {
+public class WiFiDirectServicesList extends ListFragment implements WifiP2pManager.PeerListListener{
     WiFiDevicesAdapter listAdapter = null;
     private List<WiFiP2pService> peers = new ArrayList<WiFiP2pService>();
     private View mContentView = null;
     private WifiP2pDevice myDevice;
+
+    private List<WifiP2pDevice> allNearbyPeers = new ArrayList<WifiP2pDevice>();
+
 
     interface DeviceClickListener {
         public void connectP2p(WiFiP2pService wifiP2pService);
@@ -45,8 +49,6 @@ public class WiFiDirectServicesList extends ListFragment {
                              Bundle savedInstanceState) {
         //progressBar = container.findViewById(R.id.discoveryProgressBar);
         mContentView = inflater.inflate(R.layout.devices_list, null);
-        TextView tv = (TextView) mContentView.findViewById(R.id.my_device_friendly_name);
-        tv.setText(SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext()));
         return mContentView;
     }
 
@@ -104,6 +106,56 @@ public class WiFiDirectServicesList extends ListFragment {
 
     }
 
+    public int getNumberOfConnectedDevices(){
+        int count = 0;
+
+        for(int j=0; j < peers.size(); j++){
+            if(peers.get(j).device.status == WifiP2pDevice.CONNECTED){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public void updatePeerDetails(){//Not sure if working
+        Log.d(WiFiDirectActivity.TAG, "Trying to update peer details");
+
+        for(int i=0; i < allNearbyPeers.size(); i++){
+            for(int j=0; j < peers.size(); j++){
+                Log.d(WiFiDirectActivity.TAG,  peers.get(j).device.deviceName + " --- " + allNearbyPeers.get(i).deviceName );
+
+                if(allNearbyPeers.get(i).deviceAddress == peers.get(j).device.deviceAddress){
+                    Log.d(WiFiDirectActivity.TAG, "Found a match: " + peers.get(j).device.deviceName + " - " + allNearbyPeers.get(i).deviceName );
+
+                    peers.get(j).device = allNearbyPeers.get(i);
+                }
+            }
+        }
+    }
+
+
+        @Override
+        public void onPeersAvailable(WifiP2pDeviceList peerList) {
+            Log.d(WiFiDirectActivity.TAG, "onPeersAvailable called...");
+
+            // Out with the old, in with the new.
+            allNearbyPeers.clear();
+            allNearbyPeers.addAll(peerList.getDeviceList());
+
+            // If an AdapterView is backed by this data, notify it
+            // of the change.  For instance, if you have a ListView of available
+            // peers, trigger an update.
+            //((WiFiPeerListAdapter) getListAdapter()).notifyDataSetChanged();
+            if (allNearbyPeers.size() == 0) {
+                Log.d(WiFiDirectActivity.TAG, "No devices found");
+                return;
+            }
+            updatePeerDetails();//............................................................
+            Log.d(WiFiDirectActivity.TAG, "Found devices: " + allNearbyPeers.size());
+        }
+
+
+
 //    @Override
 //    public void onPeersAvailable(WifiP2pDeviceList peerList) {//called by manager.requestPeers(...) in broadcast receiver
 ////        if (progressDialog != null && progressDialog.isShowing()) {
@@ -144,12 +196,39 @@ public class WiFiDirectServicesList extends ListFragment {
         ((WiFiDevicesAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
-    public void updateThisDevice(WifiP2pDevice device){
-        this.myDevice = device;
-        TextView view = (TextView) mContentView.findViewById(R.id.my_device_name);
-        view.setText(device.deviceName);
-        view = (TextView) mContentView.findViewById(R.id.my_device_status);
-        view.setText(getDeviceStatus(device.status));
+    public WifiP2pDevice getThisDevice() {
+        return myDevice;
+    }
+
+
+    public void updateThisDevice(WifiP2pDevice device){  //Test this.....................
+        TextView friendlyNameView = (TextView) mContentView.findViewById(R.id.my_device_friendly_name);
+        TextView nameView = (TextView) mContentView.findViewById(R.id.my_device_name);
+        TextView statusView = (TextView) mContentView.findViewById(R.id.my_device_status);
+
+        if ( device != null) {
+            Log.d(WiFiDirectActivity.TAG, "updateThisDevice: " + device.deviceName + " = " + getDeviceStatus(device.status));
+            this.myDevice = device;
+            friendlyNameView.setText(SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext()));
+            nameView.setText(device.deviceName);
+
+            if(device.status == WifiP2pDevice.CONNECTED) {
+                if(device.isGroupOwner()) {
+                    statusView.setText("Connected Players - " + getNumberOfConnectedDevices());
+                } else {
+                    statusView.setText("Connected to Host - " );//+ peers.get(0).device.deviceName);
+                }
+
+            } else {
+                statusView.setText(getDeviceStatus(device.status));
+            }
+
+        } else if (this.myDevice != null ){
+            friendlyNameView.setText(SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext()));
+            nameView.setText(this.myDevice.deviceName);
+            statusView.setText("WiFi Direct Disabled! Re-enable.");
+        }
+
     }
 
     public void setFindingTextView(String text){
@@ -181,7 +260,7 @@ public class WiFiDirectServicesList extends ListFragment {
             case WifiP2pDevice.UNAVAILABLE:
                 return "Unavailable";
             default:
-                return "Unknown";
+                return "Unknown - " + statusCode ;
         }
     }
 }
