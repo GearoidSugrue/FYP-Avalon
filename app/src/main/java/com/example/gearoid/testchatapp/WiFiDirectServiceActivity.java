@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.wifi.WifiManager;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
@@ -22,6 +23,8 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.gearoid.testchatapp.kryoPack.KryoRegisterAndPort;
@@ -59,7 +62,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
     WifiP2pManager.Channel channel;
     private BroadcastReceiver receiver = null;
 
-    private boolean isHost = false;
+    boolean isHost = false;
 
     ProgressDialog progressDialog = null;
 
@@ -115,7 +118,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
         if (isHost) {
             getSupportActionBar().setTitle("Hosting Game");
-            toolbar.setTitle("Hosting Game");
+            //toolbar.setTitle("Hosting Game");
             groupOwnerIntent = 15;
             ServerInstance.getServerInstance().getServer().start();
             WiFiDirectServicesList fragment = (WiFiDirectServicesList) this.getFragmentManager()
@@ -144,7 +147,21 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         };
         discoverServiceThread.start();
 
+        intialiseButtons();
 
+
+    }
+
+    public void intialiseButtons() {
+        Button button_gameSetup = (Button) findViewById(R.id.button_continueToSetup);
+
+        button_gameSetup.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //TODO start game setup activity
+            }
+        });
     }
 
     public void appendStatus(String status) {
@@ -250,13 +267,24 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                         if (fragment != null) {
                             WiFiDirectServicesList.WiFiDevicesAdapter adapter = ((WiFiDirectServicesList.WiFiDevicesAdapter) fragment
                                     .getListAdapter());
+
+                            int position = fragment.checkIfDeviceAlreadyAdded(srcDevice.deviceAddress, srcDevice.deviceName);
+
                             WiFiP2pService service = new WiFiP2pService();
                             service.device = srcDevice;
                             service.instanceName = instanceName;
                             service.serviceRegistrationType = registrationType;
-                            adapter.add(service);
-                            adapter.notifyDataSetChanged();
-                            Log.d(TAG, "Adding a WiFiDirectP2pService: " + service.instanceName + ", " + registrationType);
+
+                            if (position >= 0) {
+                                Log.d(TAG, "Replacing WiFiDirectP2pService: " + position + ", " + service.instanceName + ", " + registrationType);
+                                //TODO test or remove this, service replace 1
+                                fragment.replaceExistingService(position, service);//Is this really needed..??
+                            } else {
+                                adapter.add(service);
+                                adapter.notifyDataSetChanged();
+                                Log.d(TAG, "Adding a WiFiDirectP2pService: " + service.instanceName + ", " + registrationType);
+                            }
+
                         } else {
                             Log.d(TAG, "Failed to find fragment...........");
                         }
@@ -277,19 +305,28 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                         if (fragment != null) {
                             WiFiDirectServicesList.WiFiDevicesAdapter adapter = ((WiFiDirectServicesList.WiFiDevicesAdapter) fragment
                                     .getListAdapter());
+                            int position = fragment.checkIfDeviceAlreadyAdded(srcDevice.deviceAddress, srcDevice.deviceName);
+
                             WiFiP2pService service = new WiFiP2pService();
                             service.device = srcDevice;
                             service.instanceName = instanceName;
                             service.serviceRegistrationType = registrationType;
-                            adapter.add(service);
-                            adapter.notifyDataSetChanged();
-                            Log.d(TAG, "Adding a WiFiDirectP2pService: " + srcDevice.deviceName + ", " + service.instanceName + ", " + registrationType);
-                        } else {
-                            Log.d(TAG, "Failed to find fragment.");
+
+                            if (position >= 0) {
+                                Log.d(TAG, "Replacing WiFiDirectP2pService: " + position + ", " + service.instanceName + ", " + registrationType);
+                                //TODO test or remove this, service replace 2
+                                fragment.replaceExistingService(position, service);
+                            } else {
+                                adapter.add(service);
+                                adapter.notifyDataSetChanged();
+                                Log.d(TAG, "Adding a WiFiDirectP2pService: " + service.instanceName + ", " + registrationType);
+                            }
                         }
+
                     }
 
                 }
+
 
             };
 
@@ -404,7 +441,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         }
     }
 
-    public void clearLocalServices(){
+    public void clearLocalServices() {
         if (manager != null && channel != null) {
 
             manager.stopPeerDiscovery(channel, new WifiP2pManager.ActionListener() {//Necessary to prevent infinite loop or Error: NO_SERVICE_REQUESTS
@@ -437,13 +474,13 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
     }
 
-    public void showConnectingDialog(String deviceName) {
+    public void showConnectingDialog(String deviceName, final WifiP2pDevice device) {
         progressDialog = ProgressDialog.show(this, "Press Back to Cancel",
                 "Connecting to: " + deviceName, true, true, new DialogInterface.OnCancelListener() {
 
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        cancelConnection();
+                        cancelConnection(device);
                     }
                 });
 
@@ -456,31 +493,42 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         }
     }
 
-    public void cancelConnection() {
+    public void cancelConnection(WifiP2pDevice device) {
         if (manager != null) {
             final WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager()
                     .findFragmentById(R.id.frag_service_list);
+//            if (fragment.getThisDevice() == null
+//                    || fragment.getThisDevice().status == WifiP2pDevice.CONNECTED) {
+//                //disconnect();
+//                Log.d(TAG, "Cancel Connection Called");
+//
+//            } else if (fragment.getThisDevice().status == WifiP2pDevice.AVAILABLE
+//                    || fragment.getThisDevice().status == WifiP2pDevice.INVITED) {
+
             if (fragment.getThisDevice() == null
                     || fragment.getThisDevice().status == WifiP2pDevice.CONNECTED) {
-                disconnect();
+                //disconnect();
+                Log.d(TAG, "Cancel Connection Called but already connected");
+
             } else if (fragment.getThisDevice().status == WifiP2pDevice.AVAILABLE
                     || fragment.getThisDevice().status == WifiP2pDevice.INVITED) {
 
-            clearAllServiceRequests(false);
-            manager.cancelConnect(channel, new WifiP2pManager.ActionListener() {
+                clearAllServiceRequests(false);
+                //TODO Create more reliable way to ensure peer discovery is stopped.
+                manager.cancelConnect(channel, new WifiP2pManager.ActionListener() {
 
-                @Override
-                public void onSuccess() {
-                    ApplicationContext.showToast("Aborting connection");
-                    Log.d(TAG, "Aborting connection");
-                }
+                    @Override
+                    public void onSuccess() {
+                        ApplicationContext.showToast("Aborting connection");
+                        Log.d(TAG, "Aborting connection");
+                    }
 
-                @Override
-                public void onFailure(int reasonCode) {
-                    ApplicationContext.showToast("Connect abort request failed. Reason Code: " + getWiFiP2pFailureMessage(reasonCode));
-                    Log.d(TAG, "Connect abort request failed. Reason Code: " + getWiFiP2pFailureMessage(reasonCode));
-                }
-            });
+                    @Override
+                    public void onFailure(int reasonCode) {
+                        ApplicationContext.showToast("Connect abort request failed. Reason Code: " + getWiFiP2pFailureMessage(reasonCode));
+                        Log.d(TAG, "Connect abort request failed. Reason Code: " + getWiFiP2pFailureMessage(reasonCode));
+                    }
+                });
             }
         }
     }
@@ -509,20 +557,20 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         config.wps.setup = WpsInfo.PBC;
         config.groupOwnerIntent = groupOwnerIntent;//this value is ignored by remembered groups
 
-        if (!isHost) {//may need to remove...
-            clearAllServiceRequests(false);
+        if (!isHost) {//may need to remove...This stops Peer discovery which needs to be to connect...I think
+            //clearAllServiceRequests(false);//May need to re-enable
         } else {
-            clearAllServiceRequests(false);
+            //clearAllServiceRequests(false);//May need to re-enable
         }
 
         manager.connect(channel, config, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
-                showConnectingDialog(deviceName);
+                showConnectingDialog(deviceName, service.device);
 
                 ApplicationContext.showToast("Starting To Connect To " + ": " + deviceName);
                 appendStatus("Starting To Connect To " + deviceName);
-                Log.d(TAG, "Starting To Connect To " + deviceName);
+                Log.d(TAG, "Starting To Connect To " + deviceName + ", " + service.device.deviceAddress);
             }
 
             @Override
@@ -534,7 +582,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         });
     }
 
-    public void disconnect() {
+    public void disconnect() {//add kryo stuff, send packet to Host saying its disconnecting and close kryo client
         final WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager()
                 .findFragmentById(R.id.frag_service_list);
 
@@ -563,22 +611,35 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
     @Override
     public void onConnectionInfoAvailable(WifiP2pInfo p2pInfo) {
 
+        final WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager()
+                .findFragmentById(R.id.frag_service_list);
+        WiFiDirectServicesList.WiFiDevicesAdapter adapter = ((WiFiDirectServicesList.WiFiDevicesAdapter) fragment
+                .getListAdapter());
 
         if (p2pInfo.groupFormed && p2pInfo.isGroupOwner) {
             ApplicationContext.showToast("Connected as: Group Owner");
-//            WiFiDirectServicesList fragment = (WiFiDirectServicesList) activity.getFragmentManager()
-//                    .findFragmentById(R.id.frag_service_list);
-//            fragment.updateThisDevice(device);//Update each device status using our own service class/adapter class
 
+
+            //fragment.updateThisDevice(device);//Update each device status using our own service class/adapter class
+            //adapter.notifyDataSetChanged();
             Log.d(TAG, "Connected as group owner");
         } else if (p2pInfo.groupFormed) {
             ApplicationContext.showToast("Connected as: Peer");
             Log.d(TAG, "Connected as peer");
 
+            String hostAddress = p2pInfo.groupOwnerAddress.getHostAddress();
+
+            String hostName = buddies
+                    .containsKey(hostAddress) ? buddies
+                    .get(hostAddress) : "Unknown";
+            SharedPrefManager.setDefaults("HOST_NAME", hostName, this);
 //            if (!isHost) {
 //                clearAllServiceRequests(false);
 //            }
             //Start client....????
+
+
+            //adapter.notifyDataSetChanged();//Test ..................
         }
 
 
@@ -724,6 +785,33 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         }
     }
 
+    public void turnWifiOffandOn() {
+        final WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+
+        if (wifiManager.isWifiEnabled()) {
+            wifiManager.setWifiEnabled(false);
+            ApplicationContext.showToast("Turning WiFi Off");
+
+
+            Thread discoverServiceThread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        sleep(2000);
+                        ApplicationContext.showToast("Turning WiFi Back On");
+                        wifiManager.setWifiEnabled(true);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            discoverServiceThread.start();
+        } else {
+            ApplicationContext.showToast("Turning WiFi On");
+            wifiManager.setWifiEnabled(true);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -739,27 +827,31 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_reset_wifi) {
+
+            //TODO test this
+            turnWifiOffandOn();
             return true;
         } else if (id == R.id.option_direct_discover) {
 
             WiFiDirectServicesList fragment = (WiFiDirectServicesList) this.getFragmentManager()
                     .findFragmentById(R.id.frag_service_list);
-            //fragment.clearNonConnectedPeers(); //resets list, only connected peers remain//Not sure if working....
-            fragment.clearPeers();//may need to delete or mod
+            fragment.clearNonConnectedPeers(); //resets list, only connected peers remain//Not sure if working....
+            //fragment.clearPeers();//may need to delete or mod
             fragment.showProgressBar();
 
             if (serviceInfo == null) {
                 startRegistration();
             }
-            updateThisDevice(mThisDevice);//may need to delete or mod
-            fragment.updatePeerDetails();//.............
+            //updateThisDevice(mThisDevice);//may need to delete or mod
+            //fragment.updatePeerDetails();//.............
             clearAllServiceRequests(true);
-            manager.requestPeers(channel, (WifiP2pManager.PeerListListener) getFragmentManager().findFragmentById(R.id.frag_service_list));
+            //manager.requestPeers(channel, (WifiP2pManager.PeerListListener) getFragmentManager().findFragmentById(R.id.frag_service_list));
 
-
+            return true;
         } else if (id == R.id.option_direct_disconnect) {
             disconnect();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

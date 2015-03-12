@@ -146,6 +146,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void startJoinServiceActivity() {
+        SharedPrefManager.setDefaults("HOST", false, getApplicationContext());
+
         WiFiDirectActivity.groupOwnerIntent = 0; //doesn't want to be group owner
         Intent intent = new Intent(this, WiFiDirectServiceActivity.class);
         intent.putExtra("isHost", false);
@@ -153,6 +155,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void startHostServiceActivity() {
+        SharedPrefManager.setDefaults("HOST", true, getApplicationContext());
+
         WiFiDirectActivity.groupOwnerIntent = 15; //wants to be group owner
         Intent intent = new Intent(this, WiFiDirectServiceActivity.class);
         intent.putExtra("isHost", true);

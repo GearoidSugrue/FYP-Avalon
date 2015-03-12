@@ -63,7 +63,7 @@ public class WiFiDirectBroadcastReceiverService extends BroadcastReceiver {
 
                 WiFiDirectServicesList fragment = (WiFiDirectServicesList) activity.getFragmentManager()
                         .findFragmentById(R.id.frag_service_list);
-                fragment.clearPeers();
+                fragment.clearNonConnectedPeers();
 
                 Log.d(WiFiDirectServiceActivity.TAG, "WiFi Direct is disabled");
 
@@ -80,15 +80,17 @@ public class WiFiDirectBroadcastReceiverService extends BroadcastReceiver {
             if (manager != null) {
                 //manager.requestPeers(channel, (WifiP2pManager.PeerListListener) activity.getFragmentManager()
                         //.findFragmentById(R.id.frag_list));
-                ApplicationContext.showToast("P2P peers changed");//Delete later..........
+                //ApplicationContext.showToast("P2P peers changed");//Delete later..........
                 //manager.requestPeers(channel, (WifiP2pManager.PeerListListener) activity.getFragmentManager().findFragmentById(R.id.frag_service_list));
+                Log.d(WiFiDirectActivity.TAG, "P2P peers changed");
+
             }
-            Log.d(WiFiDirectActivity.TAG, "P2P peers changed");
 
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
             if (manager == null) {
                 return;
             }
+
             NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
             if (networkInfo.isConnected()) {
                 // we are connected with the other device, request connection
@@ -96,6 +98,9 @@ public class WiFiDirectBroadcastReceiverService extends BroadcastReceiver {
                 ApplicationContext.showToast("Connected to other device. Requesting network details");
                 Log.d(WiFiDirectServiceActivity.TAG, "Connected to p2p network. Requesting network details");
                 manager.requestConnectionInfo(channel, (WifiP2pManager.ConnectionInfoListener) activity);//Calls
+
+                //delete line below....
+                //manager.requestPeers(channel,(WifiP2pManager.PeerListListener)  new ArrayList<>() );
 
                 WiFiDirectServicesList fragment = (WiFiDirectServicesList) activity.getFragmentManager()
                         .findFragmentById(R.id.frag_service_list);//hides progress bar
@@ -105,6 +110,10 @@ public class WiFiDirectBroadcastReceiverService extends BroadcastReceiver {
                 //fragment.refreshList();
             } else {
                 // It's a disconnect
+                WiFiDirectServicesList fragment = (WiFiDirectServicesList) activity.getFragmentManager()
+                        .findFragmentById(R.id.frag_service_list);//hides progress bar
+                fragment.clearNonConnectedPeers();
+
                 Log.d(WiFiDirectServiceActivity.TAG, "Someone disconnected from the p2p network.");
 
             }

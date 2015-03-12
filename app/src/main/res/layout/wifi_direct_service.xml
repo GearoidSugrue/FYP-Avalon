@@ -30,6 +30,17 @@
             <!-- Preview: layout=@layout/row_devices -->
         </fragment>
 
+        <Button
+            android:id="@+id/button_continueToSetup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Continue to Game Setup"
+            android:layout_gravity="center_horizontal" />
+        <!-- android:viability view gone-->
+
+
     </LinearLayout>
 
     <TextView
