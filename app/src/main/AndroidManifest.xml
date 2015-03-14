@@ -36,24 +36,7 @@
             android:enabled="true" />
 
         <activity
-            android:name=".HostActivity"
-            android:label="@string/title_activity_host"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/ToolbarTheme" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.gearoid.testchatapp.MainActivity" />
-        </activity>
-        <activity
-            android:name=".JoinActivity"
-            android:label="@string/title_activity_join"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.gearoid.testchatapp.MainActivity" />
-        </activity>
-        <activity
-            android:name=".SetupActivity"
+            android:name=".GameSetupActivity"
             android:label="@string/title_activity_setup"
             android:parentActivityName=".HostActivity" >
             <meta-data
@@ -61,7 +44,7 @@
                 android:value="com.example.gearoid.testchatapp.HostActivity" />
         </activity>
         <activity
-            android:name=".WiFiDirectActivity"
+            android:name=".wifidirect.peerdiscovery.WiFiDirectActivity"
             android:label="@string/title_activity_wi_fi_direct"
             android:parentActivityName=".MainActivity"
             android:theme="@style/ToolbarTheme"
@@ -71,7 +54,7 @@
                 android:value="com.example.gearoid.testchatapp.MainActivity" />
         </activity>
         <activity
-            android:name=".WiFiDirectServiceActivity"
+            android:name=".wifidirect.servicediscovery.WiFiDirectServiceActivity"
             android:label="@string/title_activity_wi_fi_direct"
             android:parentActivityName=".MainActivity"
             android:theme="@style/ToolbarTheme"

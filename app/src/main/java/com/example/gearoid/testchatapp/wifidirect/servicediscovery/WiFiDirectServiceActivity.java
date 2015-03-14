@@ -1,4 +1,4 @@
-package com.example.gearoid.testchatapp;
+package com.example.gearoid.testchatapp.wifidirect.servicediscovery;
 
 
 import android.app.ProgressDialog;
@@ -27,9 +27,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.gearoid.testchatapp.kryoPack.KryoRegisterAndPort;
-import com.example.gearoid.testchatapp.kryoPack.Packet;
-import com.example.gearoid.testchatapp.kryoPack.PacketFactory;
+import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.R;
+import com.example.gearoid.testchatapp.SharedPrefManager;
+import com.example.gearoid.testchatapp.kryopackage.KRegisterAndPort;
+import com.example.gearoid.testchatapp.kryopackage.Packet;
+import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
 import com.example.gearoid.testchatapp.singletons.ClientInstance;
 import com.example.gearoid.testchatapp.singletons.ServerInstance;
 
@@ -181,8 +184,8 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
             //  Create a string map containing information about your service.
             Map record = new HashMap();
-            record.put("TCPport", String.valueOf(KryoRegisterAndPort.TCP_PORT));
-            record.put("UDPport", String.valueOf(KryoRegisterAndPort.UDP_PORT));
+            record.put("TCPport", String.valueOf(KRegisterAndPort.TCP_PORT));
+            record.put("UDPport", String.valueOf(KRegisterAndPort.UDP_PORT));
             record.put("buddyname", SharedPrefManager.getStringDefaults("USERNAME", this));
             record.put("groupOwnerIntent", "" + groupOwnerIntent);
             //record.put("available", "visible");

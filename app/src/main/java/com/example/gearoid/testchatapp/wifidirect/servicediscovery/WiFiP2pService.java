@@ -1,4 +1,4 @@
-package com.example.gearoid.testchatapp;
+package com.example.gearoid.testchatapp.wifidirect.servicediscovery;
 
 import android.net.wifi.p2p.WifiP2pDevice;
 

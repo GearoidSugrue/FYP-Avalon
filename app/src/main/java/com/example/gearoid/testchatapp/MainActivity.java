@@ -15,6 +15,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.wifidirect.peerdiscovery.WiFiDirectActivity;
+import com.example.gearoid.testchatapp.wifidirect.servicediscovery.WiFiDirectServiceActivity;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -118,19 +121,6 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void startHostActivity() {
-        String userName = SharedPrefManager.getStringDefaults("USERNAME", this);
-        Intent intent = new Intent(this, HostActivity.class);
-        intent.putExtra("USERNAME", userName);
-        startActivity(intent);
-    }
-
-    public void startJoinActivity() {
-        String userName = SharedPrefManager.getStringDefaults("USERNAME", this);
-        Intent intent = new Intent(this, JoinActivity.class);
-        intent.putExtra("USERNAME", userName);
-        startActivity(intent);
-    }
     public void startJoinWiFiActivity() {
         WiFiDirectActivity.groupOwnerIntent = 0; //doesn't want to be group owner
         Intent intent = new Intent(this, WiFiDirectActivity.class);

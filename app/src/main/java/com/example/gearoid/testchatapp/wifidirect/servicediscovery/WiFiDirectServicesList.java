@@ -1,12 +1,9 @@
-package com.example.gearoid.testchatapp;
+package com.example.gearoid.testchatapp.wifidirect.servicediscovery;
 
 import android.app.ListFragment;
 
-import android.app.ProgressDialog;
 import android.net.wifi.p2p.WifiP2pDeviceList;
-import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
-import android.support.v4.app.Fragment;
 
 import android.content.Context;
 import android.net.wifi.p2p.WifiP2pDevice;
@@ -17,8 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.R;
+import com.example.gearoid.testchatapp.SharedPrefManager;
+import com.example.gearoid.testchatapp.wifidirect.peerdiscovery.WiFiDirectActivity;
 
 import java.util.ArrayList;
 import java.util.List;

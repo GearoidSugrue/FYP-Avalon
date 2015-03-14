@@ -4,7 +4,7 @@ public class Morgana extends EvilCharacter{
 	
 	@Override
 	public String getCharacterName() {
-		return CharaConstants.MORGANA;
+		return ConstantsChara.MORGANA;
 	}
 	
 	@Override

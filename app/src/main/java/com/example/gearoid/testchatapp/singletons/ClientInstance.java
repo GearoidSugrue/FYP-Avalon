@@ -1,14 +1,13 @@
 package com.example.gearoid.testchatapp.singletons;
 
-import com.esotericsoftware.kryonet.Client;
-import com.example.gearoid.testchatapp.kryoPack.KryoClient;
+import com.example.gearoid.testchatapp.kryopackage.KClient;
 
 /**
  * Created by gearoid on 24/02/15.
  */
 public class ClientInstance {
     private static ClientInstance instance;
-    private static KryoClient client;
+    private static KClient client;
 
     private ClientInstance(){
 
@@ -22,10 +21,10 @@ public class ClientInstance {
         return instance;
     }
 
-    public static KryoClient getKryoClientInstance(){
+    public static KClient getKryoClientInstance(){
 
         if(client == null){
-            client = new KryoClient();
+            client = new KClient();
         }
         return client;
     }

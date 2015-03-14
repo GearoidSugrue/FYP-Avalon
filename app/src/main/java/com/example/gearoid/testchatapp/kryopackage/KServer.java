@@ -1,4 +1,4 @@
-package com.example.gearoid.testchatapp.kryoPack;
+package com.example.gearoid.testchatapp.kryopackage;
 
 //package com.example.gearoid.testchatapp.kyro;
 
@@ -11,26 +11,26 @@ import java.util.LinkedList;
 /**
  * Created by gearoid on 15/01/15.
  */
-public class KryoServer {
+public class KServer {
 
 	private Server server;
 
-	public KryoServer() {
+	public KServer() {
 
 		System.out.println("[Server] Server starting.");
 
 		server = new Server();
 		
-		KryoRegisterAndPort.register(server);// Import KryoRegisterAndPort to remove 'KryoRegisterAndPort.'
+		KRegisterAndPort.register(server);// Import KryoRegisterAndPort to remove 'KryoRegisterAndPort.'
 
-		server.addListener(new ServerNetListener());
+		server.addListener(new ListenerServer());
 		
 //		ClientNetListener netListener = new ClientNetListener();
 //		netListener.init(client);
 //		client.addListener(netListener);
 
 		try {
-			server.bind(KryoRegisterAndPort.TCP_PORT, KryoRegisterAndPort.UDP_PORT);
+			server.bind(KRegisterAndPort.TCP_PORT, KRegisterAndPort.UDP_PORT);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

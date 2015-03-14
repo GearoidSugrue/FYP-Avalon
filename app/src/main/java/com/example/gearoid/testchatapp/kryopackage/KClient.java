@@ -1,4 +1,4 @@
-package com.example.gearoid.testchatapp.kryoPack;
+package com.example.gearoid.testchatapp.kryopackage;
 
 import com.esotericsoftware.kryonet.Client;
 
@@ -9,20 +9,20 @@ import java.net.InetAddress;
 /**
  * Created by gearoid on 15/01/15.
  */
-public class KryoClient {
+public class KClient {
 
     public Client client;
 
-    public KryoClient() {
+    public KClient() {
         // //client.discoverHost....????
 
         System.out.println("[Client] Client starting.");
 
         client = new Client();
-        KryoRegisterAndPort.register(client);// Import to remove
+        KRegisterAndPort.register(client);// Import to remove
         // 'KryoRegisterAndPort.'
 
-        ClientNetListener netListener = new ClientNetListener();
+        ListenerClient netListener = new ListenerClient();
         netListener.init(client);
         client.addListener(netListener);
 
@@ -61,7 +61,7 @@ public class KryoClient {
     }
 
     public InetAddress findServerInetAddress() {
-        InetAddress host = client.discoverHost(KryoRegisterAndPort.UDP_PORT, 2000); // May not work correctly on android
+        InetAddress host = client.discoverHost(KRegisterAndPort.UDP_PORT, 2000); // May not work correctly on android
         System.out.println("Server IP Address is: " + host.toString());
         return host;
     }
@@ -71,8 +71,8 @@ public class KryoClient {
         new Thread(client).start();
         // pass in IP and TCP_PORT to constructor????
         try {
-            client.connect(20000, host, KryoRegisterAndPort.TCP_PORT,
-                    KryoRegisterAndPort.UDP_PORT);// timeout, IP
+            client.connect(20000, host, KRegisterAndPort.TCP_PORT,
+                    KRegisterAndPort.UDP_PORT);// timeout, IP
             // address, TCP_PORT
             // number
         } catch (IOException e) {

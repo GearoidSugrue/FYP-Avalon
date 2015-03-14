@@ -1,11 +1,11 @@
-package com.example.gearoid.testchatapp.kryoPack;
+package com.example.gearoid.testchatapp.kryopackage;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.example.gearoid.testchatapp.ApplicationContext;
-import com.example.gearoid.testchatapp.kryoPack.Packet.*;
+import com.example.gearoid.testchatapp.kryopackage.Packet.*;
 import com.example.gearoid.testchatapp.character.ICharacter;
 
 //import kyroPack.Packet.Packet0_Phase_Leader;
@@ -27,7 +27,7 @@ import com.esotericsoftware.kryonet.Listener;
 /**
  * Created by gearoid on 17/01/15.
  */
-public class ClientNetListener extends Listener {
+public class ListenerClient extends Listener {
 
 	private Client client;
 	final AtomicInteger reconnectCount = new AtomicInteger();//Necessary???
@@ -108,7 +108,7 @@ public class ClientNetListener extends Listener {
 			int senderNumber = ((Packet3_AllPlayers) o).playerNumber;
 			LinkedList<Player> allPlayers = ((Packet3_AllPlayers) o).allPlayers;
 
-			GameLogicClient.allPlayers = allPlayers;
+			//GameLogicClient.allPlayers = allPlayers;
 
 			System.out.println("[[Client " + client.getID() + ", "
 					+ client.toString()
@@ -120,8 +120,7 @@ public class ClientNetListener extends Listener {
 
 			for (int i = 0; i < allPlayers.size(); i++) {
 				Player aPlayer = allPlayers.get(i);
-				System.out.print(aPlayer.userName + " is "
-						+ aPlayer.characterName);
+				System.out.print(aPlayer.userName + " is ");
 
 				if (aPlayer.hasLadyOfLake) {
 					System.out.print(" and has the Lady of The Lake token!");

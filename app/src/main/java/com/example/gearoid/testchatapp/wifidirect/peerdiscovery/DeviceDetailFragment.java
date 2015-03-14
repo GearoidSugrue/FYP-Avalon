@@ -1,4 +1,4 @@
-package com.example.gearoid.testchatapp;
+package com.example.gearoid.testchatapp.wifidirect.peerdiscovery;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -18,11 +18,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.gearoid.testchatapp.DeviceListFragment.DeviceActionListener;
-import com.example.gearoid.testchatapp.kryoPack.Packet;
-import com.example.gearoid.testchatapp.kryoPack.PacketFactory;
+import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.R;
+import com.example.gearoid.testchatapp.SharedPrefManager;
+import com.example.gearoid.testchatapp.kryopackage.Packet;
+import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
 import com.example.gearoid.testchatapp.singletons.ClientInstance;
-import com.example.gearoid.testchatapp.singletons.ServerInstance;
 
 /**
  * Created by gearoid on 16/02/15.
@@ -66,7 +67,7 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
                 progressDialog = ProgressDialog.show(getActivity(), "Press back to cancel",
                         "Connecting to :" + device.deviceAddress, true, true
                 );
-                ((DeviceActionListener) getActivity()).connect(config);
+                ((DeviceListFragment.DeviceActionListener) getActivity()).connect(config);
 
             }
         });
@@ -76,7 +77,7 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
 
                     @Override
                     public void onClick(View v) {
-                        ((DeviceActionListener) getActivity()).disconnect();
+                        ((DeviceListFragment.DeviceActionListener) getActivity()).disconnect();
                     }
                 });
 

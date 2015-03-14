@@ -4,6 +4,6 @@ public class Assassin extends EvilCharacter {
 
 	@Override
 	public String getCharacterName() {
-		return CharaConstants.ASSASSIN;
+		return ConstantsChara.ASSASSIN;
 	}
 }

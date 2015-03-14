@@ -4,7 +4,7 @@ public class EvilCharacter implements ICharacter {
 
 	boolean isLeader = false;
 	boolean hasLadyOfLake = false;
-	String characterName = CharaConstants.MINION_OF_MORDRED;
+	String characterName = ConstantsChara.MINION_OF_MORDRED;
 	String playerName = "";
 
 	//	public GoodCharacter(){		

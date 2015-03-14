@@ -1,4 +1,4 @@
-package com.example.gearoid.testchatapp;
+package com.example.gearoid.testchatapp.wifidirect.peerdiscovery;
 
 
 import android.content.BroadcastReceiver;
@@ -10,7 +10,6 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.ActionListener;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.ChannelListener;
-import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceInfo;
 import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceRequest;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,12 +22,12 @@ import android.widget.Toast;
 import android.support.v7.app.ActionBarActivity;
 
 
-import com.example.gearoid.testchatapp.DeviceListFragment.DeviceActionListener;
-import com.example.gearoid.testchatapp.kryoPack.KryoRegisterAndPort;
+import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.wifidirect.peerdiscovery.DeviceListFragment.DeviceActionListener;
+import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.singletons.ServerInstance;
 
 import java.util.HashMap;
-import java.util.Map;
 
 
 public class WiFiDirectActivity extends ActionBarActivity implements ChannelListener, DeviceActionListener {

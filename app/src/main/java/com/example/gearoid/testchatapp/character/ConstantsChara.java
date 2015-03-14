@@ -1,8 +1,8 @@
 package com.example.gearoid.testchatapp.character;
 
-public class CharaConstants {
+public class ConstantsChara {
 	
-	private CharaConstants(){
+	private ConstantsChara(){
 		
 	}
 	

@@ -4,7 +4,7 @@ public class Oberon extends EvilCharacter{
 	
 	@Override
 	public String getCharacterName() {
-		return CharaConstants.OBERON;
+		return ConstantsChara.OBERON;
 	}
 	
 	@Override

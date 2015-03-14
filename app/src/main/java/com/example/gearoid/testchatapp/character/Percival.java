@@ -4,7 +4,7 @@ public class Percival extends GoodCharacter {
 											
 	@Override
 	public String getCharacterName() {
-		return CharaConstants.PERCIVAL;
+		return ConstantsChara.PERCIVAL;
 	}
 
 }

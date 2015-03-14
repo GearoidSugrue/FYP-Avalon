@@ -1,4 +1,4 @@
-package com.example.gearoid.testchatapp.kryoPack;
+package com.example.gearoid.testchatapp.kryopackage;
 
 import java.util.LinkedList;
 

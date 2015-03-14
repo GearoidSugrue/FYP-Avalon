@@ -25,7 +25,7 @@
             android:id="@+id/frag_list"
             android:layout_width="match_parent"
             android:layout_height="@dimen/phone_list_height"
-            class="com.example.gearoid.testchatapp.DeviceListFragment" >
+            class="com.example.gearoid.testchatapp.wifidirect.peerdiscovery.DeviceListFragment" >
 
             <!-- Preview: layout=@layout/row_devices -->
         </fragment>
@@ -34,7 +34,7 @@
             android:id="@+id/frag_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            class="com.example.gearoid.testchatapp.DeviceDetailFragment" >
+            class="com.example.gearoid.testchatapp.wifidirect.peerdiscovery.DeviceDetailFragment" >
 
             <!-- Preview: layout=@layout/device_detail -->
         </fragment>

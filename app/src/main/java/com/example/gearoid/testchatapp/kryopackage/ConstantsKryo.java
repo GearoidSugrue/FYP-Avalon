@@ -1,8 +1,8 @@
-package com.example.gearoid.testchatapp.kryoPack;
+package com.example.gearoid.testchatapp.kryopackage;
 
-public class KryoConstants {
+public class ConstantsKryo {
 
-	private KryoConstants() {
+	private ConstantsKryo() {
 
 	}
 

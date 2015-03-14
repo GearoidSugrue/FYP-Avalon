@@ -25,7 +25,7 @@
             android:id="@+id/frag_service_list"
             android:layout_width="match_parent"
             android:layout_height="350dp"
-            class="com.example.gearoid.testchatapp.WiFiDirectServicesList">
+            class="com.example.gearoid.testchatapp.wifidirect.servicediscovery.WiFiDirectServicesList">
 
             <!-- Preview: layout=@layout/row_devices -->
         </fragment>

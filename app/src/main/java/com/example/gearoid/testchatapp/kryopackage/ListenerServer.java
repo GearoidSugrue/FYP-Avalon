@@ -1,9 +1,9 @@
-package com.example.gearoid.testchatapp.kryoPack;
+package com.example.gearoid.testchatapp.kryopackage;
 
 import java.util.LinkedList;
 
 import com.example.gearoid.testchatapp.ApplicationContext;
-import com.example.gearoid.testchatapp.kryoPack.Packet.*;
+import com.example.gearoid.testchatapp.kryopackage.Packet.*;
 import com.example.gearoid.testchatapp.character.ICharacter;
 
 import com.esotericsoftware.kryonet.Client;
@@ -14,7 +14,7 @@ import com.esotericsoftware.kryonet.Listener;
 /**
  * Created by gearoid on 15/01/15.
  */
-public class ServerNetListener extends Listener {
+public class ListenerServer extends Listener {
 
     private Client client;
 
@@ -64,7 +64,7 @@ public class ServerNetListener extends Listener {
 			
 			for(int i=0; i < allPlayers.size(); i++){
 				Player aPlayer = allPlayers.get(i) ;
-				System.out.print(aPlayer.userName + " is " + aPlayer.characterName );
+				System.out.print(aPlayer.userName + " is " );
 				
 				if(aPlayer.hasLadyOfLake){
 					System.out.print(" and has the Lady of The Lake token!");
@@ -130,7 +130,7 @@ public class ServerNetListener extends Listener {
 	}
 
     public void packetReceivedReply(Connection c){
-        Packet2_Message reply = (Packet2_Message) PacketFactory.createPacket(KryoConstants.MESSAGE);
+        Packet2_Message reply = (Packet2_Message) PacketFactory.createPacket(ConstantsKryo.MESSAGE);
         reply.message = "Your Packet arrived successfully!";
         c.sendTCP(reply);
     }

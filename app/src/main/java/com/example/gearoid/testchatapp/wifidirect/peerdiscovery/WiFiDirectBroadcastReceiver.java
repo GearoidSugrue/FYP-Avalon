@@ -1,4 +1,4 @@
-package com.example.gearoid.testchatapp;
+package com.example.gearoid.testchatapp.wifidirect.peerdiscovery;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,7 +8,8 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.util.Log;
 
-
+import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.R;
 
 
 /**

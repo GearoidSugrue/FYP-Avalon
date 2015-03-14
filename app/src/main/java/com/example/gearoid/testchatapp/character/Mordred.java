@@ -4,7 +4,7 @@ public class Mordred extends EvilCharacter{
 	
 	@Override
 	public String getCharacterName() {
-		return CharaConstants.MORDRED;
+		return ConstantsChara.MORDRED;
 	}
 	
 	@Override

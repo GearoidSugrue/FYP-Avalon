@@ -1,32 +1,21 @@
-package com.example.gearoid.testchatapp.kryoPack;
-
-
-//import kyroPack.Packet.*;
-//import character.Assassin;
-//import character.EvilCharacter;
-//import character.GoodCharacter;
-//import character.ICharacter;
-//import character.Merlin;
-//import character.Mordred;
-//import character.Morgana;
-//import character.Oberon;
-//import character.Percival;
+package com.example.gearoid.testchatapp.kryopackage;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
-import com.example.gearoid.testchatapp.kryoPack.Packet.*;
+import com.example.gearoid.testchatapp.kryopackage.Packet.*;
 import com.example.gearoid.testchatapp.character.*;
 
 /**
  * Created by gearoid on 17/01/15.
  */
-public class KryoRegisterAndPort {
+public class KRegisterAndPort {
+    // This class is a convenient place to keep things common to both the client and server.
 
     static public final int TCP_PORT = 54555;
-    static public final int UDP_PORT = 54555;
+    static public final int UDP_PORT = 54577;
 
     
-    private KryoRegisterAndPort(){
+    private KRegisterAndPort(){
     	
     }
 
@@ -65,5 +54,4 @@ public class KryoRegisterAndPort {
         kryo.register(Player.class);//remove later...
 
     }
-
 }

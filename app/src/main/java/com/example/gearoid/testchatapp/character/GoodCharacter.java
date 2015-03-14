@@ -4,7 +4,7 @@ public class GoodCharacter implements ICharacter {
 
 	boolean isLeader = false;
 	boolean hasLadyOfLake = false;
-	String characterName = CharaConstants.KNIGHT_OF_ARTHUR;//Use constant
+	String characterName = ConstantsChara.KNIGHT_OF_ARTHUR;//Use constant
 	String playerName = "";
 	
 //	public GoodCharacter(){		
