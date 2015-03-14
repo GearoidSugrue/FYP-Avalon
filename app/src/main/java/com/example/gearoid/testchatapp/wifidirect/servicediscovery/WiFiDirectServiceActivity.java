@@ -44,42 +44,32 @@ import java.util.Map;
  */
 
 public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFiDirectServicesList.DeviceClickListener, WifiP2pManager.ConnectionInfoListener, WifiP2pManager.ChannelListener {
-    //DeviceListFragment.DeviceActionListener {
-
 
     public static int groupOwnerIntent;//15 highest intention to be group owner. May be ignored if a device remembers previous group.
+    boolean isHost = false;
 
-    public static final String TAG = "wifidirectdemo";
+    public static final String TAG = "wifidirectservice";
     private WifiP2pManager manager;
     private boolean isWifiP2pEnabled = false;
     private boolean retryChannel = false;
 
-    boolean mP2pConnected = false;
-    String mMyAddr = null;
     String mDeviceName = null; // the p2p name that is configurated from UI.
     WifiP2pDevice mThisDevice = null;
-    WifiP2pInfo mP2pInfo = null; // set when connection info available, reset when WIFI_P2P_CONNECTION_CHANGED_ACTION
-    boolean mIsServer = false;
 
     private final IntentFilter intentFilter = new IntentFilter();
     WifiP2pManager.Channel channel;
     private BroadcastReceiver receiver = null;
-
-    boolean isHost = false;
 
     ProgressDialog progressDialog = null;
 
     //Service discovery stuff...
     private WifiP2pDnsSdServiceRequest serviceRequest;
     WifiP2pDnsSdServiceInfo serviceInfo = null;
-    //private WiFiDirectServicesList servicesList;
     public static final String SERVICE_INSTANCE_HOST = "_avalonhost";//has to be lower case
     public static final String SERVICE_INSTANCE_JOIN = "_avalonjoin";//has to be lower case
-
     final HashMap<String, String> buddies = new HashMap<String, String>();
 
     private TextView statusTxtView;
-
 
     /**
      * @param isWifiP2pEnabled the isWifiP2pEnabled to set
@@ -121,13 +111,11 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
         if (isHost) {
             getSupportActionBar().setTitle("Hosting Game");
-            //toolbar.setTitle("Hosting Game");
             groupOwnerIntent = 15;
             ServerInstance.getServerInstance().getServer().start();
             WiFiDirectServicesList fragment = (WiFiDirectServicesList) this.getFragmentManager()
                     .findFragmentById(R.id.frag_service_list);
             fragment.setFindingTextView(getString(R.string.finding_players));
-
             //CreateGroup here???
 
         } else {
@@ -135,6 +123,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             groupOwnerIntent = 0;
         }
 
+        //Allows time for isWifiP2pEnabled to be set to true when starting this activity
         Thread discoverServiceThread = new Thread() {
             @Override
             public void run() {
@@ -177,10 +166,8 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
      */
     private void startRegistration() {
 
-        if (!isWifiP2pEnabled) {
-            //ApplicationContext.showToast("P2P not enabled. Ensure WiFi is turned on.");
-        } else {
-            Log.d(TAG, "method called: startRegistration");
+        if (isWifiP2pEnabled) {
+            Log.d(TAG, "Starting Registration");
 
             //  Create a string map containing information about your service.
             Map record = new HashMap();
@@ -188,7 +175,12 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             record.put("UDPport", String.valueOf(KRegisterAndPort.UDP_PORT));
             record.put("buddyname", SharedPrefManager.getStringDefaults("USERNAME", this));
             record.put("groupOwnerIntent", "" + groupOwnerIntent);
-            //record.put("available", "visible");
+
+            if(mThisDevice.status == WifiP2pDevice.CONNECTED){
+                record.put("available", "false");
+            } else {
+                record.put("available", "true");
+            }
 
             // Service information.  Pass it an instance name, service type
             // _protocol._transportlayer , and the map containing
@@ -200,13 +192,23 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                 serviceInfo = WifiP2pDnsSdServiceInfo.newInstance(SERVICE_INSTANCE_JOIN, "_presence._tcp", record);//may need to change full domain
             }
             //may need to change full domain
-            addLocalService(serviceInfo);
+            //
+            // addLocalService(serviceInfo);
 
-            // Add the local service, sending the service info, network channel,
-            // and listener that will be used to indicate success or failure of
-            // the request.
+            manager.addLocalService(channel, serviceInfo, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
 
-            // setServiceListenersAndServiceRequest();//Move to onCreate/ on button push???...............................
+                    appendStatus("Added Local Service");
+                    Log.d(TAG, "Local service added");
+                }
+
+                @Override
+                public void onFailure(int reasonCode) {
+                    appendStatus("Failed to add local service:" + getWiFiP2pFailureMessage(reasonCode));
+                    Log.e(TAG, "Failed to add local service:" + getWiFiP2pFailureMessage(reasonCode));
+                }
+            });
         }
     }
 
@@ -229,24 +231,19 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
                     Log.d(TAG, "DnsSdTxtRecord available: " + fullDomain);
 
-                    if (!isHost && fullDomain.startsWith(SERVICE_INSTANCE_HOST)) {//...SERVICE_INSTANCE_JOIN
-                        ApplicationContext.showToast("DnsSdTxtRecord found: " + record.get("buddyname").toString());
+                    if (!isHost && fullDomain.startsWith(SERVICE_INSTANCE_HOST)) {
                         buddies.put(device.deviceAddress, record.get("buddyname").toString());
                         appendStatus("DnsSdTxtRecord Found: " + record.get("buddyname").toString());
-
                         Log.d(TAG, "DnsSdTxtRecord available: " + record.get("buddyname").toString() + fullDomain);
 
                     } else if (isHost && fullDomain.startsWith(SERVICE_INSTANCE_JOIN)) {
-                        ApplicationContext.showToast("[Host] DnsSdTxtRecord found: " + record.get("buddyname").toString());
                         buddies.put(device.deviceAddress, record.get("buddyname").toString());
                         appendStatus("[Host] DnsSdTxtRecord Found: " + record.get("buddyname").toString());
-
                         Log.d(TAG, "DnsSdTxtRecord available: " + record.get("buddyname").toString() + fullDomain);
                     }
                 }
             };
 
-            //May need to filter by instanceName....
             WifiP2pManager.DnsSdServiceResponseListener servListener = new WifiP2pManager.DnsSdServiceResponseListener() {
                 @Override
                 public void onDnsSdServiceAvailable(String instanceName, String registrationType, WifiP2pDevice srcDevice) {
@@ -364,8 +361,8 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
             @Override
             public void onSuccess() {
-                appendStatus("Started Service Discovery...");
-                Log.d(TAG, "Started Service Discovery...");
+                appendStatus("Started Service Discovery.");
+                Log.d(TAG, "Started Service Discovery.");
             }
 
             @Override
@@ -373,44 +370,26 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
                 if (reasonCode != WifiP2pManager.NO_SERVICE_REQUESTS) {
                     ApplicationContext.showToast("Failed To Start Service Discovery: " + getWiFiP2pFailureMessage(reasonCode));
+                    ApplicationContext.showToast("Select 'Discover' to try again");
                     appendStatus("Failed To Start Service Discovery: " + getWiFiP2pFailureMessage(reasonCode));
                     appendStatus("Select 'Discover' To Try Again.");
                     Log.d(TAG, "Failed To Start Service Discovery: " + getWiFiP2pFailureMessage(reasonCode));
                 } else {// Error: NO_SERVICE_REQUESTS
                     ApplicationContext.showToast("Failed To Start Service Discovery: " + getWiFiP2pFailureMessage(reasonCode));
+                    ApplicationContext.showToast("Use 'Reset WiFi' and select 'Discover' to try again");
                     appendStatus("Failed To Start Service Discovery: " + getWiFiP2pFailureMessage(reasonCode));
-                    appendStatus("Select 'Discover' To Try Again.");
+                    appendStatus("Use 'Reset WiFi' if error reoccurs, then select 'Discover' to try again.");
                     Log.d(TAG, "Failed To Start Service Discovery: " + getWiFiP2pFailureMessage(reasonCode));
                 }
             }
         });
     }
 
-    public void addLocalService(final WifiP2pDnsSdServiceInfo info) {
-
-        if (info != null) {
-            manager.addLocalService(channel, info, new WifiP2pManager.ActionListener() {
-                @Override
-                public void onSuccess() {
-
-                    appendStatus("Added Local Service");
-                    Log.d(TAG, "Local service added");
-                }
-
-                @Override
-                public void onFailure(int reasonCode) {
-                    appendStatus("Failed to add local service:" + getWiFiP2pFailureMessage(reasonCode));
-                    Log.e(TAG, "Failed to add local service:" + getWiFiP2pFailureMessage(reasonCode));
-                }
-            });
-        }
-    }
-
     public void clearAllServiceRequests(final boolean restartDiscovery) {
 
         if (manager != null && channel != null) {
 
-            manager.stopPeerDiscovery(channel, new WifiP2pManager.ActionListener() {//Necessary to prevent infinite loop or Error: NO_SERVICE_REQUESTS
+            manager.stopPeerDiscovery(channel, new WifiP2pManager.ActionListener() {//Necessary to prevent infinite loop of Error: NO_SERVICE_REQUESTS
                 @Override
                 public void onSuccess() {
                     // initiate clearing of the all service requests
@@ -420,9 +399,8 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                             appendStatus("Cleared All Service Requests");
                             Log.d(TAG, "Cleared All Service Requests");
 
-                            if (restartDiscovery) {
+                            if (restartDiscovery) {//Reset and restart Service Discovery
                                 setServiceListenersAndServiceRequest();
-                                //discoverServices();
                             }
                         }
 
@@ -483,30 +461,15 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        cancelConnection(device);
+                        cancelConnection();
                     }
                 });
-
-
     }
 
-    public void dismissConnectingDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-    }
-
-    public void cancelConnection(WifiP2pDevice device) {
+    public void cancelConnection() {
         if (manager != null) {
             final WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager()
                     .findFragmentById(R.id.frag_service_list);
-//            if (fragment.getThisDevice() == null
-//                    || fragment.getThisDevice().status == WifiP2pDevice.CONNECTED) {
-//                //disconnect();
-//                Log.d(TAG, "Cancel Connection Called");
-//
-//            } else if (fragment.getThisDevice().status == WifiP2pDevice.AVAILABLE
-//                    || fragment.getThisDevice().status == WifiP2pDevice.INVITED) {
 
             if (fragment.getThisDevice() == null
                     || fragment.getThisDevice().status == WifiP2pDevice.CONNECTED) {
@@ -536,6 +499,12 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         }
     }
 
+    public void dismissConnectingDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
 
     /**
      * process WIFI_P2P_THIS_DEVICE_CHANGED_ACTION intent, refresh this device.
@@ -558,22 +527,15 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = service.device.deviceAddress;
         config.wps.setup = WpsInfo.PBC;
-        config.groupOwnerIntent = groupOwnerIntent;//this value is ignored by remembered groups
+        config.groupOwnerIntent = groupOwnerIntent;//This value is ignored by remembered groups
 
-        if (!isHost) {//may need to remove...This stops Peer discovery which needs to be to connect...I think
-            //clearAllServiceRequests(false);//May need to re-enable
-        } else {
-            //clearAllServiceRequests(false);//May need to re-enable
-        }
-
+        //Peer Discovery must be running to connect to a device
         manager.connect(channel, config, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
                 showConnectingDialog(deviceName, service.device);
 
-                ApplicationContext.showToast("Starting To Connect To " + ": " + deviceName);
-                appendStatus("Starting To Connect To " + deviceName);
-                Log.d(TAG, "Starting To Connect To " + deviceName + ", " + service.device.deviceAddress);
+                Log.d(TAG, "Starting To Connect To: " + deviceName + ", " + service.device.deviceAddress);
             }
 
             @Override
@@ -605,7 +567,6 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             @Override
             public void onSuccess() {
                 Log.d(TAG, "Disconnect succeed.");
-                //fragment.getView().setVisibility(View.GONE);
             }
 
         });
@@ -616,35 +577,16 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
         final WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager()
                 .findFragmentById(R.id.frag_service_list);
-        WiFiDirectServicesList.WiFiDevicesAdapter adapter = ((WiFiDirectServicesList.WiFiDevicesAdapter) fragment
-                .getListAdapter());
 
         if (p2pInfo.groupFormed && p2pInfo.isGroupOwner) {
             ApplicationContext.showToast("Connected as: Group Owner");
-
-
-            //fragment.updateThisDevice(device);//Update each device status using our own service class/adapter class
-            //adapter.notifyDataSetChanged();
             Log.d(TAG, "Connected as group owner");
         } else if (p2pInfo.groupFormed) {
             ApplicationContext.showToast("Connected as: Peer");
             Log.d(TAG, "Connected as peer");
 
-            String hostAddress = p2pInfo.groupOwnerAddress.getHostAddress();
-
-            String hostName = buddies
-                    .containsKey(hostAddress) ? buddies
-                    .get(hostAddress) : "Unknown";
-            SharedPrefManager.setDefaults("HOST_NAME", hostName, this);
-//            if (!isHost) {
-//                clearAllServiceRequests(false);
-//            }
             //Start client....????
-
-
-            //adapter.notifyDataSetChanged();//Test ..................
         }
-
 
         if (p2pInfo.groupFormed && p2pInfo.isGroupOwner) {
             final String ownerIpFinal = p2pInfo.groupOwnerAddress.getHostAddress();
@@ -688,8 +630,6 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             };
             sendPacketThread.start();
 
-            //You are the group owner, start Kryonet server here???
-
         } else if (p2pInfo.groupFormed) {
             final String ownerIpFinal = p2pInfo.groupOwnerAddress.getHostAddress();
 
@@ -726,7 +666,6 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             };
             sendPacketThread.start();
         }
-
     }
 
     /**
@@ -735,7 +674,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
     @Override
     public void onResume() {
         super.onResume();
-        receiver = new WiFiDirectBroadcastReceiverService(manager, channel, this);
+        receiver = new WiFiDirectServiceBroadcastReceiver(manager, channel, this);
         registerReceiver(receiver, intentFilter);
     }
 
@@ -800,7 +739,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                 @Override
                 public void run() {
                     try {
-                        sleep(2000);
+                        sleep(2500);
                         ApplicationContext.showToast("Turning WiFi Back On");
                         wifiManager.setWifiEnabled(true);
                     } catch (InterruptedException e) {
@@ -840,7 +779,6 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             WiFiDirectServicesList fragment = (WiFiDirectServicesList) this.getFragmentManager()
                     .findFragmentById(R.id.frag_service_list);
             fragment.clearNonConnectedPeers(); //resets list, only connected peers remain//Not sure if working....
-            //fragment.clearPeers();//may need to delete or mod
             fragment.showProgressBar();
 
             if (serviceInfo == null) {
@@ -863,7 +801,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
     @Override //ChannelListener
     public void onChannelDisconnected() {//for disconnects
-        // we will try once more
+        // Tries one more time
         if (manager != null && !retryChannel) {
             ApplicationContext.showToast("Channel lost. Trying again");
             //resetData();

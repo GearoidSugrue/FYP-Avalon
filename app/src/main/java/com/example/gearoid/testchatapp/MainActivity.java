@@ -156,7 +156,6 @@ public class MainActivity extends ActionBarActivity {
     private void showDialogEditName() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle(R.string.enter_name);
-        //alert.setMessage(R.string.name_when_playing);
         alert.setCancelable(false);
         alert.setPositiveButton(android.R.string.ok, null);
         alert.setNegativeButton(android.R.string.cancel, null);

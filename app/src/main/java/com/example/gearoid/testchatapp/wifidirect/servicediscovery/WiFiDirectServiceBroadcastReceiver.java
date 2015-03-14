@@ -17,7 +17,7 @@ import com.example.gearoid.testchatapp.wifidirect.peerdiscovery.WiFiDirectActivi
  * Created by gearoid on 27/02/15.
  */
 
-public class WiFiDirectBroadcastReceiverService extends BroadcastReceiver {
+public class WiFiDirectServiceBroadcastReceiver extends BroadcastReceiver {
 
     private WifiP2pManager manager;
     private WifiP2pManager.Channel channel;
@@ -28,7 +28,7 @@ public class WiFiDirectBroadcastReceiverService extends BroadcastReceiver {
      * @param channel  Wifi p2p channel
      * @param activity activity associated with the receiver
      */
-    public WiFiDirectBroadcastReceiverService(WifiP2pManager manager, WifiP2pManager.Channel channel,
+    public WiFiDirectServiceBroadcastReceiver(WifiP2pManager manager, WifiP2pManager.Channel channel,
                                               WiFiDirectServiceActivity activity) {
         super();
         this.manager = manager;
