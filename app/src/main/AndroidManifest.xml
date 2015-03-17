@@ -38,10 +38,10 @@
         <activity
             android:name=".GameSetupActivity"
             android:label="@string/title_activity_setup"
-            android:parentActivityName=".HostActivity" >
+            android:parentActivityName=".wifidirect.servicediscovery.WiFiDirectServiceActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.gearoid.testchatapp.HostActivity" />
+                android:value="com.example.gearoid.testchatapp.wifidirect.servicediscovery.WiFiDirectServiceActivity" />
         </activity>
         <activity
             android:name=".wifidirect.peerdiscovery.WiFiDirectActivity"

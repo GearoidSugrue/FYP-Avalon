@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.GameSetupActivity;
 import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.SharedPrefManager;
 import com.example.gearoid.testchatapp.kryopackage.KRegisterAndPort;
@@ -139,19 +140,21 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         };
         discoverServiceThread.start();
 
-        intialiseButtons();
+        initialiseButtons();
 
 
     }
 
-    public void intialiseButtons() {
+    public void initialiseButtons() { //TODO hide this until at least 4 other devices are connected
         Button button_gameSetup = (Button) findViewById(R.id.button_continueToSetup);
 
         button_gameSetup.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                //TODO start game setup activity
+                Intent intent = new Intent(ApplicationContext.getContext(), GameSetupActivity.class);
+                intent.putExtra("PLAYER_COUNT", 5); //TODO Fix this. Pass in number of connected devices
+                startActivity(intent);
+
             }
         });
     }

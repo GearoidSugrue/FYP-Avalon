@@ -1,46 +1,94 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.gearoid.testchatapp.GameSetupActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <TextView
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/game_setup_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:elevation="4dp"
+        android:background="@color/blue06"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        tools:context="com.example.gearoid.testchatapp.GameSetupActivity">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/total_players_marker"
+            android:id="@+id/textView_total_players_marker"
+            android:layout_alignParentTop="true" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <fragment
+            android:id="@+id/good_list"
+            android:layout_width="0"
+            android:layout_height="250dp"
+            android:layout_weight="1"
+            class="com.example.gearoid.testchatapp.FragmentCharacters"
+            tools:layout="@layout/character_list">
+
+            <!-- Preview: layout=@layout/row_devices -->
+        </fragment>
+
+        <fragment
+            android:id="@+id/evil_list"
+            android:layout_width="0"
+            android:layout_height="250dp"
+            android:layout_weight="1"
+            class="com.example.gearoid.testchatapp.FragmentCharacters"
+            tools:layout="@layout/character_list">
+
+            <!-- Preview: layout=@layout/row_devices -->
+        </fragment>
+
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/optional_list"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        class="com.example.gearoid.testchatapp.FragmentCharacters"
+        tools:layout="@layout/character_list">
+
+        <!-- Preview: layout=@layout/row_devices -->
+    </fragment>
+
+    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/total_players_marker"
-        android:id="@+id/textView_total_players_marker"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/good_players_marker"
-        android:id="@+id/textView_good_players_marker"
-        android:layout_below="@+id/textView_total_players_marker"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/evil_players_marker"
-        android:id="@+id/textView_evil_player_marker"
-        android:layout_below="@+id/textView_good_players_marker"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:text="Play with Lady of Lake"
+        android:id="@+id/checkBox"
+        android:layout_gravity="center_horizontal" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_start_game"
         android:id="@+id/button_start_game"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-</RelativeLayout>
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

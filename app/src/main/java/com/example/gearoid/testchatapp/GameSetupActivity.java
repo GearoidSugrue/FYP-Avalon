@@ -2,6 +2,7 @@ package com.example.gearoid.testchatapp;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,9 +36,21 @@ public class GameSetupActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.game_setup_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setTitle("Game Setup");
+
+
         initializeButtons();
 
+        int numOfPlayers = 5; //TODO fix this. Get value from intent???
+        calculateGlobalValues(numOfPlayers);
         //setup + calculate...
+
+        //Show List of Evil characters + List of Good characters + List of Optional characters
+
 
     }
 
@@ -76,6 +89,13 @@ public class GameSetupActivity extends ActionBarActivity {
         });
     }
 
+    public void calculateGlobalValues(int numberOfPlayers){
+        playerCount = numberOfPlayers;
+        currentBoard = calculateBoard(playerCount);//Gets the board we'll be using
+        evilCount = calculateNumberOfEvilPlayers(currentBoard);//Gets the number of evil players
+        goodCount = playerCount - evilCount;//Gets the number of good players
+    }
+
     public void startGameActivity(){
         //String userName = SharedPrefManager.getStringDefaults("USERNAME", this);
 
@@ -109,7 +129,7 @@ public class GameSetupActivity extends ActionBarActivity {
         return 2;
     }
 
-    public static int[] getBoardConfiguration(Board board){
+    public static int[] getBoardConfiguration(Board board){//Returns an int array that holds the number of players needed for each quest
 
         int[] arr;
         switch (board) {
@@ -124,7 +144,7 @@ public class GameSetupActivity extends ActionBarActivity {
     }
 
     public static int calculatePlayersOnQuest(Board board, Quest questNumber){//Move this???
-        return getBoardConfiguration(board)[questNumber.value];
+        return getBoardConfiguration(board)[questNumber.value]; //Returns the number of players that go on a particular quest
     }
 
 }
