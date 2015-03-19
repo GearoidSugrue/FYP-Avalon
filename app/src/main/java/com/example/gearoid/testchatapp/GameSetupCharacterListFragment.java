@@ -3,6 +3,7 @@ package com.example.gearoid.testchatapp;
 import android.app.Fragment;
 import android.app.ListFragment;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.character.EvilCharacter;
 import com.example.gearoid.testchatapp.character.ICharacter;
 import com.example.gearoid.testchatapp.wifidirect.peerdiscovery.WiFiDirectActivity;
 
@@ -23,15 +25,24 @@ import java.util.List;
 /**
  * Created by gearoid on 17/03/15.
  */
-public class FragmentCharacters extends ListFragment {
+public class GameSetupCharacterListFragment extends ListFragment {
 
+    CharacterListAdapter listAdapter = null;
     View mContentView = null;
     private  List<ICharacter> characterList =  new ArrayList<ICharacter>();
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+        listAdapter = new CharacterListAdapter(getActivity(), android.R.layout.simple_list_item_2, android.R.id.text1, characterList);
+        setListAdapter(listAdapter);
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {//Called after GameSetupActivity onCreate is called
         super.onActivityCreated(savedInstanceState);
-        this.setListAdapter(new CharacterListAdapter(getActivity(), android.R.layout.simple_list_item_2, characterList));
 
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
@@ -66,7 +77,7 @@ public class FragmentCharacters extends ListFragment {
     /**
      * Array adapter for ListFragment that maintains Character list.
      */
-    private class CharacterListAdapter extends ArrayAdapter<ICharacter> {
+    public class CharacterListAdapter extends ArrayAdapter<ICharacter> {
 
         private List<ICharacter> items;
 
@@ -75,9 +86,9 @@ public class FragmentCharacters extends ListFragment {
          * @param textViewResourceId
          * @param characters
          */
-        public CharacterListAdapter(Context context, int textViewResourceId,
+        public CharacterListAdapter(Context context, int resource, int textViewResourceId,
                                    List<ICharacter> characters) {
-            super(context, textViewResourceId, characters);
+            super(context, resource, textViewResourceId, characters);
             this.items = characters;
 
         }
@@ -86,8 +97,7 @@ public class FragmentCharacters extends ListFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             View v = convertView;
             if (v == null) {
-                LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(
-                        Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = vi.inflate(android.R.layout.simple_list_item_2, null);
             }
             ICharacter character = items.get(position);
@@ -100,11 +110,23 @@ public class FragmentCharacters extends ListFragment {
                 }
                 if(bottom != null){
                     //TODO fix this. Also add a character description in ICharacter
-                    bottom.setText(character.getCharacterName());
+                    bottom.setText(character.getShortDescription());
                 }
+                if(character instanceof EvilCharacter){//TODO ensure that this is only done on optional list
+                    v.setBackgroundColor(Color.argb(30, 255, 0, 0));
+                } else {
+                    v.setBackgroundColor(Color.argb(30, 0, 0, 255));
+                }
+
             }
+            //v.setBackgroundColor(Color.argb(255, 255, 192, 192));
             return v;
         }
+    }
+
+    public void setTitleText(String text){
+        TextView view = (TextView) mContentView.findViewById(R.id.textview_characterListTitle);
+        view.setText(text);
     }
 
 

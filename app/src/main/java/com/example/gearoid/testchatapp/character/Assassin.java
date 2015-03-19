@@ -6,4 +6,9 @@ public class Assassin extends EvilCharacter {
 	public String getCharacterName() {
 		return ConstantsChara.ASSASSIN;
 	}
+
+    @Override
+    public String getShortDescription() {
+        return "Attempts to assassinate Merlin";
+    }
 }

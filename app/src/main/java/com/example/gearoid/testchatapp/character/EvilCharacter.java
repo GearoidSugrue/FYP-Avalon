@@ -5,6 +5,7 @@ public class EvilCharacter implements ICharacter {
 	boolean isLeader = false;
 	boolean hasLadyOfLake = false;
 	String characterName = ConstantsChara.MINION_OF_MORDRED;
+    String shortDescription = "Minion of Mordred";
 	String playerName = "";
 
 	//	public GoodCharacter(){		
@@ -25,7 +26,17 @@ public class EvilCharacter implements ICharacter {
 		return characterName;
 	}
 
-	@Override
+    @Override
+    public void setCharacterName(String name) {
+        characterName = name;
+    }
+
+    @Override
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    @Override
 	public boolean getLeader() {
 		return isLeader;
 	}

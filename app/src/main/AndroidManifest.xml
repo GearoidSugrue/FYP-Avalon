@@ -38,6 +38,8 @@
         <activity
             android:name=".GameSetupActivity"
             android:label="@string/title_activity_setup"
+            android:theme="@style/ToolbarTheme"
+            android:screenOrientation="portrait"
             android:parentActivityName=".wifidirect.servicediscovery.WiFiDirectServiceActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

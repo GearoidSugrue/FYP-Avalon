@@ -1,16 +1,24 @@
 package com.example.gearoid.testchatapp;
 
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.gearoid.testchatapp.character.CharacterFactory;
+import com.example.gearoid.testchatapp.character.ConstantsChara;
 import com.example.gearoid.testchatapp.character.ICharacter;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static com.example.gearoid.testchatapp.GameSetupCharacterListFragment.*;
+import static com.example.gearoid.testchatapp.R.drawable;
 
 
 public class GameSetupActivity extends ActionBarActivity {
@@ -18,6 +26,14 @@ public class GameSetupActivity extends ActionBarActivity {
     Board currentBoard;
     int playerCount, evilCount, goodCount;
     ArrayList<ICharacter> allCharacters;
+    GameSetupCharacterListFragment goodListFrag;
+    GameSetupCharacterListFragment evilListFrag;
+    GameSetupCharacterListFragment optionalListFrag;
+    GameSetupCharacterListFragment.CharacterListAdapter goodListAdapter;
+    GameSetupCharacterListFragment.CharacterListAdapter evilListAdapter;
+    GameSetupCharacterListFragment.CharacterListAdapter optionalListAdapter;
+
+
 
     public enum Board {
         FIVE, SIX, SEVEN, EIGHT, NINE, TEN;
@@ -39,14 +55,22 @@ public class GameSetupActivity extends ActionBarActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.game_setup_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setTitle("Game Setup");
 
 
         initializeButtons();
 
-        int numOfPlayers = 5; //TODO fix this. Get value from intent???
+        int numOfPlayers = 10; //TODO fix this. Get value from intent???
         calculateGlobalValues(numOfPlayers);
+
+        getSupportActionBar().setTitle("Game Setup: " + numOfPlayers + " Players");
+
+        initializeFragments();
+        setUpGoodCharacterList();
+        setUpEvilCharacterList();
+        setUpOptionalCharacterList();
+
         //setup + calculate...
 
         //Show List of Evil characters + List of Good characters + List of Optional characters
@@ -87,6 +111,75 @@ public class GameSetupActivity extends ActionBarActivity {
                 startGameActivity();
             }
         });
+    }
+
+    private void initializeFragments() {
+        goodListFrag = (GameSetupCharacterListFragment) getFragmentManager()
+                .findFragmentById(R.id.good_list);
+        goodListFrag.setTitleText(goodCount + " Good Characters");
+
+        evilListFrag = (GameSetupCharacterListFragment) getFragmentManager()
+                .findFragmentById(R.id.evil_list);
+        evilListFrag.setTitleText(evilCount + " Evil Characters");
+
+        optionalListFrag = (GameSetupCharacterListFragment) getFragmentManager()
+                .findFragmentById(R.id.optional_list);
+        optionalListFrag.setTitleText("Select Optional Characters To Add");
+
+        goodListAdapter = (GameSetupCharacterListFragment.CharacterListAdapter) goodListFrag.getListAdapter();
+        evilListAdapter = (GameSetupCharacterListFragment.CharacterListAdapter) evilListFrag.getListAdapter();
+        optionalListAdapter = (GameSetupCharacterListFragment.CharacterListAdapter) optionalListFrag.getListAdapter();
+
+        //goodListFrag.getView().setBackgroundColor(Color.argb(50, 189, 169, 255));
+        //evilListFrag.getView().setBackgroundColor(Color.argb(50, 255, 169, 189));
+
+        goodListFrag.getView().setBackgroundColor(Color.argb(30, 0, 0, 255));
+        evilListFrag.getView().setBackgroundColor(Color.argb(30, 255, 0, 0));
+    }
+
+    public void setUpGoodCharacterList(){
+        ICharacter merlin = CharacterFactory.createPlayer(ConstantsChara.MERLIN);
+
+        Log.d("GameSetup", "Attempting to add a ICharacter to list");
+        goodListAdapter.add(merlin);
+        fillRemainingGoodListPlaces();
+    }
+
+    public void setUpEvilCharacterList(){
+        ICharacter assassin = CharacterFactory.createPlayer(ConstantsChara.ASSASSIN);
+        evilListAdapter.add(assassin);
+        fillRemainingEvilListPlaces();
+    }
+
+    public void setUpOptionalCharacterList(){
+        ICharacter percival = CharacterFactory.createPlayer(ConstantsChara.PERCIVAL);
+        ICharacter morgana = CharacterFactory.createPlayer(ConstantsChara.MORGANA);
+        ICharacter mordred = CharacterFactory.createPlayer(ConstantsChara.MORDRED);
+        ICharacter oberon = CharacterFactory.createPlayer(ConstantsChara.OBERON);
+        optionalListAdapter.add(percival);
+        optionalListAdapter.add(morgana);
+        optionalListAdapter.add(mordred);
+        optionalListAdapter.add(oberon);
+    }
+
+    public void fillRemainingGoodListPlaces(){
+        int listCount = goodListAdapter.getCount();
+        for(int i=0; i < goodCount - listCount; i++){
+            ICharacter knight = CharacterFactory.createPlayer(ConstantsChara.GOOD);
+            knight.setCharacterName("Knight " + (i+1));
+            goodListAdapter.add(knight);
+        }
+        goodListAdapter.notifyDataSetChanged();
+    }
+
+    public void fillRemainingEvilListPlaces(){
+        int listCount = evilListAdapter.getCount();
+        for(int i=0; i < evilCount - listCount; i++){
+            ICharacter minion = CharacterFactory.createPlayer(ConstantsChara.EVIL);
+            minion.setCharacterName("Minion " + (i+1));
+            evilListAdapter.add(minion);
+        }
+        evilListAdapter.notifyDataSetChanged();
     }
 
     public void calculateGlobalValues(int numberOfPlayers){

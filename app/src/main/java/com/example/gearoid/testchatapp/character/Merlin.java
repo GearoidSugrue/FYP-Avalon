@@ -4,7 +4,7 @@ public class Merlin extends GoodCharacter {
 
 	@Override
 	public String getCharacterName() {
-		return "Merlin";// Use constants
+		return ConstantsChara.MERLIN;// Use constants
 	}
 
 	@Override
@@ -15,4 +15,9 @@ public class Merlin extends GoodCharacter {
 		}		
 		return false;
 	}
+
+    @Override
+    public String getShortDescription() {
+        return "Knows evil, must remain hidden";
+    }
 }

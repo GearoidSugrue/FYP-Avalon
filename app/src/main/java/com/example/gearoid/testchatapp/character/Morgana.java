@@ -18,6 +18,11 @@ public class Morgana extends EvilCharacter{
 			return true;
 		}
 		return false;
-	}	
+	}
+
+    @Override
+    public String getShortDescription() {
+        return "Appears as Merlin";
+    }
 
 }

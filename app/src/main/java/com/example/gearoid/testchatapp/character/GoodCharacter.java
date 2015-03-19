@@ -5,7 +5,8 @@ public class GoodCharacter implements ICharacter {
 	boolean isLeader = false;
 	boolean hasLadyOfLake = false;
 	String characterName = ConstantsChara.KNIGHT_OF_ARTHUR;//Use constant
-	String playerName = "";
+    String shortDescription = "Loyal Servant of Arthur";
+    String playerName = "";
 	
 //	public GoodCharacter(){		
 //	}
@@ -25,7 +26,17 @@ public class GoodCharacter implements ICharacter {
 		return characterName;
 	}
 
-	@Override
+    @Override
+    public void setCharacterName(String name) {
+        characterName = name;
+    }
+
+    @Override
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    @Override
 	public boolean getLeader() {
 		return isLeader;
 	}

@@ -7,4 +7,8 @@ public class Percival extends GoodCharacter {
 		return ConstantsChara.PERCIVAL;
 	}
 
+    @Override
+    public String getShortDescription() {
+        return "Knows Merlin";
+    }
 }

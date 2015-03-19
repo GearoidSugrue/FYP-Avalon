@@ -15,4 +15,9 @@ public class Mordred extends EvilCharacter{
 		} 	
 		return false;
 	}
+
+    @Override
+    public String getShortDescription() {
+        return "Unknown to Merlin";
+    }
 }

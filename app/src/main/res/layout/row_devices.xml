@@ -21,6 +21,9 @@
             android:layout_width="fill_parent"
             android:layout_height="0dip"
             android:layout_weight="1"
+            android:textSize="@dimen/abc_text_size_large_material"
+            android:text="Merlin"
+            android:textColor="@android:color/black"
             android:gravity="center_vertical" />
         <TextView
             android:layout_width="fill_parent"
@@ -28,6 +31,7 @@
             android:layout_weight="1"
             android:id="@+id/device_details"
             android:singleLine="true"
+            android:text="Knows evil, must remain hidden"
             android:ellipsize="marquee" />
     </LinearLayout>
 </LinearLayout>

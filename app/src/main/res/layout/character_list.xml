@@ -2,40 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="3dp"
-    android:paddingBottom="3dp">
+    android:orientation="vertical">
 
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:gravity="center_vertical"
+        android:background="@color/material_blue_grey_950" />
 
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/textview_characterType"
+            android:id="@+id/textview_characterListTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:textSize="@dimen/abc_text_size_medium_material"
-            android:text="Good Characters:"
+            android:text="3 Good Characters"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
 
-        <TextView
-            android:id="@+id/textview_characterCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/textview_characterType"
-            android:gravity="center_vertical"
-            android:textSize="@dimen/abc_text_size_medium_material"
-            android:text="5"
-            />
     </RelativeLayout>
     <View
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:gravity="center_vertical"
-        android:background="@color/blue06" />
+        android:background="@color/material_blue_grey_950" />
 
     <ListView
         android:id="@id/android:list"
@@ -43,6 +37,7 @@
         android:layout_height="wrap_content">
 
     </ListView>
+
 
 
 </LinearLayout>
