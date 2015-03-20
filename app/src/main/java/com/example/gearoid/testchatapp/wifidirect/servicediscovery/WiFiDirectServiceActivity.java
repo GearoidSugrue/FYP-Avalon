@@ -148,15 +148,19 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
     public void initialiseButtons() { //TODO hide this until at least 4 other devices are connected
         Button button_gameSetup = (Button) findViewById(R.id.button_continueToSetup);
 
-        button_gameSetup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ApplicationContext.getContext(), GameSetupActivity.class);
-                intent.putExtra("PLAYER_COUNT", 5); //TODO Fix this. Pass in number of connected devices
-                startActivity(intent);
+        if(isHost) {
+            button_gameSetup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ApplicationContext.getContext(), GameSetupActivity.class);
+                    intent.putExtra("PLAYER_COUNT", 5); //TODO Fix this. Pass in number of connected devices
+                    startActivity(intent);
 
-            }
-        });
+                }
+            });
+        } else {
+            button_gameSetup.setVisibility(View.GONE);
+        }
     }
 
     public void appendStatus(String status) {

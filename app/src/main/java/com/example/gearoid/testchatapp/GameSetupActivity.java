@@ -1,6 +1,9 @@
 package com.example.gearoid.testchatapp;
 
+import android.app.FragmentTransaction;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -15,13 +18,11 @@ import com.example.gearoid.testchatapp.character.ConstantsChara;
 import com.example.gearoid.testchatapp.character.ICharacter;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import static com.example.gearoid.testchatapp.GameSetupCharacterListFragment.*;
 import static com.example.gearoid.testchatapp.R.drawable;
 
 
-public class GameSetupActivity extends ActionBarActivity {
+public class GameSetupActivity extends ActionBarActivity implements GameSetupCharacterListFragment.CharacterListFragListener {
 
     Board currentBoard;
     int playerCount, evilCount, goodCount;
@@ -32,7 +33,6 @@ public class GameSetupActivity extends ActionBarActivity {
     GameSetupCharacterListFragment.CharacterListAdapter goodListAdapter;
     GameSetupCharacterListFragment.CharacterListAdapter evilListAdapter;
     GameSetupCharacterListFragment.CharacterListAdapter optionalListAdapter;
-
 
 
     public enum Board {
@@ -101,6 +101,15 @@ public class GameSetupActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void displayCharacterCard(ICharacter character) {//from GameSetupCharacterListFragment.CharacterListFragListener
+        CharacterCardFragment characterFrag = new CharacterCardFragment();
+        //characterFrag.show(getFragmentManager(), "Dialog Fragment");
+
+        DialogFragment newFragment = CharacterCardFragment.newInstance(character);
+        newFragment.show(getFragmentManager(), "dialog");
+    }
+
     private void initializeButtons() {
         Button button_startGame = (Button) findViewById(R.id.button_start_game);
 
@@ -125,16 +134,29 @@ public class GameSetupActivity extends ActionBarActivity {
         optionalListFrag = (GameSetupCharacterListFragment) getFragmentManager()
                 .findFragmentById(R.id.optional_list);
         optionalListFrag.setTitleText("Select Optional Characters To Add");
+        optionalListFrag.isOptionalCharacterList = true;
 
         goodListAdapter = (GameSetupCharacterListFragment.CharacterListAdapter) goodListFrag.getListAdapter();
         evilListAdapter = (GameSetupCharacterListFragment.CharacterListAdapter) evilListFrag.getListAdapter();
         optionalListAdapter = (GameSetupCharacterListFragment.CharacterListAdapter) optionalListFrag.getListAdapter();
 
+        //goodListFrag.getView().setBackgroundColor(Color.argb(255, 0, 0, 255));
+        goodListFrag.getView().setBackground(getResources().getDrawable(R.drawable.misc_blueloyalty));
+        goodListFrag.getView().getBackground().setAlpha(150);
+        goodListFrag.getView().getBackground().setColorFilter(Color.argb(70, 0, 0, 255), PorterDuff.Mode.DARKEN);
+
+        //evilListFrag.getView().setBackgroundColor(Color.argb(255, 255, 0, 0));
+        evilListFrag.getView().setBackground(getResources().getDrawable(drawable.misc_redloyalty));
+        evilListFrag.getView().getBackground().setAlpha(150);
+        evilListFrag.getView().getBackground().setColorFilter(Color.argb(70, 255, 0, 0), PorterDuff.Mode.DARKEN);
+
+
         //goodListFrag.getView().setBackgroundColor(Color.argb(50, 189, 169, 255));
         //evilListFrag.getView().setBackgroundColor(Color.argb(50, 255, 169, 189));
 
-        goodListFrag.getView().setBackgroundColor(Color.argb(30, 0, 0, 255));
-        evilListFrag.getView().setBackgroundColor(Color.argb(30, 255, 0, 0));
+        //TODO fix this...
+//        goodListFrag.getView().setBackgroundColor(Color.argb(30, 0, 0, 255));
+//        evilListFrag.getView().setBackgroundColor(Color.argb(30, 255, 0, 0));
     }
 
     public void setUpGoodCharacterList(){

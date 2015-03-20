@@ -1,10 +1,10 @@
 package com.example.gearoid.testchatapp;
 
-import android.app.Fragment;
 import android.app.ListFragment;
 import android.content.Context;
 import android.graphics.Color;
-import android.net.wifi.p2p.WifiP2pDevice;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.example.gearoid.testchatapp.character.EvilCharacter;
 import com.example.gearoid.testchatapp.character.ICharacter;
-import com.example.gearoid.testchatapp.wifidirect.peerdiscovery.WiFiDirectActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +29,7 @@ public class GameSetupCharacterListFragment extends ListFragment {
     CharacterListAdapter listAdapter = null;
     View mContentView = null;
     private  List<ICharacter> characterList =  new ArrayList<ICharacter>();
+    public boolean isOptionalCharacterList = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -44,6 +44,12 @@ public class GameSetupCharacterListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {//Called after GameSetupActivity onCreate is called
         super.onActivityCreated(savedInstanceState);
 
+        if(!isOptionalCharacterList) {
+            TextView tv = (TextView) mContentView.findViewById(R.id.textview_characterListTitle);
+            tv.setTypeface(null, Typeface.BOLD);
+            tv.setTextColor(Color.BLACK);
+        }
+
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
             @Override
@@ -53,6 +59,8 @@ public class GameSetupCharacterListFragment extends ListFragment {
                 ICharacter character = (ICharacter) getListAdapter().getItem(position);
                 //((DeviceActionListener) getActivity()).showDetails(device);
                 Log.d("Fragment Characters", "Character long clicked:" + character.getCharacterName());
+                ((CharacterListFragListener) getActivity()).displayCharacterCard(character);
+
 
                 return true;
             }
@@ -62,6 +70,9 @@ public class GameSetupCharacterListFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContentView = inflater.inflate(R.layout.character_list, null);
+        //mContentView.setBackground(getResources().getDrawable(R.drawable.misc_blueloyalty));
+        //mContentView.getBackground().setAlpha(120);
+
         return mContentView;
     }
 
@@ -105,17 +116,25 @@ public class GameSetupCharacterListFragment extends ListFragment {
                 TextView top = (TextView) v.findViewById(android.R.id.text1);
                 TextView bottom = (TextView) v.findViewById(android.R.id.text2);
 
+
                 if(top != null){
                     top.setText(character.getCharacterName());
+                    top.setTextColor(Color.BLACK);
                 }
                 if(bottom != null){
-                    //TODO fix this. Also add a character description in ICharacter
                     bottom.setText(character.getShortDescription());
+                    bottom.setTextColor(Color.rgb(55, 55, 55));
                 }
-                if(character instanceof EvilCharacter){//TODO ensure that this is only done on optional list
-                    v.setBackgroundColor(Color.argb(30, 255, 0, 0));
-                } else {
-                    v.setBackgroundColor(Color.argb(30, 0, 0, 255));
+                if(isOptionalCharacterList) {
+                    if (character instanceof EvilCharacter) {//TODO ensure that this is only done on optional list
+                        v.setBackground(getResources().getDrawable(R.drawable.misc_redloyaltystrip));
+                        v.getBackground().setAlpha(150);
+                        v.getBackground().setColorFilter(Color.argb(70, 255, 0, 0), PorterDuff.Mode.DARKEN);
+                    } else {
+                        v.setBackground(getResources().getDrawable(R.drawable.misc_blueloyaltystrip));
+                        v.getBackground().setAlpha(150);
+                        v.getBackground().setColorFilter(Color.argb(70, 0, 0, 255), PorterDuff.Mode.DARKEN);
+                    }
                 }
 
             }
@@ -129,5 +148,11 @@ public class GameSetupCharacterListFragment extends ListFragment {
         view.setText(text);
     }
 
+    public interface CharacterListFragListener {
+
+        void displayCharacterCard(ICharacter character);
+
+
+    }
 
 }
