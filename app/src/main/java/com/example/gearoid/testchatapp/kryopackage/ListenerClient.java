@@ -1,10 +1,13 @@
 package com.example.gearoid.testchatapp.kryopackage;
 
+import android.content.Intent;
+
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.GameSetupActivity;
 import com.example.gearoid.testchatapp.kryopackage.Packet.*;
 import com.example.gearoid.testchatapp.character.ICharacter;
 
@@ -75,7 +78,16 @@ public class ListenerClient extends Listener {
 
 	public void received(Connection c, Object o) {
 
-		if (o instanceof Packet0_Phase_Leader) {
+        if (o instanceof Packet00_ClientDetails) {
+            String userName = ((Packet00_ClientDetails) o).playerName;
+            c.setName(c.getID() + "_" + userName);	//Change ID to custom ID.
+            System.out.println("[Client] Received details from " + c.getID() + ", " + c.toString());
+            ApplicationContext.showToast("[Client] Received Packet from: " + userName);
+
+            packetReceivedReply(c);
+        }
+
+        if (o instanceof Packet0_Phase_Leader) {
 			// Check if leader. If yes, open fragment for leader to select team.
 			// If no do nothing(or show results from last round or something).
 			System.out.println("[Client " + client.getID() + ", "
@@ -99,6 +111,13 @@ public class ListenerClient extends Listener {
 					+ client.toString() + "] Received message from "
 					+ c.getID() + " " + c.toString() + " connection: "
 					+ message);
+
+            //ListenerClient.KryoNetClientCallback.messageRecieved(message);
+            if(message.equalsIgnoreCase("Start")){//TODO fix this..
+                Intent i = new Intent(ApplicationContext.getContext(), GameSetupActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                ApplicationContext.getContext().startActivity(i);
+            }
 
             ApplicationContext.showToast(message);
 
@@ -180,4 +199,16 @@ public class ListenerClient extends Listener {
 		// do something with allCharacters...
 	}
 
+    public void packetReceivedReply(Connection c){
+        Packet2_Message reply = (Packet2_Message) PacketFactory.createPacket(ConstantsKryo.MESSAGE);
+        reply.message = "Your Packet arrived successfully!";
+        c.sendTCP(reply);
+    }
+
+    public interface KryoNetClientCallback {
+
+        void messageRecieved(String text);
+
+
+    }
 }

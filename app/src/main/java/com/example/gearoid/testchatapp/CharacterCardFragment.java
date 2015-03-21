@@ -24,12 +24,12 @@ public class CharacterCardFragment extends DialogFragment {
      * Create a new instance of MyDialogFragment, providing "num"
      * as an argument.
      */
-    static CharacterCardFragment newInstance(ICharacter character) {
+    static CharacterCardFragment newInstance(String name) {
         CharacterCardFragment frag = new CharacterCardFragment();
 
         // Supply num input as an argument.
         Bundle args = new Bundle();
-        args.putString("character", character.getCharacterName());
+        args.putString("character", name);
         frag.setArguments(args);
 
         return frag;
@@ -42,7 +42,6 @@ public class CharacterCardFragment extends DialogFragment {
         characterName = getArguments().getString("character");
 
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
-
 
         setStyle(style, theme);
     }
@@ -62,28 +61,51 @@ public class CharacterCardFragment extends DialogFragment {
                 image.setImageDrawable(getResources().getDrawable(R.drawable.good_merlin));
                 break;
             case ConstantsChara.PERCIVAL:
-
+                image.setImageDrawable(getResources().getDrawable(R.drawable.good_percival));
                 break;
             case ConstantsChara.ASSASSIN:
-
+                image.setImageDrawable(getResources().getDrawable(R.drawable.evil_assassin));
                 break;
             case ConstantsChara.MORDRED:
-
+                image.setImageDrawable(getResources().getDrawable(R.drawable.evil_mordred));
                 break;
             case ConstantsChara.OBERON:
-
+                image.setImageDrawable(getResources().getDrawable(R.drawable.evil_oberon));
                 break;
             case ConstantsChara.MORGANA:
-
+                image.setImageDrawable(getResources().getDrawable(R.drawable.evil_morgana));
                 break;
-            //Add Knight 1, 2, 3 etc
+            case "Knight 1":
+                image.setImageDrawable(getResources().getDrawable(R.drawable.good_knight1));
+                break;
+            case "Knight 2":
+                image.setImageDrawable(getResources().getDrawable(R.drawable.good_knight2));
+                break;
+            case "Knight 3":
+                image.setImageDrawable(getResources().getDrawable(R.drawable.good_knight3));
+                break;
+            case "Knight 4":
+                image.setImageDrawable(getResources().getDrawable(R.drawable.good_knight4));
+                break;
+            case "Knight 5":
+                image.setImageDrawable(getResources().getDrawable(R.drawable.good_knight5));
+                break;
+            case "Minion 1":
+                image.setImageDrawable(getResources().getDrawable(R.drawable.evil_minion1));
+                break;
+            case "Minion 2":
+                image.setImageDrawable(getResources().getDrawable(R.drawable.evil_minion2));
+                break;
+            case "Minion 3":
+                image.setImageDrawable(getResources().getDrawable(R.drawable.evil_minion3));
+                break;
+            case "Lady of Lake":
+                image.setImageDrawable(getResources().getDrawable(R.drawable.token_ladyoflake));
+                break;
             default:
                 image.setImageDrawable(getResources().getDrawable(R.drawable.approve_token));
                 //throw new IllegalArgumentException("Invalid character name: " + characterName );
         }
-
-
-        // Do something else
         return rootView;
     }
 }

@@ -692,10 +692,10 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy() { //Called after when finished activity. Ensure wifi direct + kryoNet is not stopped
         Log.d(TAG, "onDestroy() Called");
         ApplicationContext.showToast("onDestroy() Called");
-
+/*
         if (manager != null && channel != null) {
             //removeLocalServices(serviceInfo); //Removes a Local Service.
             //manager.removeServiceRequest(); //Removes a Service Request.
@@ -715,6 +715,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             });
         }
         serviceInfo = null;
+        */
 
         super.onDestroy();
     }

@@ -59,7 +59,7 @@ public class GameSetupCharacterListFragment extends ListFragment {
                 ICharacter character = (ICharacter) getListAdapter().getItem(position);
                 //((DeviceActionListener) getActivity()).showDetails(device);
                 Log.d("Fragment Characters", "Character long clicked:" + character.getCharacterName());
-                ((CharacterListFragListener) getActivity()).displayCharacterCard(character);
+                ((CharacterListFragListener) getActivity()).displayCharacterCard(character.getCharacterName());
 
 
                 return true;
@@ -82,6 +82,8 @@ public class GameSetupCharacterListFragment extends ListFragment {
         ICharacter character = (ICharacter) getListAdapter().getItem(position);
         //((DeviceActionListener) getActivity()).showDetails(device);
         Log.d("Fragment Characters", "Character clicked:" + character.getCharacterName());
+
+        ((CharacterListFragListener) getActivity()).characterSelected(position, isOptionalCharacterList, listAdapter);
 
     }
 
@@ -150,7 +152,8 @@ public class GameSetupCharacterListFragment extends ListFragment {
 
     public interface CharacterListFragListener {
 
-        void displayCharacterCard(ICharacter character);
+        void characterSelected(int position, boolean isOptionalList, CharacterListAdapter listAdapter);
+        void displayCharacterCard(String characterName);
 
 
     }

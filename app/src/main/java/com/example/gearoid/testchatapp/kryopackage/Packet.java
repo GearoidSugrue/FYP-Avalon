@@ -15,7 +15,7 @@ public class Packet {
     public static class Packet00_ClientDetails  extends Packet { public String playerName = "nobody";} //need to be public to be accessed outside the package
     public static class Packet0_Phase_Leader  extends Packet { }
     public static class Packet1_LoginResult extends Packet { public boolean accepted = false; }
-    public static class Packet2_Message extends Packet { String message;}
+    public static class Packet2_Message extends Packet {public String message;}
         
     public static class Packet3_AllPlayers extends Packet {    	
     	int playerNumber ;    	
