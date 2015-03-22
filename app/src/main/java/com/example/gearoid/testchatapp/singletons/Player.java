@@ -2,6 +2,8 @@ package com.example.gearoid.testchatapp.singletons;
 
 
 import com.esotericsoftware.kryonet.Connection;
+import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.SharedPrefManager;
 import com.example.gearoid.testchatapp.character.ICharacter;
 
 public class Player {

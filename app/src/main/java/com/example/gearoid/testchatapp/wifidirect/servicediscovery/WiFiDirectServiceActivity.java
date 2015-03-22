@@ -34,6 +34,7 @@ import com.example.gearoid.testchatapp.SharedPrefManager;
 import com.example.gearoid.testchatapp.kryopackage.KRegisterAndPort;
 import com.example.gearoid.testchatapp.kryopackage.Packet;
 import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
+import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.ClientInstance;
 import com.example.gearoid.testchatapp.singletons.ServerInstance;
 
@@ -111,9 +112,9 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         channel = manager.initialize(this, getMainLooper(), null);
 
         if (isHost) {
+            Session.host(); //TODO check this host method works and add other related functions to it(ie creating KryoServer)
             getSupportActionBar().setTitle("Hosting Game");
             groupOwnerIntent = 15;
-            ServerInstance.getServerInstance().getServer().start();
             WiFiDirectServicesList fragment = (WiFiDirectServicesList) this.getFragmentManager()
                     .findFragmentById(R.id.frag_service_list);
             fragment.setFindingTextView(getString(R.string.finding_players));
@@ -141,8 +142,6 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         discoverServiceThread.start();
 
         initialiseButtons();
-
-
     }
 
     public void initialiseButtons() { //TODO hide this until at least 4 other devices are connected
@@ -153,7 +152,9 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ApplicationContext.getContext(), GameSetupActivity.class);
-                    intent.putExtra("PLAYER_COUNT", 5); //TODO Fix this. Pass in number of connected devices
+                    int numberOfConnections = Session.allPlayers.size();
+                    Log.d(TAG, "Number of devices connected to KryoServer is: " + numberOfConnections);
+                    intent.putExtra("PLAYER_COUNT", numberOfConnections); //TODO Fix this. Pass in number of connected devices
                     startActivity(intent);
 
                 }
@@ -555,6 +556,9 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
     }
 
     public void disconnect() {//add kryo stuff, send packet to Host saying its disconnecting and close kryo client
+
+        //TODO send a packet to kryonet Server informing it of disconnect so it can remove player from allPlayers list
+
         final WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager()
                 .findFragmentById(R.id.frag_service_list);
 
@@ -586,35 +590,11 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                 .findFragmentById(R.id.frag_service_list);
 
         if (p2pInfo.groupFormed && p2pInfo.isGroupOwner) {
+            final String ownerIpFinal = p2pInfo.groupOwnerAddress.getHostAddress();
+            Session.join(ownerIpFinal);//Host is also a player
+
             ApplicationContext.showToast("Connected as: Group Owner");
             Log.d(TAG, "Connected as group owner");
-        } else if (p2pInfo.groupFormed) {
-            ApplicationContext.showToast("Connected as: Peer");
-            Log.d(TAG, "Connected as peer");
-
-            //Start client....????
-        }
-
-        if (p2pInfo.groupFormed && p2pInfo.isGroupOwner) {
-            final String ownerIpFinal = p2pInfo.groupOwnerAddress.getHostAddress();
-
-            Thread thread = new Thread() {//The host is also a player!!
-                @Override
-                public void run() {
-                    try {
-                        sleep(1000);
-                        if (!ClientInstance.getKryoClientInstance().getClient().isConnected()) {
-                            ClientInstance.getKryoClientInstance().connectToServer(ownerIpFinal.toString());
-                            Log.d(TAG, "Starting Host's Kryo Client ");
-
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-
-            thread.start();
 
             Thread sendPacketThread = new Thread() {//The host is also a player!!
                 @Override
@@ -622,13 +602,10 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                     try {
                         sleep(1200);
                         if (ClientInstance.getKryoClientInstance().getClient().isConnected()) {
-                            //ClientInstance.getKryoClientInstance().connectToServer(ownerIP);
                             Packet.Packet00_ClientDetails testPacket = (Packet.Packet00_ClientDetails) PacketFactory.createPacket("Client Details");
                             testPacket.playerName = SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext());
-                            //testPacket.playerName = "Mope";  //SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext());
-                            ApplicationContext.showToast("[C] Sending Packet...");
+                            ApplicationContext.showToast("[C] Sending Test Packet...");
                             ClientInstance.getKryoClientInstance().getClient().sendTCP(testPacket);
-                            Log.d(TAG, "Starting Kryo Client ");
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -639,21 +616,10 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
         } else if (p2pInfo.groupFormed) {
             final String ownerIpFinal = p2pInfo.groupOwnerAddress.getHostAddress();
+            Session.join(ownerIpFinal);
 
-            Thread thread = new Thread() {//The host is also a player!!
-                @Override
-                public void run() {
-                    try {
-                        sleep(1000);
-                        if (!ClientInstance.getKryoClientInstance().getClient().isConnected()) {
-                            ClientInstance.getKryoClientInstance().connectToServer(ownerIpFinal.toString());
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            thread.start();
+            ApplicationContext.showToast("Connected as: Peer");
+            Log.d(TAG, "Connected as peer");
 
             Thread sendPacketThread = new Thread() {//The host is also a player!!
                 @Override
@@ -663,7 +629,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                         if (ClientInstance.getKryoClientInstance().getClient().isConnected()) {
                             Packet.Packet00_ClientDetails testPacket = (Packet.Packet00_ClientDetails) PacketFactory.createPacket("Client Details");
                             testPacket.playerName = SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext());
-                            ApplicationContext.showToast("[C] Sending Packet...");
+                            ApplicationContext.showToast("[C] Sending Test Packet...");
                             ClientInstance.getKryoClientInstance().getClient().sendTCP(testPacket);
                         }
                     } catch (InterruptedException e) {

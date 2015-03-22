@@ -44,7 +44,7 @@ public class ListenerClient extends Listener {
 	public void connected(Connection arg0) {
 		System.out.println("[Client " + client.getID() + ", "
 				+ client.toString() + "]: Connection to Server established");
-        Player.getInstance().playerConnection = arg0;
+        Session.myConnection = arg0;
 
 		reconnectCount.set(0);
 		// System.out.println(arg0.getID() + ", " + arg0.toString());

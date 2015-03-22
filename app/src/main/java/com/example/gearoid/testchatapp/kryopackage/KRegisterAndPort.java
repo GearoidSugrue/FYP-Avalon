@@ -1,6 +1,7 @@
 package com.example.gearoid.testchatapp.kryopackage;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.example.gearoid.testchatapp.kryopackage.Packet.*;
 import com.example.gearoid.testchatapp.character.*;
@@ -25,6 +26,10 @@ public class KRegisterAndPort {
         Kryo kryo = endPoint.getKryo();
         
         kryo.register(Packet.class);
+        kryo.register(Packet_RequestDetails.class);
+        kryo.register(Packet_SendDetails.class);
+
+
         kryo.register(Packet00_ClientDetails.class);
         kryo.register(Packet0_Phase_Leader.class);
         kryo.register(Packet1_LoginResult.class);
@@ -49,10 +54,13 @@ public class KRegisterAndPort {
         kryo.register(Percival.class);
         kryo.register(Assassin.class);
 
+        kryo.register(Player.class);
+        //kryo.register(com.esotericsoftware.kryonet.Client.class);
+        kryo.register(Connection.class);
+
         kryo.register(java.util.LinkedList.class);
         
         
-        kryo.register(Player.class);//remove later...
 
     }
 }

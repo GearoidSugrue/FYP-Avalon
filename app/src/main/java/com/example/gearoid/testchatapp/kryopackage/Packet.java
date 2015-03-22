@@ -14,7 +14,7 @@ import com.example.gearoid.testchatapp.singletons.Player;
 public class Packet {
 
     public static class Packet_RequestDetails extends Packet { public Player player; }
-    public static class Packet_SendDetails extends Packet { public int newPlayerNumber = 0;}
+    public static class Packet_SendDetails extends Packet { public int newPlayerNumber = -1;}
 
     public static class Packet00_ClientDetails  extends Packet { public String playerName = "nobody";} //need to be public to be accessed outside the package
     public static class Packet0_Phase_Leader  extends Packet { }

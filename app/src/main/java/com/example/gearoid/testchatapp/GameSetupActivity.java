@@ -70,25 +70,20 @@ public class GameSetupActivity extends ActionBarActivity implements GameSetupCha
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setTitle("Game Setup");
 
+        Intent intent = getIntent();
 
         initializeButtons();
         initializeCheckbox();
 
-        int numOfPlayers = 10; //TODO fix this. Get value from intent???
+        int numOfPlayers = intent.getIntExtra("PLAYER_COUNT", 5);
         calculateGlobalValues(numOfPlayers);
 
-        getSupportActionBar().setTitle("Game Setup: " + numOfPlayers + " Players");
+        getSupportActionBar().setTitle("Game Setup: " + playerCount + " Players");
 
         initializeFragments();
         setUpGoodCharacterList();
         setUpEvilCharacterList();
         setUpOptionalCharacterList();
-
-
-        //setup + calculate...
-
-        //Show List of Evil characters + List of Good characters + List of Optional characters
-
 
     }
 
@@ -308,18 +303,12 @@ public class GameSetupActivity extends ActionBarActivity implements GameSetupCha
 
     public Board calculateBoard(int numberOfPlayers) {
         switch (numberOfPlayers) {
-            case 5:
-                return Board.FIVE;
-            case 6:
-                return Board.SIX;
-            case 7:
-                return Board.SEVEN;
-            case 8:
-                return Board.EIGHT;
-            case 9:
-                return Board.NINE;
-            case 10:
-                return Board.TEN;
+            case 5: return Board.FIVE;
+            case 6: return Board.SIX;
+            case 7: return Board.SEVEN;
+            case 8: return Board.EIGHT;
+            case 9: return Board.NINE;
+            case 10: return Board.TEN;
         }
         return Board.FIVE;
     }

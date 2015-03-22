@@ -28,9 +28,8 @@ public class ListenerServer extends Listener {
     }
 
     public void connected(Connection arg0){
-		System.out.println("[Server] Someone has connected: " + arg0.getID());
+		System.out.println("[Server] Someone has connected: " + arg0.getID() + "...Requesting Details");
         //Log.d("Server Listener", "Someone has connected");
-
 
         Packet_RequestDetails packet = (Packet_RequestDetails) PacketFactory.createPack(PacketFactory.PacketType.REQUEST_DETAILS);
         arg0.sendTCP(packet);
@@ -47,18 +46,26 @@ public class ListenerServer extends Listener {
             Player player = ((Packet_RequestDetails) obj).player;
 
             if(player.playerID >= 0){
-                Log.d("Packet Received", "Old player reconnected: " + player.userName + ", ID:" + player.playerID);
-                Session.allPlayers.get(player.playerID).playerConnection = con;//Should this be non static way!???
+                Log.d("Packet Received", "Old player reconnected: " + player.userName + ", ID: " + player.playerID);
+                if(Session.allPlayers.size() > player.playerID){
+                    Session.allPlayers.get(player.playerID).playerConnection = con;//Should this be non static way!???
+                } else {
+                    Log.d("Packet Received", "Error: All players list is missing entries! " + player.userName + ", ID: " + player.playerID);
+                }
 
             } else {
                 Log.d("Packet Received", "New player connected: " + player.userName);
                 Packet_SendDetails sendPacket = (Packet_SendDetails) PacketFactory.createPack(PacketFactory.PacketType.SEND_DETAILS);
 
                 sendPacket.newPlayerNumber = Session.allPlayers.size();//TODO add thread safe way to get IDs
+                player.playerConnection = con;
+                Session.allPlayers.add(player);
+
                 con.sendTCP(sendPacket);
 
-                player.playerConnection = con;
-                Session.allPlayers.add(player);//Add to specific position using the thread safe ID generated earlier
+
+
+                //Add to specific position using the thread safe ID generated earlier
             }
 
         }
