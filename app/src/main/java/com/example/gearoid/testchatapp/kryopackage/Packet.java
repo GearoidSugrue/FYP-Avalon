@@ -3,6 +3,7 @@ package com.example.gearoid.testchatapp.kryopackage;
 import java.util.LinkedList;
 
 import com.example.gearoid.testchatapp.character.ICharacter;
+import com.example.gearoid.testchatapp.singletons.Player;
 
 //package com.example.gearoid.testchatapp.kyro;
 
@@ -12,6 +13,9 @@ import com.example.gearoid.testchatapp.character.ICharacter;
  */
 public class Packet {
 
+    public static class Packet_RequestDetails extends Packet { public Player player; }
+    public static class Packet_SendDetails extends Packet { public int newPlayerNumber = 0;}
+
     public static class Packet00_ClientDetails  extends Packet { public String playerName = "nobody";} //need to be public to be accessed outside the package
     public static class Packet0_Phase_Leader  extends Packet { }
     public static class Packet1_LoginResult extends Packet { public boolean accepted = false; }
@@ -19,7 +23,7 @@ public class Packet {
         
     public static class Packet3_AllPlayers extends Packet {    	
     	int playerNumber ;    	
-    	LinkedList<Player> allPlayers ;     	
+    	LinkedList<Player> allPlayers ;
     }    
     public static class Packet30_AllPlayers extends Packet {    	
     	int playerID = 0 ;    	

@@ -4,6 +4,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.example.gearoid.testchatapp.kryopackage.Packet.*;
 import com.example.gearoid.testchatapp.character.*;
+import com.example.gearoid.testchatapp.singletons.Player;
 
 /**
  * Created by gearoid on 17/01/15.

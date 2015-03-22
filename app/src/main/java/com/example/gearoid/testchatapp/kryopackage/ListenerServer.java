@@ -1,5 +1,7 @@
 package com.example.gearoid.testchatapp.kryopackage;
 
+import android.util.Log;
+
 import java.util.LinkedList;
 
 import com.example.gearoid.testchatapp.ApplicationContext;
@@ -9,6 +11,8 @@ import com.example.gearoid.testchatapp.character.ICharacter;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.example.gearoid.testchatapp.singletons.Player;
+import com.example.gearoid.testchatapp.multiplayer.Session;
 
 
 /**
@@ -25,9 +29,11 @@ public class ListenerServer extends Listener {
 
     public void connected(Connection arg0){
 		System.out.println("[Server] Someone has connected: " + arg0.getID());
-		
-		//Create an ID and send back to the client. Client will store ID and use if necessary to reconnect.
-		
+        //Log.d("Server Listener", "Someone has connected");
+
+
+        Packet_RequestDetails packet = (Packet_RequestDetails) PacketFactory.createPack(PacketFactory.PacketType.REQUEST_DETAILS);
+        arg0.sendTCP(packet);
     }
 
     public void disconnected(Connection arg0){
@@ -35,29 +41,50 @@ public class ListenerServer extends Listener {
 
     }
 
-	public void received(Connection c, Object o) {		
-		if (o instanceof Packet00_ClientDetails) {
-			String userName = ((Packet00_ClientDetails) o).playerName;
-			c.setName(c.getID() + "_" + userName);	//Change ID to custom ID.
-			System.out.println("[Server] Received details from " + c.getID() + ", " + c.toString());
+	public void received(Connection con, Object obj) {
+
+        if (obj instanceof Packet_RequestDetails) {
+            Player player = ((Packet_RequestDetails) obj).player;
+
+            if(player.playerID >= 0){
+                Log.d("Packet Received", "Old player reconnected: " + player.userName + ", ID:" + player.playerID);
+                Session.allPlayers.get(player.playerID).playerConnection = con;//Should this be non static way!???
+
+            } else {
+                Log.d("Packet Received", "New player connected: " + player.userName);
+                Packet_SendDetails sendPacket = (Packet_SendDetails) PacketFactory.createPack(PacketFactory.PacketType.SEND_DETAILS);
+
+                sendPacket.newPlayerNumber = Session.allPlayers.size();//TODO add thread safe way to get IDs
+                con.sendTCP(sendPacket);
+
+                player.playerConnection = con;
+                Session.allPlayers.add(player);//Add to specific position using the thread safe ID generated earlier
+            }
+
+        }
+
+            if (obj instanceof Packet00_ClientDetails) {
+			String userName = ((Packet00_ClientDetails) obj).playerName;
+			con.setName(con.getID() + "_" + userName);	//Change ID to custom ID.
+			System.out.println("[Server] Received details from " + con.getID() + ", " + con.toString());
             ApplicationContext.showToast("[S] Received Packet from: " + userName);
 
-            packetReceivedReply(c);
+            packetReceivedReply(con);
 		}		
-		if (o instanceof Packet0_Phase_Leader) { //Not sure if Server should or will receive this.		
+		if (obj instanceof Packet0_Phase_Leader) { //Not sure if Server should or will receive this.
 			
 //			Packet1_LoginResult loginResult = new Packet1_LoginResult();
 //			loginResult.accepted = true;
 //			c.sendTCP(loginResult);
 		}
-		if (o instanceof Packet2_Message) {
-			String message = ((Packet2_Message) o).message;
-			System.out.println(c.getID() + " also known as: " + c.toString() + " says: " + message);
+		if (obj instanceof Packet2_Message) {
+			String message = ((Packet2_Message) obj).message;
+			System.out.println(con.getID() + " also known as: " + con.toString() + " says: " + message);
 			// do something with message...
 		}
-		if (o instanceof Packet3_AllPlayers) {
-			int senderNumber = ((Packet3_AllPlayers) o).playerNumber;
-			LinkedList<Player> allPlayers = ((Packet3_AllPlayers) o).allPlayers;
+		if (obj instanceof Packet3_AllPlayers) {
+			int senderNumber = ((Packet3_AllPlayers) obj).playerNumber;
+			LinkedList<Player> allPlayers = ((Packet3_AllPlayers) obj).allPlayers;
 			
 			System.out.println("[Server] All Player Packet Recieved from player number: " + senderNumber);
 			System.out.println("[Server] All of their details are as follows:");
@@ -77,57 +104,58 @@ public class ListenerServer extends Listener {
 			//String message = ((Packet3_AllPlayers) o).message;
 			// do something with allCharacters...
 		}
-		if (o instanceof Packet4_QuestSucessVote) {
+		if (obj instanceof Packet4_QuestSucessVote) {
 			System.out.println("[Server] Quest Success Vote Recieved.");	
-			ICharacter player = ((Packet4_QuestSucessVote) o).playerWhoVoted;
-			boolean vote = ((Packet4_QuestSucessVote) o).isSuccessVote;
+			ICharacter player = ((Packet4_QuestSucessVote) obj).playerWhoVoted;
+			boolean vote = ((Packet4_QuestSucessVote) obj).isSuccessVote;
 			
 			System.out.println(player.getCharacterName() + " votes: "  + vote);
 			
 			Packet2_Message confirmationMassage = new Packet2_Message();
-			confirmationMassage.message = "Thanks " + c.getID() + ", also known as " + c.toString() +", Vote Received";
-			c.sendTCP(confirmationMassage);
+			confirmationMassage.message = "Thanks " + con.getID() + ", also known as " + con.toString() +", Vote Received";
+			con.sendTCP(confirmationMassage);
 			
 			
 		}
-		if (o instanceof Packet5_TeamSelectVote) {
+		if (obj instanceof Packet5_TeamSelectVote) {
 			System.out.println("[Server] Team Select Vote Recieved.");	
 
 			System.out.println();		
 			
 		}
-		if (o instanceof Packet6_ProposedTeam) {
+		if (obj instanceof Packet6_ProposedTeam) {
 			System.out.println("[Server] Proposed Team Recieved.");	
 			
 			System.out.println();	
 			
 		}
-		if (o instanceof packet7_UpdateVoteCounter) {
+		if (obj instanceof packet7_UpdateVoteCounter) {
 			System.out.println("[Server] Update Vote Counter Recieved.");	
 
 			System.out.println();	
 			
 		}
-		if (o instanceof packet8_UpdateQuestCounter) {
+		if (obj instanceof packet8_UpdateQuestCounter) {
 			System.out.println("[Server] Update Vote Counter Recieved.");	
 			
 			System.out.println();
 			
 		}
-		if (o instanceof packet9_IsUsingLadyOfLake) {
+		if (obj instanceof packet9_IsUsingLadyOfLake) {
 			System.out.println("[Server] Someone is using Lady of The Lake Recieved.");	
 
 			
 			System.out.println();	
 			
 		}
-		if (o instanceof packet10_LadyOfLakeToken) {
+		if (obj instanceof packet10_LadyOfLakeToken) {
 			System.out.println("[Server] Lady of The Lake Recieved.");	
 
 			
 			System.out.println();				
 		}
 	}
+
 
     public void packetReceivedReply(Connection c){
         Packet2_Message reply = (Packet2_Message) PacketFactory.createPacket(ConstantsKryo.MESSAGE);

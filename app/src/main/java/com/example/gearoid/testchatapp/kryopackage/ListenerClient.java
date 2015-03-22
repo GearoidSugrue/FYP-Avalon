@@ -26,6 +26,8 @@ import com.example.gearoid.testchatapp.character.ICharacter;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.example.gearoid.testchatapp.singletons.Player;
+import com.example.gearoid.testchatapp.multiplayer.Session;
 
 /**
  * Created by gearoid on 17/01/15.
@@ -42,6 +44,7 @@ public class ListenerClient extends Listener {
 	public void connected(Connection arg0) {
 		System.out.println("[Client " + client.getID() + ", "
 				+ client.toString() + "]: Connection to Server established");
+        Player.getInstance().playerConnection = arg0;
 
 		reconnectCount.set(0);
 		// System.out.println(arg0.getID() + ", " + arg0.toString());
@@ -76,18 +79,29 @@ public class ListenerClient extends Listener {
 
 	}
 
-	public void received(Connection c, Object o) {
+	public void received(Connection con, Object obj) {
 
-        if (o instanceof Packet00_ClientDetails) {
-            String userName = ((Packet00_ClientDetails) o).playerName;
-            c.setName(c.getID() + "_" + userName);	//Change ID to custom ID.
-            System.out.println("[Client] Received details from " + c.getID() + ", " + c.toString());
-            ApplicationContext.showToast("[Client] Received Packet from: " + userName);
+        if (obj instanceof Packet_RequestDetails) {
+            Packet_RequestDetails packet = (Packet_RequestDetails) obj;
+            packet.player = Player.getInstance();
 
-            packetReceivedReply(c);
+            con.sendTCP(packet);
+        }
+        if (obj instanceof Packet_SendDetails){
+            Player.getInstance().playerID = ((Packet_SendDetails) obj).newPlayerNumber;
         }
 
-        if (o instanceof Packet0_Phase_Leader) {
+
+        if (obj instanceof Packet00_ClientDetails) {
+            String userName = ((Packet00_ClientDetails) obj).playerName;
+            con.setName(con.getID() + "_" + userName);	//Change ID to custom ID.
+            System.out.println("[Client] Received details from " + con.getID() + ", " + con.toString());
+            ApplicationContext.showToast("[Client] Received Packet from: " + userName);
+
+            packetReceivedReply(con);
+        }
+
+        if (obj instanceof Packet0_Phase_Leader) {
 			// Check if leader. If yes, open fragment for leader to select team.
 			// If no do nothing(or show results from last round or something).
 			System.out.println("[Client " + client.getID() + ", "
@@ -95,21 +109,21 @@ public class ListenerClient extends Listener {
 			// Call GameLogicClient method...
 		}
 
-		if (o instanceof Packet1_LoginResult) {
-			boolean answer = ((Packet1_LoginResult) o).accepted;
+		if (obj instanceof Packet1_LoginResult) {
+			boolean answer = ((Packet1_LoginResult) obj).accepted;
 
 			if (answer) {
 				// Do Something...
 
 			} else {
-				c.close();
+				con.close();
 			}
 		}
-		if (o instanceof Packet.Packet2_Message) {
-			String message = ((Packet.Packet2_Message) o).message;
+		if (obj instanceof Packet.Packet2_Message) {
+			String message = ((Packet.Packet2_Message) obj).message;
 			System.out.println("[Client " + client.getID() + ", "
 					+ client.toString() + "] Received message from "
-					+ c.getID() + " " + c.toString() + " connection: "
+					+ con.getID() + " " + con.toString() + " connection: "
 					+ message);
 
             //ListenerClient.KryoNetClientCallback.messageRecieved(message);
@@ -123,9 +137,9 @@ public class ListenerClient extends Listener {
 
             // do something with message...
 		}
-		if (o instanceof Packet3_AllPlayers) {
-			int senderNumber = ((Packet3_AllPlayers) o).playerNumber;
-			LinkedList<Player> allPlayers = ((Packet3_AllPlayers) o).allPlayers;
+		if (obj instanceof Packet3_AllPlayers) {
+			int senderNumber = ((Packet3_AllPlayers) obj).playerNumber;
+			LinkedList<Player> allPlayers = ((Packet3_AllPlayers) obj).allPlayers;
 
 			//GameLogicClient.allPlayers = allPlayers;
 
@@ -152,15 +166,15 @@ public class ListenerClient extends Listener {
 
 		}
 
-		if (o instanceof Packet4_QuestSucessVote) {
+		if (obj instanceof Packet4_QuestSucessVote) {
 			System.out.println("[Client] Quest Success Vote Recieved.");
-			ICharacter player = ((Packet4_QuestSucessVote) o).playerWhoVoted;
-			boolean vote = ((Packet4_QuestSucessVote) o).isSuccessVote;
+			ICharacter player = ((Packet4_QuestSucessVote) obj).playerWhoVoted;
+			boolean vote = ((Packet4_QuestSucessVote) obj).isSuccessVote;
 
 			System.out.println(player.getPlayerName() + " votes: " + vote);
 
 		}
-		if (o instanceof Packet5_TeamSelectVote) {//Clients shouldn't receive this packet
+		if (obj instanceof Packet5_TeamSelectVote) {//Clients shouldn't receive this packet
 //			System.out.println("[Client] Team Select Vote Recieved.");
 //			ICharacter player = ((Packet5_TeamSelectVote) o).playerWhoVoted;
 //			boolean vote = ((Packet5_TeamSelectVote) o).isSuccessVote;
@@ -168,27 +182,27 @@ public class ListenerClient extends Listener {
 //			System.out.println(player.getPlayerName() + " votes: " + vote);
 
 		}
-		if (o instanceof Packet6_ProposedTeam) {
+		if (obj instanceof Packet6_ProposedTeam) {
 			System.out.println("[Client] Proposed Team Recieved.");
 			//Bring up fragment for player to vote
 
 		}
-		if (o instanceof packet7_UpdateVoteCounter) {
+		if (obj instanceof packet7_UpdateVoteCounter) {
 			System.out.println("[Client] Update Vote Counter Recieved.");
 			//Update the Vote counter
 		}
-		if (o instanceof packet8_UpdateQuestCounter) {
+		if (obj instanceof packet8_UpdateQuestCounter) {
 			System.out.println("[Client] Update Vote Counter Recieved.");
 			//Update the Quest counter
 
 		}
-		if (o instanceof packet9_IsUsingLadyOfLake) {//Client shouldn't need this?? Or have 2 packets(1 for client, 1 for server)
+		if (obj instanceof packet9_IsUsingLadyOfLake) {//Client shouldn't need this?? Or have 2 packets(1 for client, 1 for server)
 //			System.out.println("[Client] Someone is using Lady of The Lake Recieved.");
 //
 //			System.out.println();
 
 		}
-		if (o instanceof packet10_LadyOfLakeToken) {
+		if (obj instanceof packet10_LadyOfLakeToken) {
 			System.out.println("[Client] Lady of The Lake Recieved.");
 			
 			
@@ -205,10 +219,5 @@ public class ListenerClient extends Listener {
         c.sendTCP(reply);
     }
 
-    public interface KryoNetClientCallback {
 
-        void messageRecieved(String text);
-
-
-    }
 }

@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import static com.example.gearoid.testchatapp.R.drawable;
 
 
-public class GameSetupActivity extends ActionBarActivity implements GameSetupCharacterListFragment.CharacterListFragListener, ListenerClient.KryoNetClientCallback {
+public class GameSetupActivity extends ActionBarActivity implements GameSetupCharacterListFragment.CharacterListFragListener {
 
     Board currentBoard;
     int playerCount, evilCount, goodCount;
@@ -45,13 +45,6 @@ public class GameSetupActivity extends ActionBarActivity implements GameSetupCha
     GameSetupCharacterListFragment.CharacterListAdapter goodListAdapter;
     GameSetupCharacterListFragment.CharacterListAdapter evilListAdapter;
     GameSetupCharacterListFragment.CharacterListAdapter optionalListAdapter;
-
-    @Override
-    public void messageRecieved(String text) {
-        Log.d("GameSetup", "Message from ClientListener");
-
-        ApplicationContext.showToast("Message from ClientListener" + text);
-    }
 
 
     public enum Board {
@@ -291,7 +284,7 @@ public class GameSetupActivity extends ActionBarActivity implements GameSetupCha
         }
 
 
-
+        /*
         Thread sendPacketThread = new Thread() {//Testing purposes...
             @Override
             public void run() {
@@ -310,6 +303,7 @@ public class GameSetupActivity extends ActionBarActivity implements GameSetupCha
             }
         };
         sendPacketThread.start();
+        */
     }
 
     public Board calculateBoard(int numberOfPlayers) {

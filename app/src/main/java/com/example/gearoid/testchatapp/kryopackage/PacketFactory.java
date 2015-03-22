@@ -1,12 +1,42 @@
 package com.example.gearoid.testchatapp.kryopackage;
 
+import android.util.Log;
+
 import com.example.gearoid.testchatapp.kryopackage.Packet.*;
 
 public class PacketFactory {
 
-	public static Packet createPacket(String packetName){
-		
-		if (packetName.equalsIgnoreCase(ConstantsKryo.ACTIVATE_LADY_OF_LAKE)) {
+    public enum PacketType {
+        REQUEST_DETAILS, SEND_DETAILS
+
+    }
+
+    public static Packet createPack(PacketType nameEnum){
+
+        switch(nameEnum) {
+            case REQUEST_DETAILS: return new Packet_RequestDetails();
+            case SEND_DETAILS: return new Packet_SendDetails();
+
+
+            default:
+                Log.e("PacketFactory", "Packet name not found!!! Returning NULL!"); return null;
+        }
+
+    }
+
+	public static Packet createPacket(String packetName){ //TODO remove later
+
+        switch (packetName) {
+            case "Packet_RequestDetails": return new Packet_RequestDetails();
+            case "Packet_SendDetails": return new Packet_SendDetails();
+
+
+            default:
+
+                //throw new IllegalArgumentException("Invalid character name: " + characterName );
+        }
+
+        if (packetName.equalsIgnoreCase(ConstantsKryo.ACTIVATE_LADY_OF_LAKE)) {
 
 		} else if (packetName.equalsIgnoreCase(ConstantsKryo.ALL_PLAYERS)) {
 				return new Packet30_AllPlayers();
