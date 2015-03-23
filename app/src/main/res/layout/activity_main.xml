@@ -14,23 +14,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_host"
-        android:id="@+id/button_Host"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_join"
-        android:id="@+id/button_Join"
-        android:layout_below="@+id/button_Host"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="39dp" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,20 +37,19 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Host Service"
+        android:text="Host Game"
         android:id="@+id/button_host_service"
-        android:layout_alignBottom="@+id/button_Host"
-        android:layout_toRightOf="@+id/button_Host"
-        android:layout_toEndOf="@+id/button_Host" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Join Service"
+        android:text="Join Game"
         android:id="@+id/button_join_service"
-        android:layout_alignTop="@+id/button_Join"
-        android:layout_toRightOf="@+id/button_Join"
-        android:layout_toEndOf="@+id/button_Join" />
+        android:layout_below="@+id/button_host_service"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="85dp" />
 
 
 </RelativeLayout>

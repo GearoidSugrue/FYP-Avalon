@@ -1,0 +1,16 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.gearoid.testchatapp.GameActivity">
+
+    <fragment
+        android:id="@+id/layout_gameBoardFragment"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        class="com.example.gearoid.testchatapp.GameBoardFragment">
+
+        <!-- Preview: layout=@layout/row_devices -->
+    </fragment>
+
+</LinearLayout>

@@ -53,8 +53,8 @@ public class MainActivity extends ActionBarActivity {
 
     private void initializeButtons() {
         Button button_editName = (Button) findViewById(R.id.button_edit_name);
-        Button button_hostGame = (Button) findViewById(R.id.button_Host);
-        Button button_joinGame = (Button) findViewById(R.id.button_Join);
+//        Button button_hostGame = (Button) findViewById(R.id.button_Host);
+//        Button button_joinGame = (Button) findViewById(R.id.button_Join);
 
         Button button_hostService = (Button) findViewById(R.id.button_host_service);
         Button button_joinService = (Button) findViewById(R.id.button_join_service);
@@ -66,22 +66,22 @@ public class MainActivity extends ActionBarActivity {
                 showDialogEditName();
             }
         });
-        button_hostGame.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                //startHostActivity();
-                startHostWiFiActivity();
-            }
-        });
-        button_joinGame.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                //startJoinActivity();
-                startJoinWiFiActivity();
-            }
-        });
+//        button_hostGame.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                //startHostActivity();
+//                startHostWiFiActivity();
+//            }
+//        });
+//        button_joinGame.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                //startJoinActivity();
+//                startJoinWiFiActivity();
+//            }
+//        });
         button_joinService.setOnClickListener(new View.OnClickListener() {
 
             @Override

@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gearoid.testchatapp" >
 
-
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -38,9 +37,9 @@
         <activity
             android:name=".GameSetupActivity"
             android:label="@string/title_activity_setup"
-            android:theme="@style/ToolbarTheme"
+            android:parentActivityName=".wifidirect.servicediscovery.WiFiDirectServiceActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName=".wifidirect.servicediscovery.WiFiDirectServiceActivity" >
+            android:theme="@style/ToolbarTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.gearoid.testchatapp.wifidirect.servicediscovery.WiFiDirectServiceActivity" />
@@ -49,8 +48,8 @@
             android:name=".wifidirect.peerdiscovery.WiFiDirectActivity"
             android:label="@string/title_activity_wi_fi_direct"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/ToolbarTheme"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/ToolbarTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.gearoid.testchatapp.MainActivity" />
@@ -59,11 +58,19 @@
             android:name=".wifidirect.servicediscovery.WiFiDirectServiceActivity"
             android:label="@string/title_activity_wi_fi_direct"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/ToolbarTheme"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/ToolbarTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.gearoid.testchatapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".GameScreenActivity"
+            android:label="@string/title_activity_game_screen" >
+        </activity>
+        <activity
+            android:name=".GameActivity"
+            android:label="@string/title_activity_game">
         </activity>
     </application>
 

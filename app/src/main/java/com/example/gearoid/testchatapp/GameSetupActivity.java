@@ -15,36 +15,30 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
-import com.esotericsoftware.kryo.Kryo;
 import com.example.gearoid.testchatapp.character.CharacterFactory;
 import com.example.gearoid.testchatapp.character.ConstantsChara;
 import com.example.gearoid.testchatapp.character.EvilCharacter;
 import com.example.gearoid.testchatapp.character.GoodCharacter;
 import com.example.gearoid.testchatapp.character.ICharacter;
-import com.example.gearoid.testchatapp.kryopackage.ConstantsKryo;
-import com.example.gearoid.testchatapp.kryopackage.ListenerClient;
-import com.example.gearoid.testchatapp.kryopackage.Packet;
-import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
-import com.example.gearoid.testchatapp.singletons.ClientInstance;
-import com.example.gearoid.testchatapp.singletons.ServerInstance;
+import com.example.gearoid.testchatapp.multiplayer.Session;
 
 import java.util.ArrayList;
 
 import static com.example.gearoid.testchatapp.R.drawable;
 
 
-public class GameSetupActivity extends ActionBarActivity implements GameSetupCharacterListFragment.CharacterListFragListener {
+public class GameSetupActivity extends ActionBarActivity implements CharacterListFragment.CharacterListFragListener {
 
     Board currentBoard;
     int playerCount, evilCount, goodCount;
     boolean ladyOfLake = false;
     ArrayList<ICharacter> allCharacters;
-    GameSetupCharacterListFragment goodListFrag;
-    GameSetupCharacterListFragment evilListFrag;
-    GameSetupCharacterListFragment optionalListFrag;
-    GameSetupCharacterListFragment.CharacterListAdapter goodListAdapter;
-    GameSetupCharacterListFragment.CharacterListAdapter evilListAdapter;
-    GameSetupCharacterListFragment.CharacterListAdapter optionalListAdapter;
+    CharacterListFragment goodListFrag;
+    CharacterListFragment evilListFrag;
+    CharacterListFragment optionalListFrag;
+    CharacterListFragment.CharacterListAdapter goodListAdapter;
+    CharacterListFragment.CharacterListAdapter evilListAdapter;
+    CharacterListFragment.CharacterListAdapter optionalListAdapter;
 
 
     public enum Board {
@@ -111,7 +105,7 @@ public class GameSetupActivity extends ActionBarActivity implements GameSetupCha
     }
 
     @Override
-    public void characterSelected(int position, boolean isOptionalList, GameSetupCharacterListFragment.CharacterListAdapter listAdapter) {
+    public void characterSelected(int position, boolean isOptionalList, CharacterListFragment.CharacterListAdapter listAdapter) {
 
         ICharacter character = listAdapter.getItem(position);
         if (isOptionalList) {
@@ -187,22 +181,22 @@ public class GameSetupActivity extends ActionBarActivity implements GameSetupCha
     }
 
     private void initializeFragments() {
-        goodListFrag = (GameSetupCharacterListFragment) getFragmentManager()
+        goodListFrag = (CharacterListFragment) getFragmentManager()
                 .findFragmentById(R.id.good_list);
         goodListFrag.setTitleText(goodCount + " Good Characters");
 
-        evilListFrag = (GameSetupCharacterListFragment) getFragmentManager()
+        evilListFrag = (CharacterListFragment) getFragmentManager()
                 .findFragmentById(R.id.evil_list);
         evilListFrag.setTitleText(evilCount + " Evil Characters");
 
-        optionalListFrag = (GameSetupCharacterListFragment) getFragmentManager()
+        optionalListFrag = (CharacterListFragment) getFragmentManager()
                 .findFragmentById(R.id.optional_list);
         optionalListFrag.setTitleText("Select Optional Characters To Add");
         optionalListFrag.isOptionalCharacterList = true;
 
-        goodListAdapter = (GameSetupCharacterListFragment.CharacterListAdapter) goodListFrag.getListAdapter();
-        evilListAdapter = (GameSetupCharacterListFragment.CharacterListAdapter) evilListFrag.getListAdapter();
-        optionalListAdapter = (GameSetupCharacterListFragment.CharacterListAdapter) optionalListFrag.getListAdapter();
+        goodListAdapter = (CharacterListFragment.CharacterListAdapter) goodListFrag.getListAdapter();
+        evilListAdapter = (CharacterListFragment.CharacterListAdapter) evilListFrag.getListAdapter();
+        optionalListAdapter = (CharacterListFragment.CharacterListAdapter) optionalListFrag.getListAdapter();
 
         goodListFrag.getView().setBackground(getResources().getDrawable(R.drawable.misc_blueloyalty));
         goodListFrag.getView().getBackground().setAlpha(150);
@@ -274,6 +268,13 @@ public class GameSetupActivity extends ActionBarActivity implements GameSetupCha
         if(goodListAdapter.getCount() < goodCount || evilListAdapter.getCount() < evilCount){
             ApplicationContext.showToast("Not enough characters!");
         } else {
+            Session.gameBoard = currentBoard;
+            //Send board to everyone...and arrayList of all players and characters???
+
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra("BOARD", currentBoard);
+
+            startActivity(intent);
 
             //TODO Start game activity...
         }
@@ -328,6 +329,8 @@ public class GameSetupActivity extends ActionBarActivity implements GameSetupCha
         }
         return 2;
     }
+
+
 
     public static int[] getBoardConfiguration(Board board) {//Returns an int array that holds the number of players needed for each quest
 

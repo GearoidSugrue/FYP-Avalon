@@ -55,7 +55,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            class="com.example.gearoid.testchatapp.GameSetupCharacterListFragment">
+            class="com.example.gearoid.testchatapp.CharacterListFragment">
 
             <!-- Preview: layout=@layout/row_devices -->
         </fragment>
@@ -71,7 +71,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            class="com.example.gearoid.testchatapp.GameSetupCharacterListFragment">
+            class="com.example.gearoid.testchatapp.CharacterListFragment">
 
             <!-- Preview: layout=@layout/row_devices -->
         </fragment>
@@ -83,7 +83,7 @@
             android:id="@+id/optional_list"
             android:layout_width="match_parent"
             android:layout_height="140dp"
-            class="com.example.gearoid.testchatapp.GameSetupCharacterListFragment"
+            class="com.example.gearoid.testchatapp.CharacterListFragment"
             android:layout_above="@+id/line_bottom">
 
             <!-- Preview: layout=@layout/row_devices -->

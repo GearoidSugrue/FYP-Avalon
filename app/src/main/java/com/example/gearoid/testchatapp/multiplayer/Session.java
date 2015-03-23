@@ -1,10 +1,13 @@
 package com.example.gearoid.testchatapp.multiplayer;
 
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.GameSetupActivity;
 import com.example.gearoid.testchatapp.SharedPrefManager;
+import com.example.gearoid.testchatapp.character.ICharacter;
 import com.example.gearoid.testchatapp.singletons.ClientInstance;
 import com.example.gearoid.testchatapp.singletons.Player;
 import com.example.gearoid.testchatapp.singletons.ServerInstance;
@@ -22,6 +25,10 @@ public class Session {
 
     //Server
     public static ArrayList<Player> allPlayers; //Won't be instantiated until Session object is created TODO fix allPlayers ArrayList
+    public static ArrayList<ICharacter> allCharacters;
+    public static GameSetupActivity.Board gameBoard;
+    public static Drawable boardImage;//Is this necessary??? Use Board enum instead...
+
     //public static HashMap<Player, Connection> playerConnections;
 
     public Session(){//Find a better way??..

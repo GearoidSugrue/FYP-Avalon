@@ -46,6 +46,9 @@
     <string name="finding_host">HOSTS</string>
     <string name="label_info">INFO</string>
     <string name="get_file_button">Launch Gallery</string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="title_activity_game_screen">Game Activity...</string>
+
 
 
 
