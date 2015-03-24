@@ -20,6 +20,7 @@ import com.example.gearoid.testchatapp.character.ConstantsChara;
 import com.example.gearoid.testchatapp.character.EvilCharacter;
 import com.example.gearoid.testchatapp.character.GoodCharacter;
 import com.example.gearoid.testchatapp.character.ICharacter;
+import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 
 import java.util.ArrayList;
@@ -208,7 +209,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
     }
 
     public void setUpGoodCharacterList() {
-        ICharacter merlin = CharacterFactory.createPlayer(ConstantsChara.MERLIN);
+        ICharacter merlin = CharacterFactory.createPlayer(CharacterFactory.CharacterType.MERLIN);
 
         Log.d("GameSetup", "Attempting to add a ICharacter to list");
         goodListAdapter.add(merlin);
@@ -216,16 +217,16 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
     }
 
     public void setUpEvilCharacterList() {
-        ICharacter assassin = CharacterFactory.createPlayer(ConstantsChara.ASSASSIN);
+        ICharacter assassin = CharacterFactory.createPlayer(CharacterFactory.CharacterType.ASSASSIN);
         evilListAdapter.add(assassin);
         fillRemainingEvilListPlaces();
     }
 
     public void setUpOptionalCharacterList() {
-        ICharacter percival = CharacterFactory.createPlayer(ConstantsChara.PERCIVAL);
-        ICharacter morgana = CharacterFactory.createPlayer(ConstantsChara.MORGANA);
-        ICharacter mordred = CharacterFactory.createPlayer(ConstantsChara.MORDRED);
-        ICharacter oberon = CharacterFactory.createPlayer(ConstantsChara.OBERON);
+        ICharacter percival = CharacterFactory.createPlayer(CharacterFactory.CharacterType.PERCIVAL);
+        ICharacter morgana = CharacterFactory.createPlayer(CharacterFactory.CharacterType.MORGANA);
+        ICharacter mordred = CharacterFactory.createPlayer(CharacterFactory.CharacterType.MORDRED);
+        ICharacter oberon = CharacterFactory.createPlayer(CharacterFactory.CharacterType.OBERON);
         optionalListAdapter.add(percival);
         optionalListAdapter.add(morgana);
         optionalListAdapter.add(mordred);
@@ -235,7 +236,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
     public void fillRemainingGoodListPlaces() {
         int listCount = goodListAdapter.getCount();
         for (int i = 0; i < goodCount - listCount; i++) {
-            ICharacter knight = CharacterFactory.createPlayer(ConstantsChara.GOOD);
+            ICharacter knight = CharacterFactory.createPlayer(CharacterFactory.CharacterType.KNIGHT);
             knight.setCharacterName("Knight " + (i + 1));
             goodListAdapter.add(knight);
         }
@@ -245,7 +246,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
     public void fillRemainingEvilListPlaces() {
         int listCount = evilListAdapter.getCount();
         for (int i = 0; i < evilCount - listCount; i++) {
-            ICharacter minion = CharacterFactory.createPlayer(ConstantsChara.EVIL);
+            ICharacter minion = CharacterFactory.createPlayer(CharacterFactory.CharacterType.MINION);
             minion.setCharacterName("Minion " + (i + 1));
             evilListAdapter.add(minion);
         }

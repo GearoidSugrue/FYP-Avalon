@@ -103,7 +103,7 @@ public class CharacterCardFragment extends DialogFragment {
                 image.setImageDrawable(getResources().getDrawable(R.drawable.token_ladyoflake));
                 break;
             default:
-                image.setImageDrawable(getResources().getDrawable(R.drawable.approve_token));
+                image.setImageDrawable(getResources().getDrawable(R.drawable.token_approve));
                 //throw new IllegalArgumentException("Invalid character name: " + characterName );
         }
         return rootView;

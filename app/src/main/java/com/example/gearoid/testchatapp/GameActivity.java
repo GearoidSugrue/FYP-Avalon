@@ -1,15 +1,19 @@
 package com.example.gearoid.testchatapp;
 
+import android.app.DialogFragment;
 import android.content.res.Configuration;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 
 
-public class GameActivity extends ActionBarActivity {
+public class GameActivity extends ActionBarActivity implements TeamVoteFragment.TeamVoteDialogListener {
 
     public GameBoardFragment gameBoardFrag;
     public GameSetupActivity.Board currentBoard;
@@ -26,6 +30,7 @@ public class GameActivity extends ActionBarActivity {
 
         currentBoard = (GameSetupActivity.Board) getIntent().getSerializableExtra("BOARD");
         initialiseFragments();
+        intialiseButtons();
     }
 
     private void initialiseFragments() {
@@ -60,5 +65,24 @@ public class GameActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void intialiseButtons(){
+        Button voteFragTest = (Button) findViewById(R.id.button_voteFragTest);
 
+        voteFragTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogFragment newFragment = TeamVoteFragment.newInstance("Gearoid");
+                newFragment.show(getFragmentManager(), "dialog");
+            }
+        });
+    }
+
+
+    @Override
+    public void onVoteSelected(boolean voteResult) {
+        Log.d("GameActivity", "Vote Result received from team vote dialog: " + voteResult);
+
+        //Send vote result to server
+    }
 }

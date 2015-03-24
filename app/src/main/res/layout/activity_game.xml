@@ -1,16 +1,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.gearoid.testchatapp.GameActivity">
+    tools:context="com.example.gearoid.testchatapp.GameActivity"
+    android:orientation="vertical">
 
     <fragment
         android:id="@+id/layout_gameBoardFragment"
-        android:layout_width="0dp"
+        android:layout_width="fill_parent"
         android:layout_weight="1"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         class="com.example.gearoid.testchatapp.GameBoardFragment">
 
         <!-- Preview: layout=@layout/row_devices -->
     </fragment>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Vote Frag"
+        android:id="@+id/button_voteFragTest"
+        android:layout_gravity="bottom"
+        android:layout_weight="0" />
 
 </LinearLayout>

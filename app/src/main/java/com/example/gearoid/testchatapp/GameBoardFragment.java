@@ -21,17 +21,15 @@ public class GameBoardFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //Pass enum into this.
-        //gameBoard =
-        gameBoard = GameSetupActivity.Board.TEN;
         gameBoard = (GameSetupActivity.Board) getActivity().getIntent().getSerializableExtra("BOARD");
         Log.d("gameBoardFrag", "Got activity intent" + gameBoard);
 
         ImageView boardImage = (ImageView) mContentView.findViewById(R.id.imageView_gameBoard);
 
-        Log.d("gameBoardFrag", "Current Board: " + gameBoard);
+        Drawable image = getBoardImage(gameBoard);
 
-        boardImage.setImageDrawable(getBoardImage(gameBoard));
+        boardImage.setImageDrawable(image);
+        //boardImage.setBackground(getBoardImage(gameBoard));
 
     }
 
