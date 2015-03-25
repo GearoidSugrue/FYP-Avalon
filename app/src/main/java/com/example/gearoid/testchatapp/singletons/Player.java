@@ -6,6 +6,8 @@ import com.example.gearoid.testchatapp.ApplicationContext;
 import com.example.gearoid.testchatapp.SharedPrefManager;
 import com.example.gearoid.testchatapp.character.ICharacter;
 
+import java.io.Serializable;
+
 public class Player {
 
     //PlayerConnectionID playerConId = new PlayerConnectionID();

@@ -72,7 +72,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             @Override
             public void onClick(View v) {
 
-                DialogFragment newFragment = TeamVoteFragment.newInstance("Gearoid");
+                DialogFragment newFragment = TeamVoteFragment.newInstance(new int[] {1,2,3});
                 newFragment.show(getFragmentManager(), "dialog");
             }
         });

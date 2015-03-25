@@ -1,5 +1,7 @@
 package com.example.gearoid.testchatapp;
 
+import android.app.FragmentTransaction;
+import android.app.ListFragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.app.DialogFragment;
@@ -11,6 +13,10 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.example.gearoid.testchatapp.multiplayer.Session;
+import com.example.gearoid.testchatapp.singletons.Player;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -23,18 +29,24 @@ public class TeamVoteFragment extends DialogFragment {
     ImageView image2;
     boolean image1Approve;
     boolean image2Approve;
+    int[] playerPos;
+    ListView playerListView;
+    private ArrayList<Player> playerArray ;
+    PlayerListViewAdapter adapter;
 
 
-    static TeamVoteFragment newInstance(String name) {
+    static TeamVoteFragment newInstance(int[] playerPositions) {
         TeamVoteFragment frag = new TeamVoteFragment();
 
         // Supply num input as an argument.
         Bundle args = new Bundle();
-        //args.putString("character", name);
-        //frag.setArguments(args);
+        args.putIntArray("PLAYER_POS", playerPositions);
+        frag.setArguments(args);
         Log.d("TeamVoteFrag", "Creating instance of a teamvote fragment");
         return frag;
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,10 +55,20 @@ public class TeamVoteFragment extends DialogFragment {
         //characterName = getArguments().getString("character");
         Log.d("TeamVoteFrag", "onCreate called");
 
+        Bundle extras = getArguments();
+        playerPos = extras.getIntArray("PLAYER_POS");
+        playerArray = new ArrayList<Player>();
+       // playerArray.add();
+
+
 
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
 
         setStyle(style, theme);
+
+
+
+
     }
 
     @Override
@@ -66,9 +88,20 @@ public class TeamVoteFragment extends DialogFragment {
         //image2.setBackgroundColor(Color.DKGRAY);
 
 
-        ListView proposedTeam = (ListView) rootView.findViewById(R.id.listview_proposedTeam);
+        playerListView = (ListView) rootView.findViewById(R.id.listview_proposedTeam);
+
+
 
         //TODO add player info here
+
+
+//        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+//        ListFragment listCategoriesFragment = new PlayerListFragment();
+//        transaction.add(R.id.fragment_list_players, listCategoriesFragment, "fragment_list_categories").commit();
+
+
+//        FragmentTransaction transaction2 = getChildFragmentManager().beginTransaction();
+//        transaction.add(new PlayerListFragment(), "SelectedPlayers");
 
         //ListAdapter listAdapter
         //proposedTeam.setAdapter();
@@ -76,6 +109,29 @@ public class TeamVoteFragment extends DialogFragment {
         //image.setBackgroundColor(Color.BLACK);
         //mContentView = container;
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+
+        Log.d("TeamVoteFrag", "onCreateView called");
+        adapter = new PlayerListViewAdapter(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, playerArray);
+        playerListView.setAdapter(adapter);
+        adapter.add(Player.getInstance());
+        adapter.add(Player.getInstance());
+        adapter.add(Player.getInstance());//TODO add function that limits listview size to 3/4 rows
+        adapter.add(Player.getInstance());
+        adapter.add(Player.getInstance());
+        adapter.add(Player.getInstance());
+
+
+
+        for(int i=0; i < playerPos.length; i++){
+            Log.d("TeamVoteFrag", "adding player to adapter");
+
+            //adapter.add(Session.allPlayers.get(playerPos[i])); //TODO test if players are correctly added
+        }
     }
 
     public void randomiseTokenOrder(){

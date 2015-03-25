@@ -355,4 +355,17 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         return getBoardConfiguration(board)[questNumber.value]; //Returns the number of players that go on a particular quest
     }
 
+    public static int calculateFailNumberQuest(Board board, Quest questNumber){
+
+        if(questNumber == Quest.FOURTH){
+            switch (board) {
+                case SEVEN:
+                case EIGHT:
+                case NINE:
+                case TEN: return 2;
+            }
+        }
+        return 1;
+    }
+
 }
