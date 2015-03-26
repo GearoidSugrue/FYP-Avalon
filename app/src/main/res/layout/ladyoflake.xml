@@ -71,7 +71,8 @@
             android:id="@+id/imageView_loyaltyCard"
             android:clickable="true"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/misc_loyaltyback"/>
+            android:src="@drawable/misc_loyaltyback"
+            android:adjustViewBounds="true"            />
 
         <Button
             android:layout_width="fill_parent"

@@ -33,7 +33,7 @@
             <ListView
                 android:id="@+id/listview_currentLeader"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="?android:attr/listPreferredItemHeight"/>
 
 
         </LinearLayout>
@@ -67,7 +67,7 @@
             <ListView
                 android:id="@+id/listview_nextLeader"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="?android:attr/listPreferredItemHeight"/>
 
         </LinearLayout>
 

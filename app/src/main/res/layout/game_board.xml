@@ -7,5 +7,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView_gameBoard"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:adjustViewBounds="true"
+        android:src="@drawable/board_5"/>
 </RelativeLayout>

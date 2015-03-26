@@ -10,8 +10,23 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
-        android:text="Select Quest Team"
-        android:id="@+id/textView_SelectTeamLabel" />
+        android:text="Game Finished"
+        android:id="@+id/textView_gameFinishedLabel" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/material_blue_grey_950" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/CadetBlue"
+        android:layout_gravity="center_horizontal"
+        android:text="Loyal Servent's of Arthur Win"
+        android:id="@+id/textView_gameResult" />
 
     <View
         android:layout_width="fill_parent"
@@ -24,8 +39,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
-        android:text="Your Chosen Team"
-        android:id="@+id/textView_chosenTeamLabel" />
+        android:text="Victorious Team"
+        android:id="@+id/textView_victoriousTeamLabel" />
 
     <View
         android:layout_width="fill_parent"
@@ -34,9 +49,9 @@
         android:background="@color/material_blue_grey_950" />
 
     <ListView
-        android:id="@+id/listview_chosenTeam"
-        android:layout_weight="0"
-        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:id="@+id/listview_victoriousTeam"
+        android:layout_weight="1"
+        android:layout_height="0dp"
         android:layout_width="fill_parent"/>
 
     <View
@@ -50,8 +65,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
-        android:text="Team Candidates"
-        android:id="@+id/textView_teamCandidatesLabel" />
+        android:text="Defeated Team"
+        android:id="@+id/textView_defeatedTeamLabel" />
 
     <View
         android:layout_width="fill_parent"
@@ -60,7 +75,7 @@
         android:background="@color/material_blue_grey_950" />
 
     <ListView
-        android:id="@+id/listview_teamCandidates"
+        android:id="@+id/listview_defeatedTeam"
         android:layout_weight="1"
         android:layout_height="0dp"
         android:layout_width="fill_parent"/>
@@ -81,15 +96,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Dismiss"
-            android:id="@+id/button_dismissTeamSelect"/>
+            android:text="Quit"
+            android:id="@+id/button_quitGame"/>
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Confirm"
-            android:id="@+id/button_confirmTeamSelect"/>
+            android:text="Play Again"
+            android:id="@+id/button_playAgain"/>
     </LinearLayout>
 
 </LinearLayout>

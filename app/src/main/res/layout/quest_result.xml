@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="1000dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_gravity="center_horizontal"
+        android:text="Quest Result"
+        android:id="@+id/textView_questResultLabel" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/material_blue_grey_950" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_gravity="center_horizontal"
+        android:text="Quest Team"
+        android:id="@+id/textView_questTeamLabel" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/material_blue_grey_950" />
+
+    <ListView
+        android:id="@+id/listview_questTeam"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_width="fill_parent" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/material_blue_grey_950" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_gravity="center_horizontal"
+        android:text="Tap To Revel Card"
+        android:id="@+id/textView_RevelCardLabel" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/material_blue_grey_950" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout_questVoteResults"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:background="@android:color/transparent" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/imageView_questVote1"
+            android:clickable="true"
+            android:src="@drawable/misc_swordback"
+            android:adjustViewBounds="true"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:background="@android:color/transparent" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/imageView_questVote2"
+            android:clickable="true"
+            android:src="@drawable/misc_swordback"
+            android:adjustViewBounds="true"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:background="@android:color/transparent" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/imageView_questVote3"
+            android:clickable="true"
+            android:src="@drawable/misc_swordback"
+            android:adjustViewBounds="true"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:background="@android:color/transparent" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_horizontal"
+        android:background="@android:color/transparent" />
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout_questVoteResults2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:background="@android:color/transparent" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/imageView_questVote4"
+            android:clickable="true"
+            android:src="@drawable/misc_swordback"
+            android:adjustViewBounds="true"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:background="@android:color/transparent" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/imageView_questVote5"
+            android:clickable="true"
+            android:src="@drawable/misc_swordback"
+            android:adjustViewBounds="true"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:background="@android:color/transparent" />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/imageView_questVote6"
+            android:clickable="true"
+            android:src="@drawable/misc_swordback"
+            android:adjustViewBounds="true"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:background="@android:color/transparent" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
