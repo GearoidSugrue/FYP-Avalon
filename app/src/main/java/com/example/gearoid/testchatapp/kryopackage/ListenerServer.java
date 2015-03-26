@@ -47,8 +47,8 @@ public class ListenerServer extends Listener {
 
             if(player.playerID >= 0){
                 Log.d("Packet Received", "Old player reconnected: " + player.userName + ", ID: " + player.playerID);
-                if(Session.allPlayers.size() > player.playerID){
-                    Session.allPlayers.get(player.playerID).playerConnection = con;//Should this be non static way!???
+                if(Session.masterAllPlayers.size() > player.playerID){
+                    Session.masterAllPlayers.get(player.playerID).playerConnection = con;//Should this be non static way!???
                 } else {
                     Log.d("Packet Received", "Error: All players list is missing entries! " + player.userName + ", ID: " + player.playerID);
                 }
@@ -57,9 +57,9 @@ public class ListenerServer extends Listener {
                 Log.d("Packet Received", "New player connected: " + player.userName);
                 Packet_SendDetails sendPacket = (Packet_SendDetails) PacketFactory.createPack(PacketFactory.PacketType.SEND_DETAILS);
 
-                sendPacket.newPlayerNumber = Session.allPlayers.size();//TODO add thread safe way to get IDs
+                sendPacket.newPlayerNumber = Session.masterAllPlayers.size();//TODO add thread safe way to get IDs
                 player.playerConnection = con;
-                Session.allPlayers.add(player);
+                Session.masterAllPlayers.add(player);
 
                 con.sendTCP(sendPacket);
 

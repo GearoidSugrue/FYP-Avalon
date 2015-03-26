@@ -9,14 +9,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 
+import com.example.gearoid.testchatapp.character.EvilCharacter;
+import com.example.gearoid.testchatapp.singletons.Player;
 
-public class GameActivity extends ActionBarActivity implements TeamVoteFragment.TeamVoteDialogListener {
+
+public class GameActivity extends ActionBarActivity implements TeamVoteFragment.TeamVoteDialogListener, QuestVoteFragment.QuestVoteDialogListener {
 
     public GameBoardFragment gameBoardFrag;
-    public GameSetupActivity.Board currentBoard;
+    public GameLogicFunctions.Board currentBoard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +30,9 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
 
         setContentView(R.layout.activity_game);
 
-        currentBoard = (GameSetupActivity.Board) getIntent().getSerializableExtra("BOARD");
+        currentBoard = (GameLogicFunctions.Board) getIntent().getSerializableExtra("BOARD");
         initialiseFragments();
-        intialiseButtons();
+        initialiseButtons();
     }
 
     private void initialiseFragments() {
@@ -65,15 +67,25 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         return super.onOptionsItemSelected(item);
     }
 
-    public void intialiseButtons(){
-        Button voteFragTest = (Button) findViewById(R.id.button_voteFragTest);
+    public void initialiseButtons(){
+        Button teamVoteFrag = (Button) findViewById(R.id.button_teamVoteFrag);
+        Button questVoteFrag = (Button) findViewById(R.id.button_questVoteFrag);
 
-        voteFragTest.setOnClickListener(new View.OnClickListener() {
+        teamVoteFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                DialogFragment newFragment = TeamVoteFragment.newInstance(new int[] {1,2,3});
-                newFragment.show(getFragmentManager(), "dialog");
+                DialogFragment newFragment = TeamVoteFragment.newInstance(new int[]{0, 1, 3, 4});
+                newFragment.show(getFragmentManager(), "teamdialog");
+            }
+        });
+
+        questVoteFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogFragment newFragment = QuestVoteFragment.newInstance(Player.getInstance().character instanceof EvilCharacter);
+                newFragment.show(getFragmentManager(), "questdialog");
             }
         });
     }
@@ -83,6 +95,14 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void onVoteSelected(boolean voteResult) {
         Log.d("GameActivity", "Vote Result received from team vote dialog: " + voteResult);
 
-        //Send vote result to server
+        //TODO Send vote result to server
+    }
+
+    @Override
+    public void onQuestVoteSelected(boolean voteResult) {
+        Log.d("GameActivity", "Vote Result received from quest vote dialog: " + voteResult);
+
+        //TODO Send vote result to server
+
     }
 }

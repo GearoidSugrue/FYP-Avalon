@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:background="?android:attr/activatedBackgroundIndicator"
+    android:padding="2dip">
+
+    <ImageView
+        android:id="@+id/icon_leader"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:src="@drawable/icon_leader"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/icon_questMember"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:src="@drawable/icon_questmember"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dip"
+        android:layout_weight="1"
+        android:layout_height="fill_parent">
+        <TextView
+            android:id="@+id/textview_playerName"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:textSize="@dimen/abc_text_size_large_material"
+            android:text="Gearoid"
+            android:gravity="center_vertical"
+            android:ellipsize="marquee"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/icon_ladyOfLake"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:src="@drawable/icon_ladyoflake"
+        android:visibility="gone"/>
+</LinearLayout>

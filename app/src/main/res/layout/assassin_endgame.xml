@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="1000dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_gravity="center_horizontal"
+        android:text="Assassinate Merlin"
+        android:id="@+id/textView_assassinateLabel" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/material_blue_grey_950" />
+
+    <ListView
+        android:id="@+id/listview_melinCandidates"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_width="fill_parent"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/material_blue_grey_950" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_gravity="center_horizontal"
+        android:text="Your Chosen Player"
+        android:id="@+id/textView_chosenPlayerLabel" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/material_blue_grey_950" />
+
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout_confrimSelection"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:layout_weight="0">
+
+        <ListView
+            android:id="@+id/listview_chosenPlayer"
+            android:layout_height="?android:attr/listPreferredItemHeight"
+            android:layout_width="fill_parent"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:gravity="center_vertical"
+            android:background="@color/material_blue_grey_950" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirm Chosen Player"
+            android:id="@+id/button_confirmAssassinAttempt"
+            android:layout_gravity="bottom"
+            android:layout_weight="0"/>
+    </LinearLayout>
+
+</LinearLayout>

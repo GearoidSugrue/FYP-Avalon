@@ -1,8 +1,6 @@
 package com.example.gearoid.testchatapp;
 
-import android.app.FragmentTransaction;
-import android.app.ListFragment;
-import android.graphics.Color;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.app.DialogFragment;
 import android.util.Log;
@@ -10,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.gearoid.testchatapp.multiplayer.Session;
@@ -30,9 +28,18 @@ public class TeamVoteFragment extends DialogFragment {
     boolean image1Approve;
     boolean image2Approve;
     int[] playerPos;
-    ListView playerListView;
-    private ArrayList<Player> playerArray ;
-    PlayerListViewAdapter adapter;
+    ListView proposedPlayerView;
+    ListView currentLeaderView;
+    ListView nextLeaderView;
+    PlayerListViewAdapter adapterProposedTeam;
+    PlayerListViewAdapter adapterCurrentLeader;
+    PlayerListViewAdapter adapterNextLeader;
+    ArrayList<Player> proposedPlayersArray;
+    ArrayList<Player> currentLeaderArray;
+    ArrayList<Player> nextLeaderArray;
+
+
+
 
 
     static TeamVoteFragment newInstance(int[] playerPositions) {
@@ -54,21 +61,22 @@ public class TeamVoteFragment extends DialogFragment {
 
         //characterName = getArguments().getString("character");
         Log.d("TeamVoteFrag", "onCreate called");
+        int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
+        setStyle(style, theme);
 
         Bundle extras = getArguments();
         playerPos = extras.getIntArray("PLAYER_POS");
-        playerArray = new ArrayList<Player>();
-       // playerArray.add();
+        proposedPlayersArray = new ArrayList<>();
+        currentLeaderArray = new ArrayList<>();
+        nextLeaderArray = new ArrayList<>();
 
+        for(int i=0; i < playerPos.length; i++){
+            Log.d("TeamVoteFrag", "adding player to adapterProposedTeam. int[" + i + "] = " + playerPos[i]);
+            proposedPlayersArray.add(Session.masterAllPlayers.get(playerPos[i]));
+        }
 
-
-        int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
-
-        setStyle(style, theme);
-
-
-
-
+        currentLeaderArray.add(Session.masterAllPlayers.get(GameLogicFunctions.getCurrentLeaderIndexInAllPlayerList()));
+        nextLeaderArray.add(Session.masterAllPlayers.get(GameLogicFunctions.getNextLeaderIndexInAllPlayerList()));
     }
 
     @Override
@@ -83,31 +91,12 @@ public class TeamVoteFragment extends DialogFragment {
         randomiseTokenOrder();
         setOnClicklisteners();
         //image1.setBackground(getResources().getDrawable(R.drawable.token_approve));
-        //image2.setBackground(getResources().getDrawable(R.drawable.token_reject));
         //image1.setBackgroundColor(Color.BLACK);
-        //image2.setBackgroundColor(Color.DKGRAY);
 
+        proposedPlayerView = (ListView) rootView.findViewById(R.id.listview_proposedTeam);
+        currentLeaderView = (ListView) rootView.findViewById(R.id.listview_currentLeader);
+        nextLeaderView = (ListView) rootView.findViewById(R.id.listview_nextLeader);
 
-        playerListView = (ListView) rootView.findViewById(R.id.listview_proposedTeam);
-
-
-
-        //TODO add player info here
-
-
-//        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//        ListFragment listCategoriesFragment = new PlayerListFragment();
-//        transaction.add(R.id.fragment_list_players, listCategoriesFragment, "fragment_list_categories").commit();
-
-
-//        FragmentTransaction transaction2 = getChildFragmentManager().beginTransaction();
-//        transaction.add(new PlayerListFragment(), "SelectedPlayers");
-
-        //ListAdapter listAdapter
-        //proposedTeam.setAdapter();
-
-        //image.setBackgroundColor(Color.BLACK);
-        //mContentView = container;
         return rootView;
     }
 
@@ -116,30 +105,34 @@ public class TeamVoteFragment extends DialogFragment {
         super.onActivityCreated(savedInstanceState);
 
         Log.d("TeamVoteFrag", "onCreateView called");
-        adapter = new PlayerListViewAdapter(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, playerArray);
-        playerListView.setAdapter(adapter);
-        adapter.add(Player.getInstance());
-        adapter.add(Player.getInstance());
-        adapter.add(Player.getInstance());//TODO add function that limits listview size to 3/4 rows
-        adapter.add(Player.getInstance());
-        adapter.add(Player.getInstance());
-        adapter.add(Player.getInstance());
+        adapterProposedTeam = new PlayerListViewAdapter(getActivity(), R.layout.row_players, android.R.id.text1, proposedPlayersArray);
+        proposedPlayerView.setAdapter(adapterProposedTeam);
 
+        adapterCurrentLeader = new PlayerListViewAdapter(getActivity(), R.layout.row_players, android.R.id.text1, currentLeaderArray);
+        currentLeaderView.setAdapter(adapterCurrentLeader);
+        adapterNextLeader = new PlayerListViewAdapter(getActivity(), R.layout.row_players, android.R.id.text1, nextLeaderArray);
+        nextLeaderView.setAdapter(adapterNextLeader);
 
-
-        for(int i=0; i < playerPos.length; i++){
-            Log.d("TeamVoteFrag", "adding player to adapter");
-
-            //adapter.add(Session.allPlayers.get(playerPos[i])); //TODO test if players are correctly added
+        //Limits listview to display a certain amount of rows depending what the orientation of the screen is. This helps ensure parts of the fragment doesn't get pushed off screen.
+        if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && adapterProposedTeam.getCount() > 2 ){
+            View item = adapterProposedTeam.getView(0, null, proposedPlayerView);
+            item.measure(0, 0);
+            ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (1.5 * item.getMeasuredHeight()));
+            proposedPlayerView.setLayoutParams(params);
+        } else if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT && adapterProposedTeam.getCount() > 3) {
+            View item = adapterProposedTeam.getView(0, null, proposedPlayerView);
+            item.measure(0, 0);
+            ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (3.6 * item.getMeasuredHeight()));
+            proposedPlayerView.setLayoutParams(params);
         }
     }
 
     public void randomiseTokenOrder(){
-        Log.d("TeamVoteFrag", "randomiseTokenOrder called");
+        Log.d("TeamVoteFrag", "randomiseCardOrder called");
 
         Random randomGenerator = new Random();
         int randNum = randomGenerator.nextInt(2);
-        Log.d("TeamVoteFrag", "randomiseTokenOrder: random num = " + randNum);
+        Log.d("TeamVoteFrag", "randomiseCardOrder: random num = " + randNum);
 
         if(Math.random() > 0.5){
             image1Approve = true;
@@ -189,7 +182,4 @@ public class TeamVoteFragment extends DialogFragment {
     public interface TeamVoteDialogListener {
         void onVoteSelected(boolean voteResult);
     }
-
-
-
 }

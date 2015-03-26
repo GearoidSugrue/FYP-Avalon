@@ -36,7 +36,6 @@ import com.example.gearoid.testchatapp.kryopackage.Packet;
 import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.ClientInstance;
-import com.example.gearoid.testchatapp.singletons.ServerInstance;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -152,7 +151,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ApplicationContext.getContext(), GameSetupActivity.class);
-                    int numberOfConnections = Session.allPlayers.size();
+                    int numberOfConnections = Session.masterAllPlayers.size();
                     Log.d(TAG, "Number of devices connected to KryoServer is: " + numberOfConnections);
                     intent.putExtra("PLAYER_COUNT", numberOfConnections); //TODO Fix this. Pass in number of connected devices
                     startActivity(intent);
@@ -557,7 +556,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
     public void disconnect() {//add kryo stuff, send packet to Host saying its disconnecting and close kryo client
 
-        //TODO send a packet to kryonet Server informing it of disconnect so it can remove player from allPlayers list
+        //TODO send a packet to kryonet Server informing it of disconnect so it can remove player from masterAllPlayers list
 
         final WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager()
                 .findFragmentById(R.id.frag_service_list);

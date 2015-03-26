@@ -88,7 +88,7 @@ public class CharacterListFragment extends ListFragment {
     }
 
     /**
-     * Array adapter for ListFragment that maintains Character list.
+     * Array adapterProposedTeam for ListFragment that maintains Character list.
      */
     public class CharacterListAdapter extends ArrayAdapter<ICharacter> {
 

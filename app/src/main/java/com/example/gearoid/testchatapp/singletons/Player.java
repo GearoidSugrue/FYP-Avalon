@@ -22,8 +22,9 @@ public class Player {
 	
 	public boolean isLeader = false;
 	public boolean hasLadyOfLake = false;
+    public boolean isOnQuest = false;
 
-    private Player(){
+    public Player(){//change back to private
 
     }
 

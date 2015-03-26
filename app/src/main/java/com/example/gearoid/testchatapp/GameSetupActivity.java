@@ -16,22 +16,22 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.example.gearoid.testchatapp.character.CharacterFactory;
-import com.example.gearoid.testchatapp.character.ConstantsChara;
 import com.example.gearoid.testchatapp.character.EvilCharacter;
 import com.example.gearoid.testchatapp.character.GoodCharacter;
 import com.example.gearoid.testchatapp.character.ICharacter;
-import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
 import com.example.gearoid.testchatapp.multiplayer.Session;
+import com.example.gearoid.testchatapp.singletons.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static com.example.gearoid.testchatapp.R.drawable;
 
 
 public class GameSetupActivity extends ActionBarActivity implements CharacterListFragment.CharacterListFragListener {
 
-    Board currentBoard;
-    int playerCount, evilCount, goodCount;
+    GameLogicFunctions.Board currentBoard;
+    int playerCount = 5, evilCount = 2, goodCount = 3;
     boolean ladyOfLake = false;
     ArrayList<ICharacter> allCharacters;
     CharacterListFragment goodListFrag;
@@ -40,20 +40,6 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
     CharacterListFragment.CharacterListAdapter goodListAdapter;
     CharacterListFragment.CharacterListAdapter evilListAdapter;
     CharacterListFragment.CharacterListAdapter optionalListAdapter;
-
-
-    public enum Board {
-        FIVE, SIX, SEVEN, EIGHT, NINE, TEN;
-    }
-
-    public enum Quest {
-        FIRST(1), SECOND(2), THIRD(3), FOURTH(4), FIFTH(5);
-        private int value;
-
-        private Quest(int value) {
-            this.value = value;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -255,8 +241,8 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
 
     public void calculateGlobalValues(int numberOfPlayers) {
         playerCount = numberOfPlayers;
-        currentBoard = calculateBoard(playerCount);//Gets the board we'll be using
-        evilCount = calculateNumberOfEvilPlayers(currentBoard);//Gets the number of evil players
+        currentBoard = GameLogicFunctions.calculateBoard(playerCount);//Gets the board we'll be using
+        evilCount = GameLogicFunctions.calculateNumberOfEvilPlayers(currentBoard);//Gets the number of evil players
         goodCount = playerCount - evilCount;//Gets the number of good players
     }
 
@@ -266,18 +252,36 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         //Intent intent = new Intent(this, ___.class);
 
         //startActivity(intent);
-        if(goodListAdapter.getCount() < goodCount || evilListAdapter.getCount() < evilCount){
+        if (goodListAdapter.getCount() < goodCount || evilListAdapter.getCount() < evilCount) {
             ApplicationContext.showToast("Not enough characters!");
         } else {
+            Player p1 = new Player(); //TODO Testing purpose. Delete when done.
+            Player p2 = new Player();
+            Player p3 = new Player();
+            Player p4 = new Player();
+            Player p5 = new Player();
+            p1.userName = "Gearoid";
+            p2.userName = "Emily";
+            p3.userName = "Lemon";
+            p4.userName = "Kabuki";
+            p4.hasLadyOfLake = true;
+            p5.userName = "Mopsy";
+            Session.masterAllPlayers.add(p1);
+            Session.masterAllPlayers.add(p2);
+            Session.masterAllPlayers.add(p3);
+            Session.masterAllPlayers.add(p4);
+            Session.masterAllPlayers.add(p5);
+
+            assignAllPlayersCharacters(getCombinedGoodAndEvilList());
+            initialiseLeaderOrderedAllPlayers();
+
             Session.gameBoard = currentBoard;
-            //Send board to everyone...and arrayList of all players and characters???
+            //TODO Send board to everyone...and arrayList of all players and characters???
 
             Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra("BOARD", currentBoard);
 
             startActivity(intent);
-
-            //TODO Start game activity...
         }
 
 
@@ -303,69 +307,53 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         */
     }
 
-    public Board calculateBoard(int numberOfPlayers) {
-        switch (numberOfPlayers) {
-            case 5: return Board.FIVE;
-            case 6: return Board.SIX;
-            case 7: return Board.SEVEN;
-            case 8: return Board.EIGHT;
-            case 9: return Board.NINE;
-            case 10: return Board.TEN;
+    public ArrayList<ICharacter> getCombinedGoodAndEvilList() {
+        ArrayList<ICharacter> aCharacters = new ArrayList<>();
+
+        for (int i = 0; i < goodListAdapter.getCount(); i++) {
+            aCharacters.add(goodListAdapter.getItem(i));
         }
-        return Board.FIVE;
-    }
-
-    public int calculateNumberOfEvilPlayers(Board board) {
-
-        switch (board) {
-            case FIVE:
-            case SIX:
-                return 2;
-            case SEVEN:
-            case EIGHT:
-            case NINE:
-                return 3;
-            case TEN:
-                return 4;
+        for (int i = 0; i < evilListAdapter.getCount(); i++) {
+            aCharacters.add(evilListAdapter.getItem(i));
         }
-        return 2;
+
+        return aCharacters;
     }
 
+    public static void assignAllPlayersCharacters(ArrayList<ICharacter> chosenCharacters) {
+        Collections.shuffle(chosenCharacters);
+        Session.allCharacters = new ArrayList<>();
+        Session.allCharacters.addAll(chosenCharacters);// TODO is allCharacters necessary???
 
+        if (chosenCharacters.size() == Session.masterAllPlayers.size()) {
 
-    public static int[] getBoardConfiguration(Board board) {//Returns an int array that holds the number of players needed for each quest
-
-        int[] arr;
-        switch (board) {
-            case FIVE:
-                return arr = new int[]{2, 3, 2, 3, 3};
-            case SIX:
-                return arr = new int[]{2, 3, 4, 3, 4};
-            case SEVEN:
-                return arr = new int[]{2, 3, 3, 4, 4};
-            case EIGHT:
-            case NINE:
-            case TEN:
-                return arr = new int[]{3, 4, 4, 5, 5};
-        }
-        return arr = new int[]{0, 0, 0, 0, 0};
-    }
-
-    public static int calculatePlayersOnQuest(Board board, Quest questNumber) {//Move this???
-        return getBoardConfiguration(board)[questNumber.value]; //Returns the number of players that go on a particular quest
-    }
-
-    public static int calculateFailNumberQuest(Board board, Quest questNumber){
-
-        if(questNumber == Quest.FOURTH){
-            switch (board) {
-                case SEVEN:
-                case EIGHT:
-                case NINE:
-                case TEN: return 2;
+            for (int i = 0; i < Session.masterAllPlayers.size(); i++) {
+                Session.masterAllPlayers.get(i).character = chosenCharacters.get(i);
             }
         }
-        return 1;
     }
 
+    public static void initialiseLeaderOrderedAllPlayers() {
+        Session.leaderOrderList = new ArrayList<Integer>();
+        Session.leaderOrderIterator = 0;
+
+        for(int i=0; i < Session.masterAllPlayers.size(); i++){
+            Session.leaderOrderList.add(i);
+            Log.d("GameSetup", "leaderOrderList - " +  Session.leaderOrderList.get(i));
+        }
+
+        Collections.shuffle(Session.leaderOrderList);
+
+        if(!Session.masterAllPlayers.isEmpty()){
+            Session.masterAllPlayers.get(Session.leaderOrderList.get(Session.leaderOrderIterator)).isLeader = true;
+        }
+
+//        Session.leaderOrderAllPlayers = new ArrayList<Player>();
+//        Session.leaderOrderAllPlayers.addAll(Session.masterAllPlayers);
+//        Collections.shuffle(Session.leaderOrderAllPlayers);
+//        if(!Session.leaderOrderAllPlayers.isEmpty()){
+//            Session.leaderOrderAllPlayers.get(0).isLeader = true;
+//        }
+    }
+   
 }

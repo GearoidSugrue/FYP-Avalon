@@ -15,13 +15,13 @@ import android.widget.ImageView;
 public class GameBoardFragment extends Fragment {
 
     private View mContentView = null;
-    private GameSetupActivity.Board gameBoard;
+    private GameLogicFunctions.Board gameBoard;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        gameBoard = (GameSetupActivity.Board) getActivity().getIntent().getSerializableExtra("BOARD");
+        gameBoard = (GameLogicFunctions.Board) getActivity().getIntent().getSerializableExtra("BOARD");
         Log.d("gameBoardFrag", "Got activity intent" + gameBoard);
 
         ImageView boardImage = (ImageView) mContentView.findViewById(R.id.imageView_gameBoard);
@@ -44,7 +44,7 @@ public class GameBoardFragment extends Fragment {
     }
 
 
-    public Drawable getBoardImage(GameSetupActivity.Board board){
+    public Drawable getBoardImage(GameLogicFunctions.Board board){
 
         Drawable image;
 

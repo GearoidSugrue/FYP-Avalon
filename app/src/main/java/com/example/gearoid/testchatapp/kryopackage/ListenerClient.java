@@ -141,7 +141,7 @@ public class ListenerClient extends Listener {
 			int senderNumber = ((Packet3_AllPlayers) obj).playerNumber;
 			LinkedList<Player> allPlayers = ((Packet3_AllPlayers) obj).allPlayers;
 
-			//GameLogicClient.allPlayers = allPlayers;
+			//GameLogicClient.masterAllPlayers = masterAllPlayers;
 
 			System.out.println("[[Client " + client.getID() + ", "
 					+ client.toString()

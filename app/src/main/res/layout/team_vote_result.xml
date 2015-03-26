@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="1000dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_gravity="center_horizontal"
+        android:text="Vote Result"
+        android:id="@+id/textView_voteResultLabel" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/material_blue_grey_950" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/CadetBlue"
+        android:layout_gravity="center_horizontal"
+        android:text="Team Accepted"
+        android:id="@+id/textView_voteResult" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/material_blue_grey_950" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_gravity="center_horizontal"
+        android:text="Players Who Approved"
+        android:id="@+id/textView_votedApproveLabel" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/material_blue_grey_950" />
+
+    <ListView
+        android:id="@+id/listview_votedApprove"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_width="fill_parent"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/material_blue_grey_950" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_gravity="center_horizontal"
+        android:text="Players Who Rejected"
+        android:id="@+id/textView_votedRejectLabel" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/material_blue_grey_950" />
+
+    <ListView
+        android:id="@+id/listview_votedReject"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_width="fill_parent"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/material_blue_grey_950" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:layout_weight="0">
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Dismiss"
+            android:id="@+id/button_dismissTeamVoteResult"
+            android:layout_gravity="bottom"/>
+    </LinearLayout>
+
+</LinearLayout>

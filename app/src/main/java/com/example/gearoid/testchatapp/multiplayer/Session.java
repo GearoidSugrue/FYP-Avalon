@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.GameLogicFunctions;
 import com.example.gearoid.testchatapp.GameSetupActivity;
 import com.example.gearoid.testchatapp.SharedPrefManager;
 import com.example.gearoid.testchatapp.character.ICharacter;
@@ -13,7 +14,6 @@ import com.example.gearoid.testchatapp.singletons.Player;
 import com.example.gearoid.testchatapp.singletons.ServerInstance;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by gearoid on 25/02/15.
@@ -24,21 +24,24 @@ public class Session {
     public static Connection myConnection;
 
     //Server
-    public static ArrayList<Player> allPlayers; //Won't be instantiated until Session object is created TODO fix allPlayers ArrayList
+    public static ArrayList<Player> masterAllPlayers; //Won't be instantiated until Session object is created TODO fix masterAllPlayers ArrayList
+    public static ArrayList<Player> leaderOrderAllPlayers;
+    public static ArrayList<Integer> leaderOrderList;
+    public static int leaderOrderIterator;
+
     public static ArrayList<ICharacter> allCharacters;
-    public static GameSetupActivity.Board gameBoard;
+    public static GameLogicFunctions.Board gameBoard;
     public static Drawable boardImage;//Is this necessary??? Use Board enum instead...
 
     //public static HashMap<Player, Connection> playerConnections;
 
     public Session(){//Find a better way??..
-        allPlayers = new ArrayList<>();
+        masterAllPlayers = new ArrayList<>();
     }
 
 
     public static void host(){
-
-        allPlayers = new ArrayList<>();
+        masterAllPlayers = new ArrayList<>();
         ServerInstance.getServerInstance().getServer().start();
 
     }
