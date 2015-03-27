@@ -3,6 +3,7 @@ package com.example.gearoid.testchatapp;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.app.DialogFragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,17 +38,21 @@ public class TeamVoteFragment extends DialogFragment {
     ArrayList<Player> proposedPlayersArray;
     ArrayList<Player> currentLeaderArray;
     ArrayList<Player> nextLeaderArray;
+    int questNumber;
+    int voteCount;
 
 
 
 
 
-    static TeamVoteFragment newInstance(int[] playerPositions) {
+    static TeamVoteFragment newInstance(int[] playerPositions, int questNumber, int voteNumber) {
         TeamVoteFragment frag = new TeamVoteFragment();
 
         // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putIntArray("PLAYER_POS", playerPositions);
+        args.putInt("QUEST_NUM", questNumber);
+        args.putInt("VOTE_NUM", voteNumber);
         frag.setArguments(args);
         Log.d("TeamVoteFrag", "Creating instance of a teamvote fragment");
         return frag;
@@ -66,6 +71,9 @@ public class TeamVoteFragment extends DialogFragment {
 
         Bundle extras = getArguments();
         playerPos = extras.getIntArray("PLAYER_POS");
+        questNumber = extras.getInt("QUEST_NUM");
+        voteCount = extras.getInt("VOTE_NUM");
+
         proposedPlayersArray = new ArrayList<>();
         currentLeaderArray = new ArrayList<>();
         nextLeaderArray = new ArrayList<>();
@@ -83,6 +91,12 @@ public class TeamVoteFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.team_vote, container, false);
         Log.d("TeamVoteFrag", "onCreateView called");
+
+        Toolbar mActionBarToolbar = (Toolbar) rootView.findViewById(R.id.frag_teamVote_toolbar);
+        mActionBarToolbar.setTitle("Quest " + questNumber + " - Vote " + voteCount);
+//        mActionBarToolbar.
+//        rootView.setSupportActionBar(mActionBarToolbar);
+//        getSupportActionBar().setTitle("My title");
 
         //getDialog().setTitle("Team Vote");
         image1 = (ImageView) rootView.findViewById(R.id.imageView_teamVote1);
@@ -113,13 +127,18 @@ public class TeamVoteFragment extends DialogFragment {
         adapterNextLeader = new PlayerListViewAdapter(getActivity(), R.layout.row_players, android.R.id.text1, nextLeaderArray);
         nextLeaderView.setAdapter(adapterNextLeader);
 
+        int proposedTeamCount = adapterProposedTeam.getCount();
+        int deviceConfig = getActivity().getResources().getConfiguration().orientation;
+
         //Limits listview to display a certain amount of rows depending what the orientation of the screen is. This helps ensure parts of the fragment doesn't get pushed off screen.
-        if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && adapterProposedTeam.getCount() > 2 ){
+        if(deviceConfig == Configuration.ORIENTATION_LANDSCAPE && proposedTeamCount > 2 ){
+
             View item = adapterProposedTeam.getView(0, null, proposedPlayerView);
             item.measure(0, 0);
             ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (1.5 * item.getMeasuredHeight()));
             proposedPlayerView.setLayoutParams(params);
-        } else if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT && adapterProposedTeam.getCount() > 3) {
+        } else if(deviceConfig == Configuration.ORIENTATION_PORTRAIT && proposedTeamCount > 3) {
+
             View item = adapterProposedTeam.getView(0, null, proposedPlayerView);
             item.measure(0, 0);
             ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (3.6 * item.getMeasuredHeight()));

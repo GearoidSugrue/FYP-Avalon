@@ -1,51 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:minWidth="1000dp">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/frag_assassin_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/RedWine"
+        android:layout_gravity="center"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
-        android:text="Assassinate Merlin"
+        android:text="Select A Player"
+        android:background="@color/WineRedLight"
+        android:textColor="@color/White"
         android:id="@+id/textView_assassinateLabel" />
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:gravity="center_vertical"
-        android:background="@color/material_blue_grey_950" />
-
     <ListView
-        android:id="@+id/listview_melinCandidates"
+        android:id="@+id/listview_merlinCandidates"
         android:layout_weight="1"
         android:layout_height="0dp"
         android:layout_width="fill_parent"/>
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:gravity="center_vertical"
-        android:background="@color/material_blue_grey_950" />
-
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
-        android:text="Your Chosen Player"
+        android:text="Tap Card To Reveal Player's Identity"
+        android:background="@color/WineRedLight"
+        android:textColor="@color/White"
         android:id="@+id/textView_chosenPlayerLabel" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:gravity="center_vertical"
-        android:background="@color/material_blue_grey_950" />
-
-
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/layout_confrimSelection"
@@ -53,7 +48,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="bottom"
-        android:layout_weight="0">
+        android:layout_weight="0.1">
 
         <ListView
             android:id="@+id/listview_chosenPlayer"
@@ -63,16 +58,42 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
+            android:gravity="center_horizontal"
+            android:background="@android:color/transparent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight=".2"
+            android:id="@+id/imageView_assassinChosenPlayer"
+            android:clickable="true"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/misc_characterback"
+            android:adjustViewBounds="true"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:gravity="center_horizontal"
+            android:background="@android:color/transparent" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
             android:gravity="center_vertical"
-            android:background="@color/material_blue_grey_950" />
+            android:background="@color/WineRedLight" />
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Confirm Chosen Player"
-            android:id="@+id/button_confirmAssassinAttempt"
+            android:text="Finish Game"
+            android:id="@+id/button_assassinEndGame"
             android:layout_gravity="bottom"
-            android:layout_weight="0"/>
+            android:textColor="@color/WineRedLight"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_weight="0"
+            android:visibility="invisible"/>
+
     </LinearLayout>
 
 </LinearLayout>

@@ -176,6 +176,18 @@
     <color name="DarkBlue">#00008B</color>
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
+    <color name="DarkOrchid2">#7D1B7E</color>
+    <color name="TiffanyBlue">#81D8D0</color>
+    <color name="RedWine">#990012</color>
+    <color name="GoldyBrown">#A37A00</color>
+    <color name="GoldyBrownLight">#BFA24D</color>
+    <color name="ChilliPepper">#C11B17</color>
+    <color name="WineRedLight">#AD3341</color>
+    <color name="TiffanyBlueLight">#81D8D0</color>
+    <color name="TiffanyBlueDark">#74C2BB</color>
+    <color name="MediumPurpleLight">#9E7EDF</color>
+
+
 
 
 </resources>

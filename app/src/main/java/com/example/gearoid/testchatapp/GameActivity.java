@@ -75,7 +75,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             @Override
             public void onClick(View v) {
 
-                DialogFragment newFragment = TeamVoteFragment.newInstance(new int[]{0, 1, 3, 4});
+                DialogFragment newFragment = TeamVoteFragment.newInstance(new int[]{0, 1, 3, 4}, 1 , 3); //TODO change to voteCount + QuestCount
                 newFragment.show(getFragmentManager(), "teamdialog");
             }
         });
@@ -84,7 +84,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             @Override
             public void onClick(View v) {
 
-                DialogFragment newFragment = QuestVoteFragment.newInstance(Player.getInstance().character instanceof EvilCharacter);
+                DialogFragment newFragment = QuestVoteFragment.newInstance(new int[]{0, 2, 3}, Player.getInstance().character instanceof EvilCharacter, 1); //TODO change to questNum...
                 newFragment.show(getFragmentManager(), "questdialog");
             }
         });

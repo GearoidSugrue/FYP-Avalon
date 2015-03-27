@@ -1,63 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:minWidth="1000dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/frag_selectTeam_toolbar"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_gravity="center_horizontal"
-        android:text="Select Quest Team"
-        android:id="@+id/textView_SelectTeamLabel" />
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/GoldyBrown"
+        android:layout_gravity="center"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:gravity="center_vertical"
-        android:background="@color/material_blue_grey_950" />
+        android:background="@color/GoldyBrownLight" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
         android:text="Your Chosen Team"
+        android:background="@color/GoldyBrownLight"
+        android:textColor="@color/White"
         android:id="@+id/textView_chosenTeamLabel" />
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:gravity="center_vertical"
-        android:background="@color/material_blue_grey_950" />
+
 
     <ListView
         android:id="@+id/listview_chosenTeam"
         android:layout_weight="0"
         android:layout_height="?android:attr/listPreferredItemHeight"
-        android:layout_width="fill_parent"/>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:gravity="center_vertical"
-        android:background="@color/material_blue_grey_950" />
+        android:layout_width="fill_parent" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
         android:text="Team Candidates"
+        android:background="@color/GoldyBrownLight"
+        android:textColor="@color/White"
         android:id="@+id/textView_teamCandidatesLabel" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:gravity="center_vertical"
-        android:background="@color/material_blue_grey_950" />
 
     <ListView
         android:id="@+id/listview_teamCandidates"
@@ -69,7 +60,7 @@
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:gravity="center_vertical"
-        android:background="@color/material_blue_grey_950" />
+        android:background="@color/GoldyBrownLight" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
@@ -77,19 +68,34 @@
         android:orientation="horizontal"
         android:layout_gravity="bottom"
         android:layout_weight="0">
+
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Dismiss"
-            android:id="@+id/button_dismissTeamSelect"/>
+            android:text="DISMISS"
+            android:textColor="@color/GoldyBrownLight"
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/button_dismissTeamSelect"
+            android:textStyle="bold"
+            android:textAllCaps="true"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:background="@color/GoldyBrownLight" />
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Confirm"
-            android:id="@+id/button_confirmTeamSelect"/>
+            android:textColor="@color/GoldyBrownLight"
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/button_confirmTeamSelect"
+            android:textStyle="bold"
+            android:textAllCaps="true"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -1,13 +1,21 @@
 package com.example.gearoid.testchatapp;
 
 import android.app.DialogFragment;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
+import com.example.gearoid.testchatapp.multiplayer.Session;
+import com.example.gearoid.testchatapp.singletons.Player;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -20,17 +28,21 @@ public class QuestVoteFragment extends DialogFragment {
     ImageView image2;
     boolean isImage1Sucess;
     boolean isImage2Sucess;
+    ListView teamMembersView;
+    PlayerListViewAdapter adapterTeamMembers;
+    ArrayList<Player> teamMembersArray;
+    int[] playerPos;
     boolean isEvil;
-//        ListView proposedPlayerView;  //Delete???
-//        PlayerListViewAdapter adapterProposedTeam;
-//        ArrayList<Player> proposedPlayersArray;
+    int questNumber;
 
-    static QuestVoteFragment newInstance(boolean isEvil) {
+    static QuestVoteFragment newInstance(int[] teamMembersPos, boolean isEvil, int questNumber) {
         QuestVoteFragment frag = new QuestVoteFragment();
 
         // Supply num input as an argument.
         Bundle args = new Bundle();
+        args.putIntArray("TEAM_MEMBERS", teamMembersPos);
         args.putBoolean("IS_EVIL", isEvil);
+        args.putInt("QUEST_NUM", questNumber);
         frag.setArguments(args);
         Log.d("QuestVoteFragment", "Creating instance of a QuestVoteFragment fragment");
         return frag;
@@ -47,8 +59,16 @@ public class QuestVoteFragment extends DialogFragment {
         setStyle(style, theme);
 
         Bundle extras = getArguments();
+        playerPos = extras.getIntArray("TEAM_MEMBERS");
         isEvil = extras.getBoolean("IS_EVIL", false);
+        questNumber = extras.getInt("QUEST_NUM");
 
+        teamMembersArray = new ArrayList<>();
+
+        for(int i=0; i < playerPos.length; i++){
+            Log.d("QuestVoteFrag", "adding player to adapterTeamMembers. int[" + i + "] = " + playerPos[i]);
+            teamMembersArray.add(Session.masterAllPlayers.get(playerPos[i]));
+        }
     }
 
     @Override
@@ -56,12 +76,19 @@ public class QuestVoteFragment extends DialogFragment {
         View rootView = inflater.inflate(R.layout.quest_vote, container, false);
         Log.d("TeamVoteFrag", "onCreateView called");
 
-        //getDialog().setTitle("Team Vote");
+        Toolbar mActionBarToolbar = (Toolbar) rootView.findViewById(R.id.frag_questVote_toolbar);
+        mActionBarToolbar.setTitle("Quest " + questNumber);
+
         image1 = (ImageView) rootView.findViewById(R.id.imageView_questVote1);
         image2 = (ImageView) rootView.findViewById(R.id.imageView_questVote2);
 
+        teamMembersView = (ListView) rootView.findViewById(R.id.listview_teamMembers);
+
+
         randomiseCardOrder();
         setOnClicklisteners();
+
+        //TODO add team member adapter...
 
         return rootView;
     }
@@ -69,8 +96,26 @@ public class QuestVoteFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         Log.d("QuestVoteFrag", "onCreateView called");
+
+        adapterTeamMembers = new PlayerListViewAdapter(getActivity(), R.layout.row_players, android.R.id.text1, teamMembersArray);
+        teamMembersView.setAdapter(adapterTeamMembers);
+
+        int adapterCount = adapterTeamMembers.getCount();
+        int deviceConfig = getActivity().getResources().getConfiguration().orientation;
+
+        if(deviceConfig == Configuration.ORIENTATION_LANDSCAPE && adapterCount > 2 ){
+            View item = adapterTeamMembers.getView(0, null, teamMembersView);
+            item.measure(0, 0);
+            ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (1.5 * item.getMeasuredHeight()));
+            teamMembersView.setLayoutParams(params);
+        } else if(deviceConfig == Configuration.ORIENTATION_PORTRAIT && adapterCount > 4) {
+            View item = adapterTeamMembers.getView(0, null, teamMembersView);
+            item.measure(0, 0);
+            ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (3.6 * item.getMeasuredHeight()));
+            teamMembersView.setLayoutParams(params);
+        }
+
     }
 
     public void randomiseCardOrder() {//TODO add isEvil check
