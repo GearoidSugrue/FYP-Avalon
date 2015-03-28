@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.gearoid.testchatapp.character.CharacterFactory;
 import com.example.gearoid.testchatapp.character.EvilCharacter;
@@ -62,6 +64,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         getSupportActionBar().setTitle("Game Setup: " + playerCount + " Players");
 
         initializeFragments();
+        setFragTitles();
         setUpGoodCharacterList();
         setUpEvilCharacterList();
         setUpOptionalCharacterList();
@@ -167,31 +170,49 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         });
     }
 
+    public void setFragTitles(){
+        TextView goodFragTitle = (TextView) findViewById(R.id.textView_GoodCharactersLabel);
+        goodFragTitle.setText(goodCount + " Good Characters");
+        TextView evilFragTitle = (TextView) findViewById(R.id.textView_EvilCharactersLabel);
+        evilFragTitle.setText(evilCount + " Evil Characters");
+    }
+
     private void initializeFragments() {
         goodListFrag = (CharacterListFragment) getFragmentManager()
                 .findFragmentById(R.id.good_list);
-        goodListFrag.setTitleText(goodCount + " Good Characters");
+        //goodListFrag.setTitleText(goodCount + " Good Characters");
 
         evilListFrag = (CharacterListFragment) getFragmentManager()
                 .findFragmentById(R.id.evil_list);
-        evilListFrag.setTitleText(evilCount + " Evil Characters");
+        //evilListFrag.setTitleText(evilCount + " Evil Characters");
 
         optionalListFrag = (CharacterListFragment) getFragmentManager()
                 .findFragmentById(R.id.optional_list);
-        optionalListFrag.setTitleText("Select Optional Characters To Add");
+        //optionalListFrag.setTitleText("Select Optional Characters To Add");
         optionalListFrag.isOptionalCharacterList = true;
 
         goodListAdapter = (CharacterListFragment.CharacterListAdapter) goodListFrag.getListAdapter();
         evilListAdapter = (CharacterListFragment.CharacterListAdapter) evilListFrag.getListAdapter();
         optionalListAdapter = (CharacterListFragment.CharacterListAdapter) optionalListFrag.getListAdapter();
 
-        goodListFrag.getView().setBackground(getResources().getDrawable(R.drawable.misc_blueloyalty));
-        goodListFrag.getView().getBackground().setAlpha(150);
-        goodListFrag.getView().getBackground().setColorFilter(Color.argb(70, 0, 0, 255), PorterDuff.Mode.DARKEN);
+//        goodListFrag.getView().setBackground(getResources().getDrawable(R.drawable.misc_blueloyalty));
+//        goodListFrag.getView().getBackground().setAlpha(150);
+//        goodListFrag.getView().getBackground().setColorFilter(Color.argb(70, 0, 0, 255), PorterDuff.Mode.DARKEN);
 
-        evilListFrag.getView().setBackground(getResources().getDrawable(drawable.misc_redloyalty));
-        evilListFrag.getView().getBackground().setAlpha(150);
-        evilListFrag.getView().getBackground().setColorFilter(Color.argb(70, 255, 0, 0), PorterDuff.Mode.DARKEN);
+        LinearLayout goodLayout = (LinearLayout) findViewById(R.id.layout_goodFrag);
+        goodLayout.setBackground(getResources().getDrawable(R.drawable.misc_blueloyalty));
+        goodLayout.getBackground().setAlpha(150);
+        goodLayout.getBackground().setColorFilter(Color.argb(70, 0, 0, 255), PorterDuff.Mode.DARKEN);
+
+        LinearLayout evilLayout = (LinearLayout) findViewById(R.id.layout_evilFrag);
+        evilLayout.setBackground(getResources().getDrawable(R.drawable.misc_redloyalty));
+        evilLayout.getBackground().setAlpha(150);
+        evilLayout.getBackground().setColorFilter(Color.argb(70, 255, 0, 0), PorterDuff.Mode.DARKEN);
+
+//
+//        evilListFrag.getView().setBackground(getResources().getDrawable(drawable.misc_redloyalty));
+//        evilListFrag.getView().getBackground().setAlpha(150);
+//        evilListFrag.getView().getBackground().setColorFilter(Color.argb(70, 255, 0, 0), PorterDuff.Mode.DARKEN);
     }
 
     public void setUpGoodCharacterList() {

@@ -22,6 +22,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
         android:text="Select A Player"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:background="@color/TiffanyBlue"
         android:textColor="@color/White"
         android:id="@+id/textView_ladyOfLakeLabel" />
@@ -40,6 +42,8 @@
         android:layout_gravity="center_horizontal"
         android:background="@color/TiffanyBlue"
         android:textColor="@color/White"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:text="Tap Card To Reveal Player's Loyalty"
         android:id="@+id/textView_tapToRevelLoyaltyLabel" />
 

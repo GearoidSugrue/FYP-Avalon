@@ -22,6 +22,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
         android:text="Select A Player"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:background="@color/WineRedLight"
         android:textColor="@color/White"
         android:id="@+id/textView_assassinateLabel" />
@@ -37,6 +39,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:text="Tap Card To Reveal Player's Identity"
         android:background="@color/WineRedLight"
         android:textColor="@color/White"
@@ -83,17 +87,17 @@
             android:gravity="center_vertical"
             android:background="@color/WineRedLight" />
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Finish Game"
-            android:id="@+id/button_assassinEndGame"
-            android:layout_gravity="bottom"
-            android:textColor="@color/WineRedLight"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_weight="0"
-            android:visibility="invisible"/>
+
 
     </LinearLayout>
-
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Finish Game"
+        android:id="@+id/button_assassinEndGame"
+        android:layout_gravity="bottom"
+        android:textColor="@color/WineRedLight"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_weight="0"
+        android:visibility="invisible"/>
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,11 +45,11 @@ public class CharacterListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {//Called after GameSetupActivity onCreate is called
         super.onActivityCreated(savedInstanceState);
 
-        if(!isOptionalCharacterList) {
-            TextView tv = (TextView) mContentView.findViewById(R.id.textview_characterListTitle);
-            tv.setTypeface(null, Typeface.BOLD);
-            tv.setTextColor(Color.BLACK);
-        }
+//        if(!isOptionalCharacterList) {
+//            TextView tv = (TextView) mContentView.findViewById(R.id.textview_characterListTitle);
+//            tv.setTypeface(null, Typeface.BOLD);
+//            tv.setTextColor(Color.BLACK);
+//        }
 
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
@@ -118,7 +119,6 @@ public class CharacterListFragment extends ListFragment {
                 TextView top = (TextView) v.findViewById(android.R.id.text1);
                 TextView bottom = (TextView) v.findViewById(android.R.id.text2);
 
-
                 if(top != null){
                     top.setText(character.getCharacterName());
                     top.setTextColor(Color.BLACK);
@@ -145,10 +145,10 @@ public class CharacterListFragment extends ListFragment {
         }
     }
 
-    public void setTitleText(String text){
-        TextView view = (TextView) mContentView.findViewById(R.id.textview_characterListTitle);
-        view.setText(text);
-    }
+//    public void setTitleText(String text){
+//        TextView view = (TextView) mContentView.findViewById(R.id.textview_characterListTitle);
+//        view.setText(text);
+//    }
 
     public interface CharacterListFragListener {
 

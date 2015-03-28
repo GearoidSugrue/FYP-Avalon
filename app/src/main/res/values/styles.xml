@@ -137,7 +137,7 @@
     <color name="Chartreuse">#7FFF00</color>
     <color name="LawnGreen">#7CFC00</color>
     <color name="MediumSlateBlue">#7B68EE</color>
-    <color name="LightSlateGray">#778899</color>
+    <color name="LightSlateGray">#8D99A6</color> #778899
     <color name="SlateGray">#708090</color>
     <color name="OliveDrab">#6B8E23</color>
     <color name="SlateBlue">#6A5ACD</color>
@@ -154,7 +154,8 @@
     <color name="Turquoise">#40E0D0</color>
     <color name="MediumSeaGreen">#3CB371</color>
     <color name="LimeGreen">#32CD32</color>
-    <color name="DarkSlateGray">#2F4F4F</color>
+    <color name="DarkSlateGray">#454A4A</color>
+    <color name="DarkSlateGray2">#585C5C</color>
     <color name="SeaGreen">#2E8B57</color>
     <color name="ForestGreen">#228B22</color>
     <color name="LightSeaGreen">#20B2AA</color>
@@ -186,6 +187,11 @@
     <color name="TiffanyBlueLight">#81D8D0</color>
     <color name="TiffanyBlueDark">#74C2BB</color>
     <color name="MediumPurpleLight">#9E7EDF</color>
+    <color name="GreenLight">#33AD33</color>
+    <color name="GreenDark">#009900</color>
+    <color name="LightGrey2">#C6C6C6</color>
+
+
 
 
 

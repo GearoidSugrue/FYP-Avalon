@@ -22,6 +22,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
         android:text="Team Members"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:background="@color/LightSlateGray"
         android:textColor="@color/White"
         android:id="@+id/textView_teamMembersLabel" />
@@ -39,6 +41,8 @@
         android:layout_gravity="center_horizontal"
         android:background="@color/LightSlateGray"
         android:textColor="@color/White"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:text="Select One"/>
 
     <View

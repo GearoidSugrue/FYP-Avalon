@@ -1,9 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_weight="0"
+    android:layout_height="fill_parent"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -12,111 +11,169 @@
         android:layout_width="match_parent"
         android:minHeight="?attr/actionBarSize"
         android:elevation="4dp"
-        android:background="@color/blue06"
+        android:background="@color/DarkSlateGray"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="3dp"
-        android:paddingRight="3dp"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp"
-        android:id="@+id/layout_playerCount"
-        tools:context="com.example.gearoid.testchatapp.GameSetupActivity"
-        android:layout_below="@+id/game_setup_toolbar">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Tap characters to remove them"
-            android:id="@+id/textView_total_players_label"
-            android:layout_alignParentTop="true" />
-
-
-    </RelativeLayout>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Tap Characters To Remove Them"
+        android:background="@color/DarkSlateGray2"
+        android:textColor="@color/White"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:id="@+id/textView_tapCharactersToRemove_label" />
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/layout_characterFragments"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/optional_list"
-        android:layout_below="@+id/layout_playerCount"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
-        <fragment
-            android:id="@+id/good_list"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            class="com.example.gearoid.testchatapp.CharacterListFragment">
+            android:orientation="vertical"
+            android:id="@+id/layout_goodFrag">
 
-            <!-- Preview: layout=@layout/row_devices -->
-        </fragment>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_gravity="center_horizontal"
+                android:text="Good Characters"
+                android:gravity="center"
+                android:background="@android:color/transparent"
+                android:textColor="@color/White"
+                android:id="@+id/textView_GoodCharactersLabel" />
+
+            <fragment
+                android:id="@+id/good_list"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                class="com.example.gearoid.testchatapp.CharacterListFragment">
+
+                <!-- Preview: layout=@layout/row_devices -->
+            </fragment>
+        </LinearLayout>
 
         <View
-            android:layout_width="2dp"
+            android:layout_width="1dp"
             android:layout_height="fill_parent"
             android:gravity="center_vertical"
-            android:background="@color/material_blue_grey_950" />
+            android:background="@color/DarkSlateGray2" />
 
-        <fragment
-            android:id="@+id/evil_list"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            class="com.example.gearoid.testchatapp.CharacterListFragment">
+            android:orientation="vertical"
+            android:id="@+id/layout_evilFrag">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_gravity="center_horizontal"
+                android:text="Evil Characters"
+                android:gravity="center"
+                android:background="@android:color/transparent"
+                android:textColor="@color/White"
+                android:id="@+id/textView_EvilCharactersLabel" />
+
+            <fragment
+                android:id="@+id/evil_list"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                class="com.example.gearoid.testchatapp.CharacterListFragment">
+
+                <!-- Preview: layout=@layout/row_devices -->
+            </fragment>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Tap Optional Characters To Add Them"
+        android:background="@color/DarkSlateGray2"
+        android:textColor="@color/White"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:id="@+id/textView_tapOptionalToAdd_label" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_horizontal"
+        android:background="@color/LightGrey" />
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout_optionalFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".7"
+        android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/optional_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            class="com.example.gearoid.testchatapp.CharacterListFragment"
+            android:layout_weight=".5">
 
             <!-- Preview: layout=@layout/row_devices -->
         </fragment>
 
     </LinearLayout>
 
-
-        <fragment
-            android:id="@+id/optional_list"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            class="com.example.gearoid.testchatapp.CharacterListFragment"
-            android:layout_above="@+id/line_bottom">
-
-            <!-- Preview: layout=@layout/row_devices -->
-        </fragment>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:layout_weight="0">
 
         <View
-            android:id="@+id/line_bottom"
             android:layout_width="fill_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:gravity="center_vertical"
-            android:layout_above="@+id/checkBox_LadyOfLake"
-            android:background="@color/material_blue_grey_950" />
+            android:background="@color/DarkSlateGray2" />
 
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Play with Lady of Lake"
+            android:text="Play With Lady of Lake"
             android:id="@+id/checkBox_LadyOfLake"
-            android:layout_gravity="center_horizontal"
-            android:layout_above="@+id/button_start_game"
-            android:layout_centerHorizontal="true" />
+            android:layout_gravity="center_horizontal" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:gravity="center_vertical"
+            android:background="@color/DarkSlateGray2" />
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/button_start_game"
-            android:id="@+id/button_start_game"
-            android:layout_gravity="center_horizontal"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+            android:textColor="@color/DarkSlateGray2"
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/button_start_game" />
+
+    </LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>
 
 
 

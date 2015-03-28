@@ -28,18 +28,16 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_gravity="center_horizontal"
                 android:text="Current Leader"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:background="@color/MediumPurpleLight"
+                android:textColor="@color/White"
                 android:id="@+id/textView_LeaderLabel" />
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:gravity="center_vertical"
-                android:background="@color/material_blue_grey_950" />
 
             <ListView
                 android:id="@+id/listview_currentLeader"
@@ -53,7 +51,7 @@
             android:layout_width="1dp"
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
-            android:background="@color/material_blue_grey_950" />
+            android:background="@color/MediumPurpleLight" />
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="0dp"
@@ -62,18 +60,16 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_gravity="center_horizontal"
                 android:text="Next Leader"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:background="@color/MediumPurpleLight"
+                android:textColor="@color/White"
                 android:id="@+id/textView_NextLeaderLabel" />
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:gravity="center_vertical"
-                android:background="@color/material_blue_grey_950" />
 
             <ListView
                 android:id="@+id/listview_nextLeader"
@@ -84,26 +80,17 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:gravity="center_vertical"
-        android:background="@color/material_blue_grey_950" />
-
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
         android:text="Proposed Team"
-        android:gravity="center"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@color/MediumPurpleLight"
+        android:textColor="@color/White"
         android:id="@+id/textView_labelProposedTeam" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:gravity="center_vertical"
-        android:background="@color/material_blue_grey_950" />
 
     <ListView
         android:id="@+id/listview_proposedTeam"
@@ -112,26 +99,23 @@
 
     </ListView>
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:gravity="center_vertical"
-        android:background="@color/material_blue_grey_950" />
-
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
-        android:text="Select Vote"
-        android:gravity="center"
+        android:text="Vote"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@color/MediumPurpleLight"
+        android:textColor="@color/White"
         android:id="@+id/textView_labelVote" />
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:gravity="center_vertical"
-        android:background="@color/material_blue_grey_950" />
+        android:gravity="center_horizontal"
+        android:background="@android:color/transparent" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/layout_teamVote"
@@ -139,13 +123,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:background="@android:color/transparent" />
+
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/imageView_teamVote1"
             android:clickable="true"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true"
+            android:src="@drawable/token_approve"/>
         <View
             android:layout_width="1dp"
             android:layout_height="fill_parent"
@@ -158,7 +149,14 @@
             android:layout_weight="1"
             android:id="@+id/imageView_teamVote2"
             android:clickable="true"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true"
+            android:src="@drawable/token_approve"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:background="@android:color/transparent" />
 
     </LinearLayout>
 

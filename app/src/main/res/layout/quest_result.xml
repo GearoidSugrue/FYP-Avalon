@@ -23,6 +23,7 @@
         android:textColor="@color/CadetBlue"
         android:layout_gravity="center_horizontal"
         android:text="SUCCESS"
+        android:gravity="center"
         android:textStyle="bold"
         android:id="@+id/textView_questResult"
         android:visibility="gone"/>
@@ -33,6 +34,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
         android:text="Quest Team"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:background="@color/LightSlateGray"
         android:textColor="@color/White"
         android:id="@+id/textView_questTeamLabel" />
@@ -49,6 +52,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
         android:text="Tap To Reveal Card"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:background="@color/LightSlateGray"
         android:textColor="@color/White"
         android:id="@+id/textView_RevelCardLabel" />

@@ -8,7 +8,7 @@
     <string name="button_join">Join Game</string>
     <string name="button_edit_name">Edit Name</string>
     <string name="button_setup_game">Continue To Setup</string>
-    <string name="text_view_player_text">Player Name: </string>
+    <string name="text_view_player_text">Username</string>
     <string name="OK">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="name_here">Name here</string>
@@ -37,14 +37,14 @@
     <string name="empty_message">No devices found. Turn on P2P and perform discovery from the Action Bar</string>
     <string name="p2p_off_warning">Enable P2P from action bar button above or system settings</string>
     <string name="group_owner_text">"Am I the Group Owner? "</string>
-    <string name="label_me">MY DEVICE</string>
+    <string name="label_me">My Device</string>
     <string name="label_peers">PEERS</string>
     <string name="label_friendly_name">Name:</string>
     <string name="label_ID">ID:</string>
     <string name="label_status">Status:</string>
-    <string name="finding_players">PLAYERS</string>
-    <string name="finding_host">HOSTS</string>
-    <string name="label_info">INFO</string>
+    <string name="finding_players">Players</string>
+    <string name="finding_host">Hosts</string>
+    <string name="label_info">Information</string>
     <string name="get_file_button">Launch Gallery</string>
     <string name="title_activity_game">GameActivity</string>
     <string name="title_activity_game_screen">Game Activity...</string>

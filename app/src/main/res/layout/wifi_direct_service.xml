@@ -11,65 +11,79 @@
         android:layout_width="match_parent"
         android:minHeight="?attr/actionBarSize"
         android:elevation="4dp"
-        android:background="@color/blue06"
+        android:background="@color/GreenDark"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <LinearLayout
         android:id="@+id/container_root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <fragment
             android:id="@+id/frag_service_list"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="fill_parent"
             class="com.example.gearoid.testchatapp.wifidirect.servicediscovery.WiFiDirectServicesList">
 
             <!-- Preview: layout=@layout/row_devices -->
         </fragment>
 
-        <Button
-            android:id="@+id/button_continueToSetup"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="Continue to Game Setup"
-            android:layout_gravity="center_horizontal" />
+
         <!-- android:viability view gone-->
 
 
     </LinearLayout>
 
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/GreenLight" />
+
     <TextView
         android:id="@+id/textview_label_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="3dp"
-        android:paddingRight="3dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:textSize="@dimen/abc_text_size_medium_material"
-        android:textStyle="bold"
-        android:textColor="@color/blue06"
+        android:background="@color/GreenLight"
+        android:textColor="@color/White"
         android:text="@string/label_info">
     </TextView>
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:gravity="center_vertical"
-        android:background="@color/blue06" />
 
     <TextView
         android:id="@+id/status_text"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".3"
         android:paddingTop="3dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:layout_gravity="bottom"
         android:scrollbars="vertical" >
 
     </TextView>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_vertical"
+        android:background="@color/GreenLight" />
+
+    <Button
+        android:id="@+id/button_continueToSetup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_gravity="bottom"
+        android:textColor="@color/GreenLight"
+        style="?android:attr/borderlessButtonStyle"
+        android:text="Continue to Game Setup"
+         />
 
 </LinearLayout>
