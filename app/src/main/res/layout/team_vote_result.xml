@@ -32,10 +32,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/CadetBlue"
+        android:textColor="@color/SlateBlue"
         android:layout_gravity="center_horizontal"
         android:text="Team Accepted"
         android:gravity="center"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         android:id="@+id/textView_voteResult" />
 
     <TextView
@@ -90,6 +92,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Dismiss"
+            android:textAllCaps="true"
             android:id="@+id/button_dismissTeamVoteResult"
             android:textColor="@color/MediumPurpleLight"
             style="?android:attr/borderlessButtonStyle"

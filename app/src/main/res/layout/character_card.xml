@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="fill_parent"
+    android:background="@color/Black">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView_characterCard"
         android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:text="Allows the holder to see the loyalty of another player.\n
+\nThe token is passed onto the player its used on.\n\nCan be used from the 2nd Quest onward.\n\nCan only be used at the start of each quest."
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="@color/Black"
+        android:textColor="@color/White"
+        android:visibility="gone"
+        android:id="@+id/textView_characterDescription" />
+
 </LinearLayout>

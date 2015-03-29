@@ -1,32 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:minWidth="1000dp">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/frag_gameOVer_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/MidnightBlue"
+        android:layout_gravity="center"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
-        android:text="Game Finished"
+        android:text="Result"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@color/MidnightBlueLight"
+        android:textColor="@color/White"
         android:id="@+id/textView_gameFinishedLabel" />
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/CadetBlue"
+        android:textColor="@color/SlateBlueDark"
         android:layout_gravity="center_horizontal"
         android:text="Loyal Servent's of Arthur Win"
+        android:gravity="center"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         android:id="@+id/textView_gameResult" />
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:gravity="center_vertical"
-        android:background="@color/material_blue_grey_950" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -34,6 +47,10 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
         android:text="Victorious Team"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@color/MidnightBlueLight"
+        android:textColor="@color/White"
         android:id="@+id/textView_victoriousTeamLabel" />
 
     <ListView
@@ -42,18 +59,16 @@
         android:layout_height="0dp"
         android:layout_width="fill_parent"/>
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:gravity="center_vertical"
-        android:background="@color/material_blue_grey_950" />
-
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
         android:text="Defeated Team"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@color/MidnightBlueLight"
+        android:textColor="@color/White"
         android:id="@+id/textView_defeatedTeamLabel" />
 
     <ListView
@@ -66,7 +81,7 @@
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:gravity="center_vertical"
-        android:background="@color/material_blue_grey_950" />
+        android:background="@color/MidnightBlueLight" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
@@ -79,7 +94,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Quit"
-            android:textColor="@color/TiffanyBlue"
+            android:textAllCaps="true"
+            android:textColor="@color/MidnightBlueLight"
             style="?android:attr/borderlessButtonStyle"
             android:id="@+id/button_quitGame"/>
 
@@ -87,14 +103,15 @@
             android:layout_width="1dp"
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
-            android:background="@color/GoldyBrownLight" />
+            android:background="@color/MidnightBlueLight" />
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Play Again"
-            android:textColor="@color/TiffanyBlue"
+            android:textAllCaps="true"
+            android:textColor="@color/MidnightBlueLight"
             style="?android:attr/borderlessButtonStyle"
             android:id="@+id/button_playAgain"/>
     </LinearLayout>

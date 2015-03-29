@@ -3,9 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/blue06</item>
+        <item name="colorPrimary">@color/MidnightBlueLight</item>
         <!--   darker variant for the status bar and contextual app bars -->
-        <item name="colorPrimaryDark">@color/blue01</item>
+        <item name="colorPrimaryDark">@color/MidnightBlue</item>
     </style>
 
     <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -120,7 +120,8 @@
     <color name="DarkOrchid">#9932CC</color>
     <color name="PaleGreen">#98FB98</color>
     <color name="DarkViolet">#9400D3</color>
-    <color name="MediumPurple">#9370DB</color>
+    <color name="MediumPurple">#7E587E</color>
+    <color name="MediumPurple2">#9370DB</color>
     <color name="LightGreen">#90EE90</color>
     <color name="DarkSeaGreen">#8FBC8F</color>
     <color name="SaddleBrown">#8B4513</color>
@@ -141,6 +142,7 @@
     <color name="SlateGray">#708090</color>
     <color name="OliveDrab">#6B8E23</color>
     <color name="SlateBlue">#6A5ACD</color>
+    <color name="SlateBlueDark">#5F51B8</color>
     <color name="DimGray">#696969</color>
     <color name="MediumAquamarine">#66CDAA</color>
     <color name="CornflowerBlue">#6495ED</color>
@@ -155,12 +157,14 @@
     <color name="MediumSeaGreen">#3CB371</color>
     <color name="LimeGreen">#32CD32</color>
     <color name="DarkSlateGray">#454A4A</color>
-    <color name="DarkSlateGray2">#585C5C</color>
+    <color name="DarkSlateGray2">#D4C7CB</color>
+    <color name="DarkSlateGray3">#585C5C</color>
     <color name="SeaGreen">#2E8B57</color>
     <color name="ForestGreen">#228B22</color>
     <color name="LightSeaGreen">#20B2AA</color>
     <color name="DodgerBlue">#1E90FF</color>
     <color name="MidnightBlue">#191970</color>
+    <color name="MidnightBlueLight">#30307E</color>
     <color name="Aqua">#00FFFF</color>
     <color name="Cyan">#00FFFF</color>
     <color name="SpringGreen">#00FF7F</color>
@@ -186,13 +190,21 @@
     <color name="WineRedLight">#AD3341</color>
     <color name="TiffanyBlueLight">#81D8D0</color>
     <color name="TiffanyBlueDark">#74C2BB</color>
-    <color name="MediumPurpleLight">#9E7EDF</color>
+    <color name="MediumPurpleLight">#8B698B</color>
+    <color name="MediumPurpleLight2">#9E7EDF</color>
     <color name="GreenLight">#33AD33</color>
     <color name="GreenDark">#009900</color>
     <color name="LightGrey2">#C6C6C6</color>
+    <color name="ViolaPurple">#7E587E</color>
+    <color name="ViolaPurpleLight">#8B698B</color>
+    <color name="MuddyBrown">#A65300</color>
+    <color name="MuddyBrownLight">#B85C00</color>
 
+    <color name="PurpleIris">#571B7E</color>
+    <color name="PurpleIrisLight">#68328B</color>
 
-
+    <color name="HazelGreen">#617C58</color>
+    <color name="HazelGreenLight">#718969</color>
 
 
 

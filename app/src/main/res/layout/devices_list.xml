@@ -13,6 +13,7 @@
         android:background="@color/GreenLight"
         android:textColor="@color/White"
         android:text="@string/label_me"
+        android:id="@+id/textview_label_myDevice"
         android:gravity="center_vertical"
         />
 

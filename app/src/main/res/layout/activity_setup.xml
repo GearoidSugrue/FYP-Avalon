@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:minHeight="?attr/actionBarSize"
         android:elevation="4dp"
-        android:background="@color/DarkSlateGray"
+        android:background="@color/MidnightBlue"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Tap Characters To Remove Them"
-        android:background="@color/DarkSlateGray2"
+        android:background="@color/MidnightBlueLight"
         android:textColor="@color/White"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
@@ -66,7 +66,7 @@
             android:layout_width="1dp"
             android:layout_height="fill_parent"
             android:gravity="center_vertical"
-            android:background="@color/DarkSlateGray2" />
+            android:background="@color/MidnightBlueLight" />
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="0dp"
@@ -104,7 +104,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Tap Optional Characters To Add Them"
-        android:background="@color/DarkSlateGray2"
+        android:background="@color/MidnightBlueLight"
         android:textColor="@color/White"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
@@ -112,9 +112,9 @@
 
     <View
         android:layout_width="fill_parent"
-        android:layout_height="1dp"
+        android:layout_height="1px"
         android:gravity="center_horizontal"
-        android:background="@color/LightGrey" />
+        android:background="@color/MidnightBlueLight" />
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -147,7 +147,7 @@
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:gravity="center_vertical"
-            android:background="@color/DarkSlateGray2" />
+            android:background="@color/MidnightBlueLight" />
 
         <CheckBox
             android:layout_width="wrap_content"
@@ -160,13 +160,14 @@
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:gravity="center_vertical"
-            android:background="@color/DarkSlateGray2" />
+            android:background="@color/MidnightBlueLight" />
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/button_start_game"
-            android:textColor="@color/DarkSlateGray2"
+            android:textAllCaps="true"
+            android:textColor="@color/MidnightBlueLight"
             style="?android:attr/borderlessButtonStyle"
             android:id="@+id/button_start_game" />
 

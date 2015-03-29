@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
@@ -110,18 +111,27 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
         channel = manager.initialize(this, getMainLooper(), null);
 
+        WiFiDirectServicesList fragment = (WiFiDirectServicesList) this.getFragmentManager()
+                .findFragmentById(R.id.frag_service_list);
+
         if (isHost) {
             Session.host(); //TODO check this host method works and add other related functions to it(ie creating KryoServer)
             getSupportActionBar().setTitle("Hosting Game");
             groupOwnerIntent = 15;
-            WiFiDirectServicesList fragment = (WiFiDirectServicesList) this.getFragmentManager()
-                    .findFragmentById(R.id.frag_service_list);
             fragment.setFindingTextView(getString(R.string.finding_players));
             //CreateGroup here???
 
         } else {
             getSupportActionBar().setTitle("Joining Game");
             groupOwnerIntent = 0;
+
+            Toolbar tb = (Toolbar) findViewById(R.id.wifidirect_service_toolbar);
+            tb.setBackgroundColor(getResources().getColor(R.color.SlateBlueDark));
+
+            TextView infoTv = (TextView) findViewById(R.id.textview_label_info);
+            infoTv.setBackgroundColor(getResources().getColor(R.color.SlateBlue));
+
+            fragment.setColorsToBlue();
         }
 
         //Allows time for isWifiP2pEnabled to be set to true when starting this activity

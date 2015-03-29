@@ -20,11 +20,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/CadetBlue"
+        android:textColor="@color/SlateBlue"
         android:layout_gravity="center_horizontal"
         android:text="SUCCESS"
         android:gravity="center"
         android:textStyle="bold"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         android:id="@+id/textView_questResult"
         android:visibility="gone"/>
 
@@ -208,6 +210,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Dismiss"
+        android:textAllCaps="true"
         android:id="@+id/button_confirmLadyOfLake"
         android:layout_gravity="bottom"
         android:textColor="@color/LightSlateGray"

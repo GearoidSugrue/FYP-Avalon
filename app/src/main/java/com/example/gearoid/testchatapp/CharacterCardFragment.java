@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.gearoid.testchatapp.character.ConstantsChara;
 import com.example.gearoid.testchatapp.character.ICharacter;
@@ -101,6 +102,10 @@ public class CharacterCardFragment extends DialogFragment {
                 break;
             case "Lady of Lake":
                 image.setImageDrawable(getResources().getDrawable(R.drawable.token_ladyoflake));
+                TextView description = (TextView) rootView.findViewById(R.id.textView_characterDescription);
+                description.setVisibility(View.VISIBLE);
+
+                rootView.setMinimumHeight(825);
                 break;
             default:
                 image.setImageDrawable(getResources().getDrawable(R.drawable.token_approve));

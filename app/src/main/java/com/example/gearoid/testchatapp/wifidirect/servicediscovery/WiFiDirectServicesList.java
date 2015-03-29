@@ -87,6 +87,7 @@ public class WiFiDirectServicesList extends ListFragment implements WifiP2pManag
 
     }
 
+
     public class WiFiDevicesAdapter extends ArrayAdapter<WiFiP2pService> {
         private List<WiFiP2pService> items;
 
@@ -226,6 +227,16 @@ public class WiFiDirectServicesList extends ListFragment implements WifiP2pManag
             nameView.setText(this.myDevice.deviceName);
             statusView.setText("WiFi Direct Disabled! Re-enable.");
         }
+
+    }
+
+
+    public void setColorsToBlue(){
+        TextView view = (TextView)  mContentView.findViewById(R.id.textview_label_myDevice);
+        view.setBackgroundColor(getResources().getColor(R.color.SlateBlue));
+
+        TextView view2 = (TextView)  mContentView.findViewById(R.id.finding_text);
+        view2.setBackgroundColor(getResources().getColor(R.color.SlateBlue));
 
     }
 

@@ -28,11 +28,25 @@
         android:textColor="@color/White"
         android:id="@+id/textView_assassinateLabel" />
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/WineRedLight"
+        android:layout_gravity="center_horizontal"
+        android:text="SUCCESS"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:id="@+id/textView_assassinResult"
+        android:visibility="gone"/>
+
     <ListView
         android:id="@+id/listview_merlinCandidates"
         android:layout_weight="1"
         android:layout_height="0dp"
-        android:layout_width="fill_parent"/>
+        android:layout_width="fill_parent" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -57,7 +71,7 @@
         <ListView
             android:id="@+id/listview_chosenPlayer"
             android:layout_height="?android:attr/listPreferredItemHeight"
-            android:layout_width="fill_parent"/>
+            android:layout_width="fill_parent" />
 
         <View
             android:layout_width="fill_parent"
@@ -68,12 +82,12 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight=".2"
+            android:layout_weight="1"
             android:id="@+id/imageView_assassinChosenPlayer"
             android:clickable="true"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/misc_characterback"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true" />
 
         <View
             android:layout_width="fill_parent"
@@ -87,17 +101,18 @@
             android:gravity="center_vertical"
             android:background="@color/WineRedLight" />
 
-
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Finish Game"
+            android:textAllCaps="true"
+            android:id="@+id/button_assassinEndGame"
+            android:layout_gravity="bottom"
+            android:textColor="@color/WineRedLight"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_weight="0"
+            android:visibility="visible" />
 
     </LinearLayout>
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Finish Game"
-        android:id="@+id/button_assassinEndGame"
-        android:layout_gravity="bottom"
-        android:textColor="@color/WineRedLight"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_weight="0"
-        android:visibility="invisible"/>
+
 </LinearLayout>

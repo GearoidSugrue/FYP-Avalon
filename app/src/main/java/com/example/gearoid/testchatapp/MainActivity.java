@@ -3,6 +3,7 @@ package com.example.gearoid.testchatapp;
 import android.os.Bundle;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.gearoid.testchatapp.wifidirect.peerdiscovery.WiFiDirectActivity;
@@ -26,6 +28,8 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setTitle(R.string.app_name);
         setContentView(R.layout.activity_main);
+
+//        Tool
 
 
         initializeButtons();
@@ -52,48 +56,31 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void initializeButtons() {
-        Button button_editName = (Button) findViewById(R.id.button_edit_name);
-//        Button button_hostGame = (Button) findViewById(R.id.button_Host);
-//        Button button_joinGame = (Button) findViewById(R.id.button_Join);
 
-        Button button_hostService = (Button) findViewById(R.id.button_host_service);
-        Button button_joinService = (Button) findViewById(R.id.button_join_service);
-
-        button_editName.setOnClickListener(new View.OnClickListener() {
+        LinearLayout editNameButtonLayout = (LinearLayout) findViewById(R.id.linearLayout_editNameButton);
+        editNameButtonLayout.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 showDialogEditName();
             }
         });
-//        button_hostGame.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                //startHostActivity();
-//                startHostWiFiActivity();
-//            }
-//        });
-//        button_joinGame.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                //startJoinActivity();
-//                startJoinWiFiActivity();
-//            }
-//        });
-        button_joinService.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                startJoinServiceActivity();
-            }
-        });
-        button_hostService.setOnClickListener(new View.OnClickListener() {
+        LinearLayout hostButtonLayout = (LinearLayout) findViewById(R.id.linearLayout_hostButton);
+        hostButtonLayout.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 startHostServiceActivity();
+            }
+        });
+
+        LinearLayout joinButtonLayout = (LinearLayout) findViewById(R.id.linearLayout_joinButton);
+        joinButtonLayout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startJoinServiceActivity();
             }
         });
     }

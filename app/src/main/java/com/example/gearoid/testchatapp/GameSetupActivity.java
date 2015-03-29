@@ -293,6 +293,8 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
             Session.masterAllPlayers.add(p4);
             Session.masterAllPlayers.add(p5);
 
+            //TODO Check if lady of lake is checked and assign it to somebody
+
             assignAllPlayersCharacters(getCombinedGoodAndEvilList());
             initialiseLeaderOrderedAllPlayers();
 
