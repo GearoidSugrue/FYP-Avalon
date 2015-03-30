@@ -30,8 +30,8 @@
 
     <ListView
         android:id="@+id/listview_chosenTeam"
-        android:layout_weight="0"
-        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_weight="1"
+        android:layout_height="0dp"
         android:layout_width="fill_parent" />
 
     <TextView

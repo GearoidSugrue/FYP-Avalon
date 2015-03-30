@@ -59,7 +59,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         initializeCheckbox();
 
         int numOfPlayers = intent.getIntExtra("PLAYER_COUNT", 5);
-        calculateGlobalValues(numOfPlayers);
+        calculateGlobalValues(5);
 
         getSupportActionBar().setTitle("Game Setup: " + playerCount + " Players");
 
@@ -348,9 +348,12 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         Session.allCharacters = new ArrayList<>();
         Session.allCharacters.addAll(chosenCharacters);// TODO is allCharacters necessary???
 
+        Log.d("GameSetup", "Assigning players characters");
+
         if (chosenCharacters.size() == Session.masterAllPlayers.size()) {
 
             for (int i = 0; i < Session.masterAllPlayers.size(); i++) {
+                Log.d("GameSetup", "Character: " + chosenCharacters.get(i).getCharacterName());
                 Session.masterAllPlayers.get(i).character = chosenCharacters.get(i);
             }
         }

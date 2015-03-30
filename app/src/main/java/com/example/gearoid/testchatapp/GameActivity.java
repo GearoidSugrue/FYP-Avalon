@@ -15,7 +15,8 @@ import com.example.gearoid.testchatapp.character.EvilCharacter;
 import com.example.gearoid.testchatapp.singletons.Player;
 
 
-public class GameActivity extends ActionBarActivity implements TeamVoteFragment.TeamVoteDialogListener, QuestVoteFragment.QuestVoteDialogListener {
+public class GameActivity extends ActionBarActivity implements TeamVoteFragment.TeamVoteDialogListener, QuestVoteFragment.QuestVoteDialogListener, SelectTeamFragment.TeamSelectDialogListener
+                                                               , AssassinateFragment.AssassinateDialogListener {
 
     public GameBoardFragment gameBoardFrag;
     public GameLogicFunctions.Board currentBoard;
@@ -70,6 +71,8 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void initialiseButtons(){
         Button teamVoteFrag = (Button) findViewById(R.id.button_teamVoteFrag);
         Button questVoteFrag = (Button) findViewById(R.id.button_questVoteFrag);
+        Button teamSelectFrag = (Button) findViewById(R.id.button_teamSelectFrag);
+        Button button_assassinateFrag = (Button) findViewById(R.id.button_assassinateFrag);
 
         teamVoteFrag.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,8 +91,26 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
                 newFragment.show(getFragmentManager(), "questdialog");
             }
         });
-    }
 
+        teamSelectFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogFragment newFragment = SelectTeamFragment.newInstance(3, 2); //TODO change to questNum...
+                newFragment.show(getFragmentManager(), "teamselectdialog");
+            }
+        });
+
+        button_assassinateFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogFragment newFragment = AssassinateFragment.newInstance(); //TODO change to questNum...
+                newFragment.show(getFragmentManager(), "assassinatedialog");
+            }
+        });
+
+    }
 
     @Override
     public void onVoteSelected(boolean voteResult) {
@@ -103,6 +124,21 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         Log.d("GameActivity", "Vote Result received from quest vote dialog: " + voteResult);
 
         //TODO Send vote result to server
+
+    }
+
+    @Override
+    public void onTeamSelected(int[] teamIndexes) {
+        Log.d("GameActivity", "Team selected received from TeamSelect dialog.");
+        //TODO Send player indexes to server result to server
+
+
+    }
+
+    @Override
+    public void onAssassination(boolean isSuccess) {
+        Log.d("GameActivity", "OnAssassinate received from Assassinate dialog. Result: " + isSuccess);
+        //TODO Send player indexes to server result to server
 
     }
 }

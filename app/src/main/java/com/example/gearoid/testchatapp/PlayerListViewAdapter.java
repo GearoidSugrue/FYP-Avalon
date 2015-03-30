@@ -86,5 +86,10 @@ public class PlayerListViewAdapter extends ArrayAdapter<Player> {
         //v.setBackgroundColor(Color.argb(255, 255, 192, 192));
         return v;
     }
+
+//    public interface PlayerListListener {
+//
+//        void playerSelected(int position, boolean isOptionalList, PlayerListViewAdapter listAdapter);
+//    }
 }
 

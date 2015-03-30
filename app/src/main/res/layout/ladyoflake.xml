@@ -30,7 +30,7 @@
 
     <ListView
         android:id="@+id/listview_ladyOfLakeCandidates"
-        android:layout_weight=".5"
+        android:layout_weight="1"
         android:layout_height="0dp"
         android:layout_width="fill_parent"/>
 
@@ -58,13 +58,19 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="bottom"
-        android:layout_weight="0.1">
+        android:layout_weight=".1">
 
         <ListView
             android:id="@+id/listview_chosenLadyOfLakePlayer"
             android:layout_height="?android:attr/listPreferredItemHeight"
             android:layout_width="0dp"
             android:layout_weight="1"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:background="@android:color/transparent" />
 
         <ImageView
             android:layout_width="0dp"
@@ -75,6 +81,12 @@
             android:layout_gravity="center_horizontal"
             android:src="@drawable/misc_loyaltyback"
             android:adjustViewBounds="true"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:background="@android:color/transparent" />
 
     </LinearLayout>
 
@@ -95,11 +107,11 @@
         android:layout_height="wrap_content"
         android:text="Cancel"
         android:textAllCaps="true"
-        android:id="@+id/button_confirmLadyOfLake"
+        android:id="@+id/button_cancelLadyOfLake"
         android:layout_gravity="bottom"
         android:textColor="@color/TiffanyBlue"
         style="?android:attr/borderlessButtonStyle"
-        android:layout_weight="0"/>
+        android:layout_weight="0" />
 
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.example.gearoid.testchatapp;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -52,65 +53,54 @@ public class CharacterCardFragment extends DialogFragment {
         View rootView = inflater.inflate(R.layout.character_card, container,
                 false);
 
-        //rootView.setBackgroundColor(Color.TRANSPARENT);
         ImageView image = (ImageView) rootView.findViewById(R.id.imageView_characterCard);
         image.setBackgroundColor(Color.BLACK);
-        //image.setBackgroundColor(Color.TRANSPARENT);
+
+        if (characterName.equalsIgnoreCase("Lady of Lake")){
+            image.setImageDrawable(DrawableFactory.getDrawable(getResources(), characterName));
+            TextView description = (TextView) rootView.findViewById(R.id.textView_characterDescription);
+            description.setVisibility(View.VISIBLE);
+
+            rootView.setMinimumHeight(825);
+        } else {
+            image.setImageDrawable(DrawableFactory.getDrawable(getResources(), characterName));
+        }
+        return rootView;
+    }
+
+    public Drawable getCharacterImage(String characterName) {
 
         switch (characterName) {
             case ConstantsChara.MERLIN:
-                image.setImageDrawable(getResources().getDrawable(R.drawable.good_merlin));
-                break;
+                return getResources().getDrawable(R.drawable.good_merlin);
             case ConstantsChara.PERCIVAL:
-                image.setImageDrawable(getResources().getDrawable(R.drawable.good_percival));
-                break;
+                return getResources().getDrawable(R.drawable.good_percival);
             case ConstantsChara.ASSASSIN:
-                image.setImageDrawable(getResources().getDrawable(R.drawable.evil_assassin));
-                break;
+                return getResources().getDrawable(R.drawable.evil_assassin);
             case ConstantsChara.MORDRED:
-                image.setImageDrawable(getResources().getDrawable(R.drawable.evil_mordred));
-                break;
+                return getResources().getDrawable(R.drawable.evil_mordred);
             case ConstantsChara.OBERON:
-                image.setImageDrawable(getResources().getDrawable(R.drawable.evil_oberon));
-                break;
+                return getResources().getDrawable(R.drawable.evil_oberon);
             case ConstantsChara.MORGANA:
-                image.setImageDrawable(getResources().getDrawable(R.drawable.evil_morgana));
-                break;
+                return getResources().getDrawable(R.drawable.evil_morgana);
             case "Knight 1":
-                image.setImageDrawable(getResources().getDrawable(R.drawable.good_knight1));
-                break;
+                return getResources().getDrawable(R.drawable.good_knight1);
             case "Knight 2":
-                image.setImageDrawable(getResources().getDrawable(R.drawable.good_knight2));
-                break;
+                return getResources().getDrawable(R.drawable.good_knight2);
             case "Knight 3":
-                image.setImageDrawable(getResources().getDrawable(R.drawable.good_knight3));
-                break;
+                return getResources().getDrawable(R.drawable.good_knight3);
             case "Knight 4":
-                image.setImageDrawable(getResources().getDrawable(R.drawable.good_knight4));
-                break;
+                return getResources().getDrawable(R.drawable.good_knight4);
             case "Knight 5":
-                image.setImageDrawable(getResources().getDrawable(R.drawable.good_knight5));
-                break;
+                return getResources().getDrawable(R.drawable.good_knight5);
             case "Minion 1":
-                image.setImageDrawable(getResources().getDrawable(R.drawable.evil_minion1));
-                break;
+                return getResources().getDrawable(R.drawable.evil_minion1);
             case "Minion 2":
-                image.setImageDrawable(getResources().getDrawable(R.drawable.evil_minion2));
-                break;
+                return getResources().getDrawable(R.drawable.evil_minion2);
             case "Minion 3":
-                image.setImageDrawable(getResources().getDrawable(R.drawable.evil_minion3));
-                break;
-            case "Lady of Lake":
-                image.setImageDrawable(getResources().getDrawable(R.drawable.token_ladyoflake));
-                TextView description = (TextView) rootView.findViewById(R.id.textView_characterDescription);
-                description.setVisibility(View.VISIBLE);
-
-                rootView.setMinimumHeight(825);
-                break;
+                return getResources().getDrawable(R.drawable.evil_minion3);
             default:
-                image.setImageDrawable(getResources().getDrawable(R.drawable.token_approve));
-                //throw new IllegalArgumentException("Invalid character name: " + characterName );
+                return getResources().getDrawable(R.drawable.token_approve);
         }
-        return rootView;
     }
 }

@@ -28,15 +28,36 @@
             android:layout_height="wrap_content"
             android:text="Team Vote"
             android:id="@+id/button_teamVoteFrag"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            style="?android:attr/borderlessButtonStyle"
+            android:textAllCaps="true"/>
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Quest Vote"
             android:id="@+id/button_questVoteFrag"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            style="?android:attr/borderlessButtonStyle"
+            android:textAllCaps="true"/>
 
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Team Select"
+            android:id="@+id/button_teamSelectFrag"
+            android:layout_weight="1"
+            style="?android:attr/borderlessButtonStyle"
+            android:textAllCaps="true"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Assassinate"
+            android:id="@+id/button_assassinateFrag"
+            android:layout_weight="1"
+            style="?android:attr/borderlessButtonStyle"
+            android:textAllCaps="true"/>
 
     </LinearLayout>
 </LinearLayout>
