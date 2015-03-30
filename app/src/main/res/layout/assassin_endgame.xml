@@ -35,19 +35,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/WineRedLight"
         android:layout_gravity="center_horizontal"
-        android:text="SUCCESS"
+        android:text="Assassination Failed"
         android:gravity="center"
         android:textStyle="bold"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
         android:id="@+id/textView_assassinResult"
         android:visibility="gone"/>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:gravity="center_horizontal"
-        android:background="@color/WineRedLight" />
 
     <ListView
         android:id="@+id/listview_assassinCandidates"
@@ -67,14 +59,6 @@
         android:textColor="@color/White"
         android:id="@+id/textView_chosenPlayerLabel" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/layout_assassinConfirmSelection"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="bottom"
-        android:layout_weight="1">
-
 
         <View
             android:layout_width="fill_parent"
@@ -84,7 +68,7 @@
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:orientation="horizontal"
             android:layout_gravity="bottom"
             android:layout_weight="1">
@@ -104,14 +88,14 @@
 
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/imageView_assassinChosenPlayer"
                 android:clickable="true"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/misc_characterback"
                 android:adjustViewBounds="true"
-                android:visibility="invisible"/>
+                android:visibility="visible"/>
 
             <View
                 android:layout_width="1dp"
@@ -143,8 +127,7 @@
             android:textColor="@color/WineRedLight"
             style="?android:attr/borderlessButtonStyle"
             android:layout_weight="0"
-            android:visibility="gone" />
+            android:visibility="invisible" />
 
-    </LinearLayout>
 
 </LinearLayout>

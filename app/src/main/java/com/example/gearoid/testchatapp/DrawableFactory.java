@@ -47,6 +47,10 @@ public class DrawableFactory {
                 return res.getDrawable(R.drawable.token_approve);
             case "Reject Token":
                 return res.getDrawable(R.drawable.token_reject);
+            case "Red Loyalty Card":
+                return res.getDrawable(R.drawable.misc_redloyaltycard);
+            case "Blue Loyalty Card":
+                return res.getDrawable(R.drawable.misc_blueloyaltycard);
             default:
                 return res.getDrawable(R.drawable.token_approve);
         }

@@ -191,9 +191,9 @@ public class AssassinateFragment extends DialogFragment {
 
         if (player.character instanceof Merlin) {
             isSucess = true;
+            result.setText("Assassination Successful");
         } else {
             isSucess = false;
-            result.setText("Failed");
         }
 
         result.setVisibility(View.VISIBLE);
@@ -204,7 +204,17 @@ public class AssassinateFragment extends DialogFragment {
         Button finishGame = (Button) mContentView.findViewById(R.id.button_assassinFinishGame);
         finishGame.setVisibility(View.VISIBLE);
 
+
+        View item = adapterCandidatePlayers.getView(0, null, candidatePlayersView);
+        item.measure(0, 0);
+
+        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (3.5 * item.getMeasuredHeight()));
+        result.setLayoutParams(params);
+
         candidatePlayersView.setVisibility(View.GONE);
+//
+//        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (3.5 * item.getMeasuredHeight()));
+//        candidatePlayersView.setLayoutParams(params);
     }
 
 

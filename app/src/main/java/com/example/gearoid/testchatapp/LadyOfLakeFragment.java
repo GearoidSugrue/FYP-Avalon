@@ -125,7 +125,7 @@ public class LadyOfLakeFragment extends DialogFragment {
                 Player player = (Player) parent.getItemAtPosition(position);
                 Log.d("LadyOfLakeFragment", "Player clicked:" + player.userName);
 
-                if(!isFinished) {
+                if (!isFinished) {
                     adapterChosenPlayer.clear();
                     adapterChosenPlayer.add(player);
                     final ImageView chosenPlayer = (ImageView) mContentView.findViewById(R.id.imageView_ladyOfLakeloyaltyCard);
@@ -141,7 +141,7 @@ public class LadyOfLakeFragment extends DialogFragment {
                 Player player = (Player) parent.getItemAtPosition(position);
                 Log.d("LadyOfLakeFragment", "Player clicked:" + player.userName);
 
-                if(!isFinished) {
+                if (!isFinished) {
                     adapterChosenPlayer.remove(player);
                     final ImageView chosenPlayer = (ImageView) mContentView.findViewById(R.id.imageView_ladyOfLakeloyaltyCard);
                     chosenPlayer.setVisibility(View.INVISIBLE);
@@ -151,7 +151,7 @@ public class LadyOfLakeFragment extends DialogFragment {
     }
 
     public void setImageViewOnClickListeners() {
-        final ImageView chosenPlayer = (ImageView) mContentView.findViewById(R.id.imageView_assassinChosenPlayer);
+        final ImageView chosenPlayer = (ImageView) mContentView.findViewById(R.id.imageView_ladyOfLakeloyaltyCard);
 
         chosenPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,7 +174,7 @@ public class LadyOfLakeFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                if(isFinished) {
+                if (isFinished) {
                     LadyOfLakeDialogListener activity = (LadyOfLakeDialogListener) getActivity();
                     activity.ladyOfLakeActivated(playerIndex);
                     closeDialog();
@@ -190,22 +190,31 @@ public class LadyOfLakeFragment extends DialogFragment {
 
         isFinished = true;
         Player player = adapterChosenPlayer.getItem(0);
+        final ImageView chosenPlayer = (ImageView) mContentView.findViewById(R.id.imageView_ladyOfLakeloyaltyCard);
+        TextView result = (TextView) mContentView.findViewById(R.id.textView_ladyOfLakeResult);
 
         if (player.character instanceof EvilCharacter) {
-            //chosenPlayer.setImageDrawable(DrawableFactory.getDrawable(getResources(), player.character.getCharacterName()));
+            chosenPlayer.setImageDrawable(DrawableFactory.getDrawable(getResources(), "Red Loyalty Card"));
         } else {
-            //chosenPlayer.setImageDrawable(DrawableFactory.getDrawable(getResources(), player.character.getCharacterName()));
+            chosenPlayer.setImageDrawable(DrawableFactory.getDrawable(getResources(), "Blue Loyalty Card"));
+            result.setText("Player is Good");
+            result.setTextColor(getResources().getColor(R.color.SlateBlue));
         }
-
-        //result.setVisibility(View.VISIBLE);
-
-        final ImageView chosenPlayer = (ImageView) mContentView.findViewById(R.id.imageView_ladyOfLakeloyaltyCard);
-        //chosenPlayer.setImageDrawable(DrawableFactory.getDrawable(getResources(), player.character.getCharacterName()));
 
         Button finishGame = (Button) mContentView.findViewById(R.id.button_cancelLadyOfLake);
         finishGame.setText("Close");
 
+        result.setVisibility(View.VISIBLE);
+
+        View item = adapterCandidatePlayers.getView(0, null, candidatePlayersView);
+        item.measure(0, 0);
+
+        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (3.5 * item.getMeasuredHeight()));
+        result.setLayoutParams(params);
+
         candidatePlayersView.setVisibility(View.GONE);
+
+        //candidatePlayersView.setVisibility(View.INVISIBLE);
     }
 
 

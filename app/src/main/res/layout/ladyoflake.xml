@@ -4,7 +4,8 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:minWidth="1000dp">
+    android:minWidth="1000dp"
+    android:minHeight="1000dp">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/frag_ladyOfLake_toolbar"
@@ -28,11 +29,23 @@
         android:textColor="@color/White"
         android:id="@+id/textView_ladyOfLakeLabel" />
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/WineRedLight"
+        android:layout_gravity="center_horizontal"
+        android:text="Player is Evil"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:id="@+id/textView_ladyOfLakeResult"
+        android:visibility="gone"/>
+
     <ListView
         android:id="@+id/listview_ladyOfLakeCandidates"
-        android:layout_weight="1"
-        android:layout_height="0dp"
-        android:layout_width="fill_parent"/>
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:visibility="visible"/>
 
 
     <TextView
@@ -55,10 +68,10 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:orientation="horizontal"
         android:layout_gravity="bottom"
-        android:layout_weight=".1">
+        android:layout_weight="1">
 
         <ListView
             android:id="@+id/listview_chosenLadyOfLakePlayer"
@@ -74,7 +87,7 @@
 
         <ImageView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_weight="1"
             android:id="@+id/imageView_ladyOfLakeloyaltyCard"
             android:clickable="true"

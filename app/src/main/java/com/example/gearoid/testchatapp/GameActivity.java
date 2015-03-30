@@ -16,7 +16,7 @@ import com.example.gearoid.testchatapp.singletons.Player;
 
 
 public class GameActivity extends ActionBarActivity implements TeamVoteFragment.TeamVoteDialogListener, QuestVoteFragment.QuestVoteDialogListener, SelectTeamFragment.TeamSelectDialogListener
-                                                               , AssassinateFragment.AssassinateDialogListener {
+                                                               , AssassinateFragment.AssassinateDialogListener, LadyOfLakeFragment.LadyOfLakeDialogListener {
 
     public GameBoardFragment gameBoardFrag;
     public GameLogicFunctions.Board currentBoard;
@@ -72,7 +72,8 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         Button teamVoteFrag = (Button) findViewById(R.id.button_teamVoteFrag);
         Button questVoteFrag = (Button) findViewById(R.id.button_questVoteFrag);
         Button teamSelectFrag = (Button) findViewById(R.id.button_teamSelectFrag);
-        Button button_assassinateFrag = (Button) findViewById(R.id.button_assassinateFrag);
+        Button assassinateFrag = (Button) findViewById(R.id.button_assassinateFrag);
+        Button ladyOfLakeFrag = (Button) findViewById(R.id.button_ladyOfLakeFrag);
 
         teamVoteFrag.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,11 +102,20 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             }
         });
 
-        button_assassinateFrag.setOnClickListener(new View.OnClickListener() {
+        assassinateFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 DialogFragment newFragment = AssassinateFragment.newInstance(); //TODO change to questNum...
+                newFragment.show(getFragmentManager(), "assassinatedialog");
+            }
+        });
+
+        ladyOfLakeFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogFragment newFragment = LadyOfLakeFragment.newInstance(); //TODO change to questNum...
                 newFragment.show(getFragmentManager(), "assassinatedialog");
             }
         });
@@ -138,7 +148,14 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     @Override
     public void onAssassination(boolean isSuccess) {
         Log.d("GameActivity", "OnAssassinate received from Assassinate dialog. Result: " + isSuccess);
-        //TODO Send player indexes to server result to server
+        //TODO Send info to server
+
+    }
+
+    @Override
+    public void ladyOfLakeActivated(int playerIndex) {
+        Log.d("GameActivity", "LadyOfLakeActivated received from LadyOfLake dialog. Player ID " + playerIndex);
+        //TODO Send player info to server
 
     }
 }
