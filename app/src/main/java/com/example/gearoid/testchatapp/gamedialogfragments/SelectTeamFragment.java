@@ -1,4 +1,4 @@
-package com.example.gearoid.testchatapp;
+package com.example.gearoid.testchatapp.gamedialogfragments;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -13,6 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.PlayerListViewAdapter;
+import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.Player;
 
@@ -33,7 +36,7 @@ public class SelectTeamFragment extends DialogFragment {
     int teamSize;
     int questNumber;
 
-    static SelectTeamFragment newInstance(int teamSize, int questNumber) {
+    public static SelectTeamFragment newInstance(int teamSize, int questNumber) {
 
         Log.d("SelectTeamFragment", "Creating instance of a SelectTeamFragment fragment");
 

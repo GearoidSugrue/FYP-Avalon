@@ -19,20 +19,6 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/SlateBlue"
-        android:layout_gravity="center_horizontal"
-        android:text="SUCCESS"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:id="@+id/textView_questResult"
-        android:visibility="gone"/>
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
         android:text="Quest Team"
@@ -41,6 +27,20 @@
         android:background="@color/LightSlateGray"
         android:textColor="@color/White"
         android:id="@+id/textView_questTeamLabel" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/SlateBlue"
+        android:layout_gravity="center_horizontal"
+        android:text="Quest Succeeded"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:id="@+id/textView_questResult"
+        android:visibility="gone"/>
 
     <ListView
         android:id="@+id/listview_questTeam"
@@ -73,7 +73,7 @@
         android:orientation="horizontal">
 
         <View
-            android:layout_width="1dp"
+            android:layout_width="10dp"
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
             android:background="@android:color/transparent" />
@@ -88,7 +88,7 @@
             android:adjustViewBounds="true"/>
 
         <View
-            android:layout_width="1dp"
+            android:layout_width="10dp"
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
             android:background="@android:color/transparent" />
@@ -103,7 +103,7 @@
             android:adjustViewBounds="true"/>
 
         <View
-            android:layout_width="1dp"
+            android:layout_width="10dp"
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
             android:background="@android:color/transparent" />
@@ -119,10 +119,11 @@
             android:visibility="gone"/>
 
         <View
-            android:layout_width="1dp"
+            android:layout_width="10dp"
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
-            android:background="@android:color/transparent" />
+            android:background="@android:color/transparent"
+            android:id="@+id/rightBlankSpaceRow1"/>
 
     </LinearLayout>
 
@@ -141,7 +142,7 @@
         android:visibility="gone">
 
         <View
-            android:layout_width="1dp"
+            android:layout_width="10dp"
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
             android:background="@android:color/transparent" />
@@ -157,7 +158,7 @@
             android:visibility="visible"/>
 
         <View
-            android:layout_width="1dp"
+            android:layout_width="10dp"
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
             android:background="@android:color/transparent" />
@@ -173,7 +174,7 @@
             android:visibility="invisible"/>
 
         <View
-            android:layout_width="1dp"
+            android:layout_width="10dp"
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
             android:background="@android:color/transparent" />
@@ -188,7 +189,7 @@
             android:visibility="invisible"/>
 
         <View
-            android:layout_width="1dp"
+            android:layout_width="10dp"
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
             android:background="@android:color/transparent" />
@@ -211,11 +212,12 @@
         android:layout_height="wrap_content"
         android:text="Dismiss"
         android:textAllCaps="true"
-        android:id="@+id/button_confirmLadyOfLake"
+        android:id="@+id/button_dismissQuestResult"
         android:layout_gravity="bottom"
         android:textColor="@color/LightSlateGray"
         style="?android:attr/borderlessButtonStyle"
-        android:layout_weight="0"/>
+        android:layout_weight="0"
+        android:visibility="invisible"/>
 
 
 </LinearLayout>

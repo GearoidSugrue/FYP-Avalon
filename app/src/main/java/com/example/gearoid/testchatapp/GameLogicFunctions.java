@@ -18,6 +18,10 @@ public class GameLogicFunctions {
         private Quest(int value) {
             this.value = value;
         }
+
+        public int getValue(){
+            return this.value;
+        }
     }
 
     public static Board calculateBoard(int numberOfPlayers) {

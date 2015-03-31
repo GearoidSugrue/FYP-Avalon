@@ -1,4 +1,4 @@
-package com.example.gearoid.testchatapp;
+package com.example.gearoid.testchatapp.gamedialogfragments;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -14,8 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.DrawableFactory;
+import com.example.gearoid.testchatapp.PlayerListViewAdapter;
+import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.character.EvilCharacter;
-import com.example.gearoid.testchatapp.character.Merlin;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.Player;
 
@@ -37,7 +39,7 @@ public class LadyOfLakeFragment extends DialogFragment {
     boolean isFinished = false;
     int playerIndex = 0;
 
-    static LadyOfLakeFragment newInstance() {
+    public static LadyOfLakeFragment newInstance() {
 
         Log.d("LadyOfLakeFragment", "Creating instance of a SelectTeamFragment fragment");
 
@@ -214,7 +216,7 @@ public class LadyOfLakeFragment extends DialogFragment {
 
         candidatePlayersView.setVisibility(View.GONE);
 
-        //candidatePlayersView.setVisibility(View.INVISIBLE);
+        //visiblePlayersView.setVisibility(View.INVISIBLE);
     }
 
 

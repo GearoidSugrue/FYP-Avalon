@@ -1,16 +1,18 @@
 package com.example.gearoid.testchatapp.character;
 
+import android.util.Log;
+
 public class Merlin extends GoodCharacter {
 
 	@Override
 	public String getCharacterName() {
-		return ConstantsChara.MERLIN;// Use constants
+		return ConstantsChara.MERLIN;
 	}
 
 	@Override
 	public boolean isVisableTo(ICharacter character) {
 
-		if(character instanceof Percival){
+        if(character instanceof Percival){
 			return true;
 		}		
 		return false;

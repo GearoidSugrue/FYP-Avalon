@@ -12,14 +12,27 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.gearoid.testchatapp.character.EvilCharacter;
+import com.example.gearoid.testchatapp.gamedialogfragments.AssassinateFragment;
+import com.example.gearoid.testchatapp.gamedialogfragments.GameFinishedFragment;
+import com.example.gearoid.testchatapp.gamedialogfragments.LadyOfLakeFragment;
+import com.example.gearoid.testchatapp.gamedialogfragments.PlayerCharacterFragment;
+import com.example.gearoid.testchatapp.gamedialogfragments.QuestResultFragment;
+import com.example.gearoid.testchatapp.gamedialogfragments.QuestVoteFragment;
+import com.example.gearoid.testchatapp.gamedialogfragments.SelectTeamFragment;
+import com.example.gearoid.testchatapp.gamedialogfragments.TeamVoteFragment;
+import com.example.gearoid.testchatapp.gamedialogfragments.TeamVoteResultFragment;
 import com.example.gearoid.testchatapp.singletons.Player;
 
+import static com.example.gearoid.testchatapp.GameLogicFunctions.*;
 
-public class GameActivity extends ActionBarActivity implements TeamVoteFragment.TeamVoteDialogListener, QuestVoteFragment.QuestVoteDialogListener, SelectTeamFragment.TeamSelectDialogListener
-                                                               , AssassinateFragment.AssassinateDialogListener, LadyOfLakeFragment.LadyOfLakeDialogListener {
+
+public class GameActivity extends ActionBarActivity implements TeamVoteFragment.TeamVoteDialogListener, QuestVoteFragment.QuestVoteDialogListener, SelectTeamFragment.TeamSelectDialogListener,
+                                    AssassinateFragment.AssassinateDialogListener, LadyOfLakeFragment.LadyOfLakeDialogListener, GameFinishedFragment.GameFinishedDialogListener, QuestResultFragment.QuestResultDialogListener {
 
     public GameBoardFragment gameBoardFrag;
-    public GameLogicFunctions.Board currentBoard;
+    public Board currentBoard;
+    public Quest currentQuest;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +44,8 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
 
         setContentView(R.layout.activity_game);
 
-        currentBoard = (GameLogicFunctions.Board) getIntent().getSerializableExtra("BOARD");
+        currentBoard = (Board) getIntent().getSerializableExtra("BOARD");
+        currentQuest = Quest.FIRST;
         initialiseFragments();
         initialiseButtons();
     }
@@ -74,6 +88,10 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         Button teamSelectFrag = (Button) findViewById(R.id.button_teamSelectFrag);
         Button assassinateFrag = (Button) findViewById(R.id.button_assassinateFrag);
         Button ladyOfLakeFrag = (Button) findViewById(R.id.button_ladyOfLakeFrag);
+        Button teamVoteResultFrag = (Button) findViewById(R.id.button_teamVoteResultFrag);
+        Button gameFinishedFrag = (Button) findViewById(R.id.button_gameFinishedFrag);
+        Button playerCharacterFrag = (Button) findViewById(R.id.button_playerCharacterFrag);
+        Button questResultFrag = (Button) findViewById(R.id.button_questResultFrag);
 
         teamVoteFrag.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +134,43 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             public void onClick(View v) {
 
                 DialogFragment newFragment = LadyOfLakeFragment.newInstance(); //TODO change to questNum...
-                newFragment.show(getFragmentManager(), "assassinatedialog");
+                newFragment.show(getFragmentManager(), "ladyoflakedialog");
+            }
+        });
+
+        teamVoteResultFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogFragment newFragment = TeamVoteResultFragment.newInstance(false, new int[]{0, 3}, new int[]{1,2,4}, 2, 3); //TODO change to questNum...
+                newFragment.show(getFragmentManager(), "teamvoteresultdialog");
+            }
+        });
+
+        gameFinishedFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogFragment newFragment = GameFinishedFragment.newInstance(true, new int[]{0, 3}, new int[]{1, 2, 4}); //TODO change to questNum...
+                newFragment.show(getFragmentManager(), "teamvoteresultdialog");
+            }
+        });
+
+        playerCharacterFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogFragment newFragment = PlayerCharacterFragment.newInstance(); //TODO change to questNum...
+                newFragment.show(getFragmentManager(), "playercharacterdialog");
+            }
+        });
+
+        questResultFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogFragment newFragment = QuestResultFragment.newInstance(new int[]{2, 3}, new boolean[]{ true, true}, currentQuest, calculateFailRequiredForQuest(currentBoard, currentQuest)); //TODO change to questNum...
+                newFragment.show(getFragmentManager(), "questresultdialog");
             }
         });
 
@@ -156,6 +210,27 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void ladyOfLakeActivated(int playerIndex) {
         Log.d("GameActivity", "LadyOfLakeActivated received from LadyOfLake dialog. Player ID " + playerIndex);
         //TODO Send player info to server
+
+    }
+
+    @Override
+    public void onGameFinishedSelection(boolean playAgain) {
+        Log.d("GameActivity", "GameFinished option received from GameFinished dialog. PlayAgain = " + playAgain);
+        //TODO Send info to server
+
+    }
+
+    @Override
+    public void onQuestVoteResultRevealed(int voteNumber, boolean voteResult) {
+        Log.d("GameActivity", "QuestVoteResultRevealed from QuestResultDialog. Vote Number: " + voteNumber + ", Vote Result: " + voteResult);
+        //TODO Send info to server
+
+    }
+
+    @Override
+    public void onQuestVoteResultsFinished(boolean result) {
+        Log.d("GameActivity", "onQuestVoteResultsFinished from QuestResultDialog. Quest Result: " + result);
+        //TODO Send info to server
 
     }
 }

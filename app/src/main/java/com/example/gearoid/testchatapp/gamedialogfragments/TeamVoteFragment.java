@@ -1,4 +1,4 @@
-package com.example.gearoid.testchatapp;
+package com.example.gearoid.testchatapp.gamedialogfragments;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.example.gearoid.testchatapp.GameLogicFunctions;
+import com.example.gearoid.testchatapp.PlayerListViewAdapter;
+import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.Player;
 
@@ -45,7 +48,7 @@ public class TeamVoteFragment extends DialogFragment {
 
 
 
-    static TeamVoteFragment newInstance(int[] playerPositions, int questNumber, int voteNumber) {
+    public static TeamVoteFragment newInstance(int[] playerPositions, int questNumber, int voteNumber) {
         TeamVoteFragment frag = new TeamVoteFragment();
 
         // Supply num input as an argument.
@@ -79,7 +82,7 @@ public class TeamVoteFragment extends DialogFragment {
         nextLeaderArray = new ArrayList<>();
 
         for(int i=0; i < playerPos.length; i++){
-            Log.d("TeamVoteFrag", "adding player to adapterProposedTeam. int[" + i + "] = " + playerPos[i]);
+            Log.d("TeamVoteFrag", "adding player to adapterVictoriousPlayers. int[" + i + "] = " + playerPos[i]);
             proposedPlayersArray.add(Session.masterAllPlayers.get(playerPos[i]));
         }
 
@@ -94,6 +97,8 @@ public class TeamVoteFragment extends DialogFragment {
 
         Toolbar mActionBarToolbar = (Toolbar) rootView.findViewById(R.id.frag_teamVote_toolbar);
         mActionBarToolbar.setTitle("Quest " + questNumber + " - Vote " + voteCount);
+        mActionBarToolbar.setLogo(getResources().getDrawable(R.drawable.icon_votetoken));
+
 //        mActionBarToolbar.
 //        rootView.setSupportActionBar(mActionBarToolbar);
 //        getSupportActionBar().setTitle("My title");

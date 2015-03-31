@@ -1,4 +1,4 @@
-package com.example.gearoid.testchatapp;
+package com.example.gearoid.testchatapp.gamedialogfragments;
 
 import android.app.DialogFragment;
 import android.content.res.Configuration;
@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.PlayerListViewAdapter;
+import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.Player;
 
@@ -35,7 +38,7 @@ public class QuestVoteFragment extends DialogFragment {
     boolean isEvil;
     int questNumber;
 
-    static QuestVoteFragment newInstance(int[] teamMembersPos, boolean isEvil, int questNumber) {
+    public static QuestVoteFragment newInstance(int[] teamMembersPos, boolean isEvil, int questNumber) {
         QuestVoteFragment frag = new QuestVoteFragment();
 
         // Supply num input as an argument.
@@ -78,6 +81,7 @@ public class QuestVoteFragment extends DialogFragment {
 
         Toolbar mActionBarToolbar = (Toolbar) rootView.findViewById(R.id.frag_questVote_toolbar);
         mActionBarToolbar.setTitle("Quest " + questNumber);
+        mActionBarToolbar.setLogo(getResources().getDrawable(R.drawable.icon_questvote));
 
         image1 = (ImageView) rootView.findViewById(R.id.imageView_questVote1);
         image2 = (ImageView) rootView.findViewById(R.id.imageView_questVote2);

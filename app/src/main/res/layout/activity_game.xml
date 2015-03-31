@@ -29,8 +29,9 @@
             android:text="Team Vote"
             android:id="@+id/button_teamVoteFrag"
             android:layout_weight="1"
+            android:textColor="@color/MediumPurple"
             style="?android:attr/borderlessButtonStyle"
-            android:textAllCaps="true"/>
+            android:textAllCaps="true" />
 
         <Button
             android:layout_width="0dp"
@@ -38,8 +39,9 @@
             android:text="Quest Vote"
             android:id="@+id/button_questVoteFrag"
             android:layout_weight="1"
+            android:textColor="@color/SlateGray"
             style="?android:attr/borderlessButtonStyle"
-            android:textAllCaps="true"/>
+            android:textAllCaps="true" />
 
         <Button
             android:layout_width="0dp"
@@ -47,8 +49,9 @@
             android:text="Team Select"
             android:id="@+id/button_teamSelectFrag"
             android:layout_weight="1"
+            android:textColor="@color/MuddyBrown"
             style="?android:attr/borderlessButtonStyle"
-            android:textAllCaps="true"/>
+            android:textAllCaps="true" />
 
         <Button
             android:layout_width="0dp"
@@ -56,8 +59,9 @@
             android:text="Assassinate"
             android:id="@+id/button_assassinateFrag"
             android:layout_weight="1"
+            android:textColor="@color/RedWine"
             style="?android:attr/borderlessButtonStyle"
-            android:textAllCaps="true"/>
+            android:textAllCaps="true" />
 
     </LinearLayout>
 
@@ -70,13 +74,55 @@
         android:layout_gravity="bottom"
         android:layout_weight="0">
 
-    <Button
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Lady of the Lake"
-        android:id="@+id/button_ladyOfLakeFrag"
-        android:layout_weight="1"
-        style="?android:attr/borderlessButtonStyle"
-        android:textAllCaps="true"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Lady of the Lake"
+            android:id="@+id/button_ladyOfLakeFrag"
+            android:layout_weight="1"
+            android:textColor="@color/TiffanyBlueDark"
+            style="?android:attr/borderlessButtonStyle"
+            android:textAllCaps="true" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Team Vote Result"
+            android:id="@+id/button_teamVoteResultFrag"
+            android:layout_weight="1"
+            android:textColor="@color/MediumPurple"
+            style="?android:attr/borderlessButtonStyle"
+            android:textAllCaps="true" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Game Finished"
+            android:id="@+id/button_gameFinishedFrag"
+            android:layout_weight="1"
+            android:textColor="@color/MidnightBlue"
+            style="?android:attr/borderlessButtonStyle"
+            android:textAllCaps="true" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="View Character"
+            android:id="@+id/button_playerCharacterFrag"
+            android:layout_weight="1"
+            android:textColor="@color/HazelGreen"
+            style="?android:attr/borderlessButtonStyle"
+            android:textAllCaps="true" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Quest Result"
+            android:id="@+id/button_questResultFrag"
+            android:layout_weight="1"
+            android:textColor="@color/SlateGray"
+            style="?android:attr/borderlessButtonStyle"
+            android:textAllCaps="true" />
+
     </LinearLayout>
 </LinearLayout>

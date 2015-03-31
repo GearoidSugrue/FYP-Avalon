@@ -95,7 +95,7 @@
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/misc_characterback"
                 android:adjustViewBounds="true"
-                android:visibility="visible"/>
+                android:visibility="invisible"/>
 
             <View
                 android:layout_width="1dp"

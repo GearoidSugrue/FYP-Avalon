@@ -93,6 +93,7 @@
             android:clickable="true"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/misc_loyaltyback"
+            android:visibility="invisible"
             android:adjustViewBounds="true"/>
 
         <View

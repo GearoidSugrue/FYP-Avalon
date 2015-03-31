@@ -1,4 +1,4 @@
-package com.example.gearoid.testchatapp;
+package com.example.gearoid.testchatapp.gamedialogfragments;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -7,13 +7,12 @@ import android.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.DrawableFactory;
+import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.character.ConstantsChara;
-import com.example.gearoid.testchatapp.character.ICharacter;
 
 /**
  * Created by gearoid on 19/03/15.
@@ -26,7 +25,7 @@ public class CharacterCardFragment extends DialogFragment {
      * Create a new instance of MyDialogFragment, providing "num"
      * as an argument.
      */
-    static CharacterCardFragment newInstance(String name) {
+    public static CharacterCardFragment newInstance(String name) {
         CharacterCardFragment frag = new CharacterCardFragment();
 
         // Supply num input as an argument.

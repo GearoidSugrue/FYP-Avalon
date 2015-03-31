@@ -21,13 +21,12 @@ import com.example.gearoid.testchatapp.character.CharacterFactory;
 import com.example.gearoid.testchatapp.character.EvilCharacter;
 import com.example.gearoid.testchatapp.character.GoodCharacter;
 import com.example.gearoid.testchatapp.character.ICharacter;
+import com.example.gearoid.testchatapp.gamedialogfragments.CharacterCardFragment;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-import static com.example.gearoid.testchatapp.R.drawable;
 
 
 public class GameSetupActivity extends ActionBarActivity implements CharacterListFragment.CharacterListFragListener {

@@ -1,4 +1,4 @@
-package com.example.gearoid.testchatapp;
+package com.example.gearoid.testchatapp.gamedialogfragments;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -14,6 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.DrawableFactory;
+import com.example.gearoid.testchatapp.PlayerListViewAdapter;
+import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.character.Merlin;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.Player;
@@ -36,7 +39,7 @@ public class AssassinateFragment extends DialogFragment {
     boolean isFinished = false;
     boolean isSucess = false;
 
-    static AssassinateFragment newInstance() {
+    public static AssassinateFragment newInstance() {
 
         Log.d("AssassinateFragment", "Creating instance of a SelectTeamFragment fragment");
 
@@ -214,7 +217,7 @@ public class AssassinateFragment extends DialogFragment {
         candidatePlayersView.setVisibility(View.GONE);
 //
 //        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (3.5 * item.getMeasuredHeight()));
-//        candidatePlayersView.setLayoutParams(params);
+//        visiblePlayersView.setLayoutParams(params);
     }
 
 

@@ -7,7 +7,7 @@
     android:minWidth="1000dp">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/frag_gameOVer_toolbar"
+        android:id="@+id/frag_gameFinished_toolbar"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:minHeight="?attr/actionBarSize"
