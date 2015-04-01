@@ -45,7 +45,7 @@ import java.util.Map;
  * Created by gearoid on 27/02/15.
  */
 
-public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFiDirectServicesList.DeviceClickListener, WifiP2pManager.ConnectionInfoListener, WifiP2pManager.ChannelListener {
+public class                  WiFiDirectServiceActivity extends ActionBarActivity implements WiFiDirectServicesList.DeviceClickListener, WifiP2pManager.ConnectionInfoListener, WifiP2pManager.ChannelListener {
 
     public static int groupOwnerIntent;//15 highest intention to be group owner. May be ignored if a device remembers previous group.
     boolean isHost = false;
@@ -119,6 +119,9 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             getSupportActionBar().setTitle("Hosting Game");
             groupOwnerIntent = 15;
             fragment.setFindingTextView(getString(R.string.finding_players));
+            Toolbar tb = (Toolbar) findViewById(R.id.wifidirect_service_toolbar);
+            tb.setBackgroundColor(getResources().getColor(R.color.GreenDark));
+
             //CreateGroup here???
 
         } else {

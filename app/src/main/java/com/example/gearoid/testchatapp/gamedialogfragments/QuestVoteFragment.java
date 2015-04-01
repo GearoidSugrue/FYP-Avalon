@@ -15,6 +15,7 @@ import android.widget.ListView;
 import com.example.gearoid.testchatapp.ApplicationContext;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
+import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.Player;
 
@@ -33,7 +34,7 @@ public class QuestVoteFragment extends DialogFragment {
     boolean isImage2Sucess;
     ListView teamMembersView;
     PlayerListViewAdapter adapterTeamMembers;
-    ArrayList<Player> teamMembersArray;
+    ArrayList<PlayerBasic> teamMembersArray;
     int[] playerPos;
     boolean isEvil;
     int questNumber;
@@ -70,7 +71,7 @@ public class QuestVoteFragment extends DialogFragment {
 
         for(int i=0; i < playerPos.length; i++){
             Log.d("QuestVoteFrag", "adding player to adapterTeamMembers. int[" + i + "] = " + playerPos[i]);
-            teamMembersArray.add(Session.masterAllPlayers.get(playerPos[i]));
+            teamMembersArray.add(Session.allPlayersBasic.get(playerPos[i]));
         }
     }
 
@@ -88,11 +89,8 @@ public class QuestVoteFragment extends DialogFragment {
 
         teamMembersView = (ListView) rootView.findViewById(R.id.listview_teamMembers);
 
-
         randomiseCardOrder();
         setOnClicklisteners();
-
-        //TODO add team member adapter...
 
         return rootView;
     }

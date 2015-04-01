@@ -67,39 +67,5 @@ public class CharacterCardFragment extends DialogFragment {
         return rootView;
     }
 
-    public Drawable getCharacterImage(String characterName) {
 
-        switch (characterName) {
-            case ConstantsChara.MERLIN:
-                return getResources().getDrawable(R.drawable.good_merlin);
-            case ConstantsChara.PERCIVAL:
-                return getResources().getDrawable(R.drawable.good_percival);
-            case ConstantsChara.ASSASSIN:
-                return getResources().getDrawable(R.drawable.evil_assassin);
-            case ConstantsChara.MORDRED:
-                return getResources().getDrawable(R.drawable.evil_mordred);
-            case ConstantsChara.OBERON:
-                return getResources().getDrawable(R.drawable.evil_oberon);
-            case ConstantsChara.MORGANA:
-                return getResources().getDrawable(R.drawable.evil_morgana);
-            case "Knight 1":
-                return getResources().getDrawable(R.drawable.good_knight1);
-            case "Knight 2":
-                return getResources().getDrawable(R.drawable.good_knight2);
-            case "Knight 3":
-                return getResources().getDrawable(R.drawable.good_knight3);
-            case "Knight 4":
-                return getResources().getDrawable(R.drawable.good_knight4);
-            case "Knight 5":
-                return getResources().getDrawable(R.drawable.good_knight5);
-            case "Minion 1":
-                return getResources().getDrawable(R.drawable.evil_minion1);
-            case "Minion 2":
-                return getResources().getDrawable(R.drawable.evil_minion2);
-            case "Minion 3":
-                return getResources().getDrawable(R.drawable.evil_minion3);
-            default:
-                return getResources().getDrawable(R.drawable.token_approve);
-        }
-    }
 }

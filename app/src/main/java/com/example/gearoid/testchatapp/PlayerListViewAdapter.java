@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
 import com.example.gearoid.testchatapp.singletons.Player;
 
 import java.util.List;
@@ -17,10 +18,10 @@ import java.util.List;
 /**
  * Created by gearoid on 25/03/15.
  */
-public class PlayerListViewAdapter extends ArrayAdapter<Player> {
+public class PlayerListViewAdapter extends ArrayAdapter<PlayerBasic> {
 
     int resource;
-    private List<Player> items;
+    private List<PlayerBasic> items;
     Context context;
 
     /**
@@ -29,7 +30,7 @@ public class PlayerListViewAdapter extends ArrayAdapter<Player> {
      * @param players
      */
     public PlayerListViewAdapter(Context context, int resource, int textViewResourceId,
-                                 List<Player> players) {
+                                 List<PlayerBasic> players) {
         super(context, resource, textViewResourceId, players);
         this.items = players;
         this.context = context;
@@ -49,7 +50,7 @@ public class PlayerListViewAdapter extends ArrayAdapter<Player> {
 //            v = vi.inflate(R.layout.row_devices, null);
         }
         if (items.size() > 0) {
-            Player player = items.get(position);
+            PlayerBasic player = items.get(position);
             if (player != null) {
                 TextView top = (TextView) v.findViewById(R.id.textview_playerName);
 

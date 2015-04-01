@@ -18,6 +18,7 @@ import com.example.gearoid.testchatapp.ApplicationContext;
 import com.example.gearoid.testchatapp.GameLogicFunctions;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
+import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.Player;
 
@@ -41,7 +42,7 @@ public class QuestResultFragment extends DialogFragment {
     Drawable fail;
     ListView teamMembersView;
     PlayerListViewAdapter adapterTeamMembers;
-    ArrayList<Player> teamMembersArray;
+    ArrayList<PlayerBasic> teamMembersArray;
     Button finishGame;
     TextView resultTextview;
     int[] playerPos;
@@ -89,7 +90,7 @@ public class QuestResultFragment extends DialogFragment {
 
         for (int i = 0; i < playerPos.length; i++) {
             Log.d("QuestResultFrag", "adding player to adapterTeamMembers. int[" + i + "] = " + playerPos[i]);
-            teamMembersArray.add(Session.masterAllPlayers.get(playerPos[i]));
+            teamMembersArray.add(Session.allPlayersBasic.get(playerPos[i]));
         }
     }
 

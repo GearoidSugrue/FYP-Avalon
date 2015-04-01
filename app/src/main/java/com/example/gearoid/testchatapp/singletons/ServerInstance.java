@@ -7,7 +7,7 @@ import com.example.gearoid.testchatapp.kryopackage.KServer;
  */
 public class ServerInstance {
     private static ServerInstance instance;
-    private static KServer server;
+    public static KServer server;
 
 
     private ServerInstance(){

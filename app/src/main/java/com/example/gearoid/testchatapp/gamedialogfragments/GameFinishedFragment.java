@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
+import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.Player;
 
@@ -32,8 +33,8 @@ public class GameFinishedFragment extends DialogFragment {
     ListView defeatedPlayersView;
     PlayerListViewAdapter adapterVictoriousPlayers;
     PlayerListViewAdapter adapterDefeatedPlayers;
-    ArrayList<Player> victoriousPlayersArray;
-    ArrayList<Player> defeatedPlayersArray;
+    ArrayList<PlayerBasic> victoriousPlayersArray;
+    ArrayList<PlayerBasic> defeatedPlayersArray;
     boolean gameResult;
 
 
@@ -70,12 +71,12 @@ public class GameFinishedFragment extends DialogFragment {
 
         for (int i = 0; i < victoriousPlayerPos.length; i++) {
             Log.d("GameFinishedFragment", "adding player to adapterVictoriousPlayers. int[" + i + "] = " + victoriousPlayerPos[i]);
-            victoriousPlayersArray.add(Session.masterAllPlayers.get(victoriousPlayerPos[i]));
+            victoriousPlayersArray.add(Session.allPlayersBasic.get(victoriousPlayerPos[i]));
         }
 
         for (int i = 0; i < defeatedPlayerPos.length; i++) {
             Log.d("GameFinishedFragment", "adding player to adapterDefeatedPlayers. int[" + i + "] = " + defeatedPlayerPos[i]);
-            defeatedPlayersArray.add(Session.masterAllPlayers.get(defeatedPlayerPos[i]));
+            defeatedPlayersArray.add(Session.allPlayersBasic.get(defeatedPlayerPos[i]));
         }
 
     }

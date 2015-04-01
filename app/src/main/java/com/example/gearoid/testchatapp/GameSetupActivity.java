@@ -22,11 +22,14 @@ import com.example.gearoid.testchatapp.character.EvilCharacter;
 import com.example.gearoid.testchatapp.character.GoodCharacter;
 import com.example.gearoid.testchatapp.character.ICharacter;
 import com.example.gearoid.testchatapp.gamedialogfragments.CharacterCardFragment;
+import com.example.gearoid.testchatapp.kryopackage.Packet;
+import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
 import com.example.gearoid.testchatapp.multiplayer.Session;
-import com.example.gearoid.testchatapp.singletons.Player;
+import com.example.gearoid.testchatapp.singletons.ServerInstance;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 
 public class GameSetupActivity extends ActionBarActivity implements CharacterListFragment.CharacterListFragListener {
@@ -275,35 +278,47 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         if (goodListAdapter.getCount() < goodCount || evilListAdapter.getCount() < evilCount) {
             ApplicationContext.showToast("Not enough characters!");
         } else {
-            Player p1 = new Player(); //TODO Testing purpose. Delete when done.
-            Player p2 = new Player();
-            Player p3 = new Player();
-            Player p4 = new Player();
-            Player p5 = new Player();
-            p1.userName = "Gearoid";
-            p2.userName = "Emily";
-            p3.userName = "Lemon";
-            p4.userName = "Kabuki";
-            p4.hasLadyOfLake = true;
-            p5.userName = "Mopsy";
-            Session.masterAllPlayers.add(p1);
-            Session.masterAllPlayers.add(p2);
-            Session.masterAllPlayers.add(p3);
-            Session.masterAllPlayers.add(p4);
-            Session.masterAllPlayers.add(p5);
+//            Player p1 = new Player(); //TODO Testing purpose. Delete when done.
+//            Player p2 = new Player();
+//            Player p3 = new Player();
+//            Player p4 = new Player();
+//            Player p5 = new Player();
+//            p1.userName = "Gearoid";
+//            p2.userName = "Emily";
+//            p3.userName = "Lemon";
+//            p4.userName = "Kabuki";
+//            p4.hasLadyOfLake = true;
+//            p5.userName = "Mopsy";
+//            Session.masterAllPlayers.add(p1);
+//            Session.masterAllPlayers.add(p2);
+//            Session.masterAllPlayers.add(p3);
+//            Session.masterAllPlayers.add(p4);
+//            Session.masterAllPlayers.add(p5);
 
-            //TODO Check if lady of lake is checked and assign it to somebody
-
+            checkAndAssignLadyOfLake();
             assignAllPlayersCharacters(getCombinedGoodAndEvilList());
             initialiseLeaderOrderedAllPlayers();
 
-            Session.gameBoard = currentBoard;
-            //TODO Send board to everyone...and arrayList of all players and characters???
+            final Packet.Packet_StartGame packet = (Packet.Packet_StartGame) PacketFactory.createPack(PacketFactory.PacketType.START_GAME);
 
-            Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra("BOARD", currentBoard);
+            packet.allPlayersBasic = new ArrayList<>();
+            packet.leaderOrderList = new ArrayList<>();
+            packet.allPlayersBasic.addAll(Session.allPlayersBasic);
+            packet.leaderOrderList.addAll(Session.leaderOrderList);
+            packet.currentBoard = currentBoard;
 
-            startActivity(intent);
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    ServerInstance.server.getServer().sendToAllTCP(packet);
+                }
+            };
+            thread.start();
+
+//            Intent intent = new Intent(this, GameActivity.class);
+//            intent.putExtra("BOARD", currentBoard);
+//
+//            startActivity(intent);
         }
 
 
@@ -329,6 +344,30 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         */
     }
 
+    public void checkAndAssignLadyOfLake(){
+        Log.d("GameSetup", "Checking if lady of lake has been checked");
+
+        if(ladyOfLake){
+            Log.d("GameSetup", "Assigning lady of lake");
+
+            Random ran = new Random();
+            final int randomIndex = ran.nextInt(Session.allPlayersBasic.size());
+
+            Session.allPlayersBasic.get(randomIndex).hasLadyOfLake = true;
+            final Packet.Packet_IsLadyOfLake packet = (Packet.Packet_IsLadyOfLake) PacketFactory.createPack(PacketFactory.PacketType.IS_LADYOFLAKE);
+            packet.isLadyOfLake = true;
+
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    Session.masterAllPlayers.get(randomIndex).playerConnection.sendTCP(packet);
+                }
+            };
+            thread.start();
+
+        }
+    }
+
     public ArrayList<ICharacter> getCombinedGoodAndEvilList() {
         ArrayList<ICharacter> aCharacters = new ArrayList<>();
 
@@ -349,11 +388,11 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
 
         Log.d("GameSetup", "Assigning players characters");
 
-        if (chosenCharacters.size() == Session.masterAllPlayers.size()) {
+        if (chosenCharacters.size() == Session.allPlayersBasic.size()) {
 
-            for (int i = 0; i < Session.masterAllPlayers.size(); i++) {
+            for (int i = 0; i < Session.allPlayersBasic.size(); i++) {
                 Log.d("GameSetup", "Character: " + chosenCharacters.get(i).getCharacterName());
-                Session.masterAllPlayers.get(i).character = chosenCharacters.get(i);
+                Session.allPlayersBasic.get(i).character = chosenCharacters.get(i);
             }
         }
     }
@@ -362,15 +401,15 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         Session.leaderOrderList = new ArrayList<Integer>();
         Session.leaderOrderIterator = 0;
 
-        for(int i=0; i < Session.masterAllPlayers.size(); i++){
+        for(int i=0; i < Session.allPlayersBasic.size(); i++){
             Session.leaderOrderList.add(i);
             Log.d("GameSetup", "leaderOrderList - " +  Session.leaderOrderList.get(i));
         }
 
         Collections.shuffle(Session.leaderOrderList);
 
-        if(!Session.masterAllPlayers.isEmpty()){
-            Session.masterAllPlayers.get(Session.leaderOrderList.get(Session.leaderOrderIterator)).isLeader = true;
+        if(!Session.allPlayersBasic.isEmpty()){
+            Session.allPlayersBasic.get(Session.leaderOrderList.get(Session.leaderOrderIterator)).isLeader = true;
         }
 
 //        Session.leaderOrderAllPlayers = new ArrayList<Player>();

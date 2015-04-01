@@ -21,5 +21,6 @@ public class ServerSession {
 
     public void host() {
         ServerInstance.getServerInstance().getServer().start();
+
     }
 }

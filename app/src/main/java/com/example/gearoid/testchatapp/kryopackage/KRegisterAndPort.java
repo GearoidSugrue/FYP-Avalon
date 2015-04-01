@@ -5,6 +5,8 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.example.gearoid.testchatapp.kryopackage.Packet.*;
 import com.example.gearoid.testchatapp.character.*;
+import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
+import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.Player;
 
 /**
@@ -28,6 +30,26 @@ public class KRegisterAndPort {
         kryo.register(Packet.class);
         kryo.register(Packet_RequestDetails.class);
         kryo.register(Packet_SendDetails.class);
+
+        kryo.register(Packet_StartGame.class);
+        kryo.register(Packet_IsLadyOfLake.class);
+        kryo.register(Packet_TeamVote.class);
+        kryo.register(Packet_TeamVoteResult.class);
+        kryo.register(Packet_QuestVote.class);
+
+        kryo.register(Packet_SelectTeam.class);
+
+
+
+
+
+
+
+
+
+
+
+        kryo.register(packet10_LadyOfLakeToken.class);
 
 
         kryo.register(Packet00_ClientDetails.class);
@@ -54,11 +76,20 @@ public class KRegisterAndPort {
         kryo.register(Percival.class);
         kryo.register(Assassin.class);
 
+        //kryo.register(Board.class); //enum board???
         kryo.register(Player.class);
+        kryo.register(PlayerBasic.class);
+        kryo.register(com.example.gearoid.testchatapp.multiplayer.Session.GameState.class);
+
+        kryo.register(com.example.gearoid.testchatapp.GameLogicFunctions.Board.class);
+        kryo.register(com.example.gearoid.testchatapp.GameLogicFunctions.Quest.class);
         //kryo.register(com.esotericsoftware.kryonet.Client.class);
         kryo.register(Connection.class);
+        kryo.register(com.esotericsoftware.kryonet.Server.class);
+        kryo.register(com.esotericsoftware.kryonet.Connection[].class);
 
         kryo.register(java.util.LinkedList.class);
+        kryo.register(java.util.ArrayList.class);
         
         
 

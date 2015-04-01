@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.gearoid.testchatapp.GameLogicFunctions;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
+import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.Player;
 
@@ -35,8 +36,8 @@ public class TeamVoteResultFragment extends DialogFragment {
     ListView rejectedPlayersView;
     PlayerListViewAdapter adapterApprovedPlayers;
     PlayerListViewAdapter adapterRejectedPlayers;
-    ArrayList<Player> approvedPlayersArray;
-    ArrayList<Player> rejectedPlayersArray;
+    ArrayList<PlayerBasic> approvedPlayersArray;
+    ArrayList<PlayerBasic> rejectedPlayersArray;
     int questNumber;
     int voteNumber;
     boolean isAccepted;
@@ -78,12 +79,12 @@ public class TeamVoteResultFragment extends DialogFragment {
 
         for (int i = 0; i < playerApprovePos.length; i++) {
             Log.d("TeamVoteResultFragment", "adding player to adapterVictoriousPlayers. int[" + i + "] = " + playerApprovePos[i]);
-            approvedPlayersArray.add(Session.masterAllPlayers.get(playerApprovePos[i]));
+            approvedPlayersArray.add(Session.allPlayersBasic.get(playerApprovePos[i]));
         }
 
         for (int i = 0; i < playerRejectPos.length; i++) {
             Log.d("TeamVoteResultFragment", "adding player to adapterDefeatedPlayers. int[" + i + "] = " + playerRejectPos[i]);
-            rejectedPlayersArray.add(Session.masterAllPlayers.get(playerRejectPos[i]));
+            rejectedPlayersArray.add(Session.allPlayersBasic.get(playerRejectPos[i]));
         }
 
     }
@@ -101,7 +102,6 @@ public class TeamVoteResultFragment extends DialogFragment {
 
         approvedPlayersView = (ListView) rootView.findViewById(R.id.listview_votedApprove);
         rejectedPlayersView = (ListView) rootView.findViewById(R.id.listview_votedReject);
-
 
         if (!isAccepted) {
             TextView voteResult = (TextView) rootView.findViewById(R.id.textView_voteResult);

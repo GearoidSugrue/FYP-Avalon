@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.GameActivity;
 import com.example.gearoid.testchatapp.GameSetupActivity;
 import com.example.gearoid.testchatapp.kryopackage.Packet.*;
 import com.example.gearoid.testchatapp.character.ICharacter;
@@ -35,11 +36,32 @@ import com.example.gearoid.testchatapp.multiplayer.Session;
 public class ListenerClient extends Listener {
 
 	private Client client;
-	final AtomicInteger reconnectCount = new AtomicInteger();//Necessary???
+    IActivityClientListener activity;
+    final AtomicInteger reconnectCount = new AtomicInteger();//Necessary???
+
+    public interface IActivityClientListener {
+        void client_OnPacketReceived(String message);
+
+        void client_UpdateGameState(Session.GameState nextGameState);
+
+//        void clientStartTeamVoteDialog(int[] proposedTeam, GameLogicFunctions.Quest quest, int voteCount);
+//        void clientStartTeamVoteResultDialog(boolean isApproved, int[] playerApprovedPos, int[] playerRejectedPos, GameLogicFunctions.Quest quest, int voteNumber);
+
+        void client_OnTeamVoteReceived(Packet_TeamVote voteInfo);
+        void client_OnTeamVoteResultReceived(Packet_TeamVoteResult voteResultInfo);
+        void client_OnQuestVoteReceived(Packet_QuestVote questInfo);
+
+        void client_OnSelectTeamReceived(Packet_SelectTeam questInfo);
+
+    }
 
 	public void init(Client cl) {
 		this.client = cl;
 	}
+
+    public void setActivityClientListener(IActivityClientListener activity){
+        this.activity = activity;
+    }
 
 	public void connected(Connection arg0) {
 		System.out.println("[Client " + client.getID() + ", "
@@ -90,6 +112,54 @@ public class ListenerClient extends Listener {
         if (obj instanceof Packet_SendDetails){
             Player.getInstance().playerID = ((Packet_SendDetails) obj).newPlayerNumber;
         }
+        if (obj instanceof Packet_IsLadyOfLake){
+            Player.getInstance().hasLadyOfLake = ((Packet_IsLadyOfLake) obj).isLadyOfLake;
+        }
+        if(obj instanceof Packet_StartGame){
+            Packet_StartGame packet = (Packet_StartGame) obj;
+
+            Session.allPlayersBasic.addAll(packet.allPlayersBasic);
+            Session.leaderOrderList.addAll(packet.leaderOrderList);
+            Session.currentBoard = packet.currentBoard;
+
+            Player.instance.character = Session.allPlayersBasic.get(Player.instance.playerID).character;
+
+            Session.gameStatusText = "Waiting For Leader To Select Team";
+
+            Intent i = new Intent(ApplicationContext.getContext(), GameActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ApplicationContext.getContext().startActivity(i);
+        }
+        if(obj instanceof Packet_UpdateGameState){
+            Packet_UpdateGameState packet = (Packet_UpdateGameState) obj;
+
+            activity.client_UpdateGameState(packet.nextGameState);
+        }
+        if(obj instanceof Packet_TeamVote){
+            Packet_TeamVote packet = (Packet_TeamVote) obj;
+
+            activity.client_OnTeamVoteReceived(packet);
+            //activity.clientStartTeamVoteDialog(packet.proposedTeam, packet.quest, packet.voteCount);
+        }
+        if(obj instanceof Packet_TeamVoteResult){
+            Packet_TeamVoteResult packet = (Packet_TeamVoteResult) obj;
+
+            activity.client_OnTeamVoteResultReceived(packet);
+            //activity.clientStartTeamVoteResultDialog(packet.isApproved, packet.playerApprovedPos, packet.playerRejectedPos, packet.quest, packet.voteNumber);
+        }
+        if (obj instanceof  Packet_QuestVote){
+            Packet_QuestVote packet = (Packet_QuestVote) obj;
+
+            activity.client_OnQuestVoteReceived(packet);
+        }
+
+
+        if(obj instanceof Packet_SelectTeam){
+            Packet_SelectTeam packet = (Packet_SelectTeam) obj;
+
+            activity.client_OnSelectTeamReceived(packet);
+        }
+
 
 
         if (obj instanceof Packet00_ClientDetails) {

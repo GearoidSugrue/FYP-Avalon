@@ -15,6 +15,7 @@ import android.widget.ListView;
 import com.example.gearoid.testchatapp.GameLogicFunctions;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
+import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.Player;
 
@@ -38,9 +39,9 @@ public class TeamVoteFragment extends DialogFragment {
     PlayerListViewAdapter adapterProposedTeam;
     PlayerListViewAdapter adapterCurrentLeader;
     PlayerListViewAdapter adapterNextLeader;
-    ArrayList<Player> proposedPlayersArray;
-    ArrayList<Player> currentLeaderArray;
-    ArrayList<Player> nextLeaderArray;
+    ArrayList<PlayerBasic> proposedPlayersArray;
+    ArrayList<PlayerBasic> currentLeaderArray;
+    ArrayList<PlayerBasic> nextLeaderArray;
     int questNumber;
     int voteCount;
 
@@ -83,11 +84,11 @@ public class TeamVoteFragment extends DialogFragment {
 
         for(int i=0; i < playerPos.length; i++){
             Log.d("TeamVoteFrag", "adding player to adapterVictoriousPlayers. int[" + i + "] = " + playerPos[i]);
-            proposedPlayersArray.add(Session.masterAllPlayers.get(playerPos[i]));
+            proposedPlayersArray.add(Session.allPlayersBasic.get(playerPos[i]));
         }
 
-        currentLeaderArray.add(Session.masterAllPlayers.get(GameLogicFunctions.getCurrentLeaderIndexInAllPlayerList()));
-        nextLeaderArray.add(Session.masterAllPlayers.get(GameLogicFunctions.getNextLeaderIndexInAllPlayerList()));
+        currentLeaderArray.add(Session.allPlayersBasic.get(GameLogicFunctions.getCurrentLeaderIndexInAllPlayerList()));
+        nextLeaderArray.add(Session.allPlayersBasic.get(GameLogicFunctions.getNextLeaderIndexInAllPlayerList()));
     }
 
     @Override

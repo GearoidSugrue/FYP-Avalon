@@ -18,6 +18,7 @@ import com.example.gearoid.testchatapp.DrawableFactory;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.character.EvilCharacter;
+import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.Player;
 
@@ -34,8 +35,8 @@ public class LadyOfLakeFragment extends DialogFragment {
     ListView candidatePlayersView;
     PlayerListViewAdapter adapterChosenPlayer;
     PlayerListViewAdapter adapterCandidatePlayers;
-    ArrayList<Player> chosenPlayerArray;
-    ArrayList<Player> candidatePlayersArray;
+    ArrayList<PlayerBasic> chosenPlayerArray;
+    ArrayList<PlayerBasic> candidatePlayersArray;
     boolean isFinished = false;
     int playerIndex = 0;
 
@@ -70,7 +71,7 @@ public class LadyOfLakeFragment extends DialogFragment {
         chosenPlayerArray = new ArrayList<>();
 
         candidatePlayersArray = new ArrayList<>();
-        candidatePlayersArray.addAll(Session.masterAllPlayers);
+        candidatePlayersArray.addAll(Session.allPlayersBasic);
     }
 
     @Override
@@ -124,7 +125,7 @@ public class LadyOfLakeFragment extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Player player = (Player) parent.getItemAtPosition(position);
+                PlayerBasic player = (PlayerBasic) parent.getItemAtPosition(position);
                 Log.d("LadyOfLakeFragment", "Player clicked:" + player.userName);
 
                 if (!isFinished) {
@@ -140,7 +141,7 @@ public class LadyOfLakeFragment extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Player player = (Player) parent.getItemAtPosition(position);
+                PlayerBasic player = (PlayerBasic) parent.getItemAtPosition(position);
                 Log.d("LadyOfLakeFragment", "Player clicked:" + player.userName);
 
                 if (!isFinished) {
@@ -191,7 +192,7 @@ public class LadyOfLakeFragment extends DialogFragment {
     public void useLadyOfLake() {
 
         isFinished = true;
-        Player player = adapterChosenPlayer.getItem(0);
+        PlayerBasic player = adapterChosenPlayer.getItem(0);
         final ImageView chosenPlayer = (ImageView) mContentView.findViewById(R.id.imageView_ladyOfLakeloyaltyCard);
         TextView result = (TextView) mContentView.findViewById(R.id.textView_ladyOfLakeResult);
 

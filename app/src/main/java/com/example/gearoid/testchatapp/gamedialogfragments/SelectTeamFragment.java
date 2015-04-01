@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.gearoid.testchatapp.ApplicationContext;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
+import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.Player;
 
@@ -31,8 +32,8 @@ public class SelectTeamFragment extends DialogFragment {
     ListView candidatePlayersView;
     PlayerListViewAdapter adapterChosenTeam;
     PlayerListViewAdapter adapterCandidatePlayers;
-    ArrayList<Player> chosenTeamArray;
-    ArrayList<Player> candidatePlayersArray;
+    ArrayList<PlayerBasic> chosenTeamArray;
+    ArrayList<PlayerBasic> candidatePlayersArray;
     int teamSize;
     int questNumber;
 
@@ -67,7 +68,7 @@ public class SelectTeamFragment extends DialogFragment {
         chosenTeamArray = new ArrayList<>();
 
         candidatePlayersArray = new ArrayList<>();
-        candidatePlayersArray.addAll(Session.masterAllPlayers);
+        candidatePlayersArray.addAll(Session.allPlayersBasic);
     }
 
     @Override
@@ -87,8 +88,6 @@ public class SelectTeamFragment extends DialogFragment {
         chosenTeamView = (ListView) rootView.findViewById(R.id.listview_chosenTeam);
         candidatePlayersView = (ListView) rootView.findViewById(R.id.listview_teamCandidates);
 
-        // randomiseCardOrder();
-
         return rootView;
     }
 
@@ -106,8 +105,6 @@ public class SelectTeamFragment extends DialogFragment {
         candidatePlayersView.setAdapter(adapterCandidatePlayers);
 
         setListViewOnclickListeners();
-
-        //int deviceConfig = getActivity().getResources().getConfiguration().orientation;
 
         if (teamSize < 4) {
             View item = adapterCandidatePlayers.getView(0, null, candidatePlayersView);
@@ -129,7 +126,7 @@ public class SelectTeamFragment extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Player player = (Player) parent.getItemAtPosition(position);
+                PlayerBasic player = (PlayerBasic) parent.getItemAtPosition(position);
                 Log.d("SelectTeam Fragment", "Player clicked:" + player.userName);
 
                 if(adapterChosenTeam.getCount() < teamSize){
@@ -145,7 +142,7 @@ public class SelectTeamFragment extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Player player = (Player) parent.getItemAtPosition(position);
+                PlayerBasic player = (PlayerBasic) parent.getItemAtPosition(position);
                 Log.d("SelectTeam Fragment", "Player clicked:" + player.userName);
 
                 adapterChosenTeam.remove(player);

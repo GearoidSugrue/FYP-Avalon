@@ -82,7 +82,8 @@ public class WiFiDirectActivity extends ActionBarActivity implements ChannelList
 
         if (isHost) {
             groupOwnerIntent = 15;
-            ServerInstance.getServerInstance().startServer();//Start KryoNet server
+//            ServerInstance.getServerInstance().startServer();//Start KryoNet server
+            ServerInstance.server.getServer().start();
         }
 
     }

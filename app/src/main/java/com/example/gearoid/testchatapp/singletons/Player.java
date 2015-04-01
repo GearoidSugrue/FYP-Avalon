@@ -12,7 +12,7 @@ public class Player {
 
     //PlayerConnectionID playerConId = new PlayerConnectionID();
 
-    private static Player instance;
+    public static Player instance;
 
     public int playerID = -1;
     public Connection playerConnection = null;

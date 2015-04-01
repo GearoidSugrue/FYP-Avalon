@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.gearoid.testchatapp.multiplayer.Session;
+
 /**
  * Created by gearoid on 22/03/15.
  */
@@ -20,9 +22,13 @@ public class GameBoardFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.d("gameBoardFrag", "onActivityCreated called");
 
-        gameBoard = (GameLogicFunctions.Board) getActivity().getIntent().getSerializableExtra("BOARD");
-        Log.d("gameBoardFrag", "Got activity intent" + gameBoard);
+
+//        gameBoard = (GameLogicFunctions.Board) getActivity().getIntent().getSerializableExtra("BOARD");
+//        Log.d("gameBoardFrag", "Got activity intent" + gameBoard);
+
+        gameBoard = Session.currentBoard;
 
         ImageView boardImage = (ImageView) mContentView.findViewById(R.id.imageView_gameBoard);
 

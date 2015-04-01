@@ -1,8 +1,12 @@
 package com.example.gearoid.testchatapp.kryopackage;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
+import com.example.gearoid.testchatapp.GameLogicFunctions;
 import com.example.gearoid.testchatapp.character.ICharacter;
+import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
+import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.Player;
 
 //package com.example.gearoid.testchatapp.kyro;
@@ -15,6 +19,18 @@ public class Packet {
 
     public static class Packet_RequestDetails extends Packet { public Player player; }
     public static class Packet_SendDetails extends Packet { public int newPlayerNumber = -1;}
+
+    public static class Packet_TeamVote extends Packet { public int[] proposedTeam; public GameLogicFunctions.Quest quest; public int voteCount;}
+    public static class Packet_TeamVoteResult extends Packet { public boolean isApproved; public int[] playerApprovedPos; public int[] playerRejectedPos; public GameLogicFunctions.Quest quest; public int voteNumber;}
+    public static class Packet_QuestVote extends Packet { public int[] teamMemberPos; public GameLogicFunctions.Quest quest;}
+
+    public static class Packet_SelectTeam extends Packet { public int teamSize; public GameLogicFunctions.Quest quest;}
+
+
+    public static class Packet_StartGame extends Packet { public ArrayList<PlayerBasic> allPlayersBasic; public ArrayList<Integer> leaderOrderList; public GameLogicFunctions.Board currentBoard;}
+    public static class Packet_IsLadyOfLake extends Packet { public boolean isLadyOfLake;}
+
+    public static class Packet_UpdateGameState extends Packet {public Session.GameState nextGameState;}
 
     public static class Packet00_ClientDetails  extends Packet { public String playerName = "nobody";} //need to be public to be accessed outside the package
     public static class Packet0_Phase_Leader  extends Packet { }

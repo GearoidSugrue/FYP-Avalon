@@ -7,7 +7,8 @@ import com.example.gearoid.testchatapp.kryopackage.Packet.*;
 public class PacketFactory {
 
     public enum PacketType {
-        REQUEST_DETAILS, SEND_DETAILS
+        REQUEST_DETAILS, SEND_DETAILS, START_GAME, IS_LADYOFLAKE, UPDATE_GAMESTATE, TEAM_VOTE,
+        TEAM_VOTE_RESULT, QUEST_VOTE,       SELECT_TEAM
 
     }
 
@@ -16,6 +17,13 @@ public class PacketFactory {
         switch(nameEnum) {
             case REQUEST_DETAILS: return new Packet_RequestDetails();
             case SEND_DETAILS: return new Packet_SendDetails();
+            case START_GAME: return new Packet_StartGame();
+            case IS_LADYOFLAKE: return new Packet_IsLadyOfLake();
+            case UPDATE_GAMESTATE: return new Packet_UpdateGameState();
+            case TEAM_VOTE: return new Packet_TeamVote();
+            case TEAM_VOTE_RESULT: return new Packet_TeamVoteResult();
+            case QUEST_VOTE: return new Packet_QuestVote();
+            case SELECT_TEAM: return new Packet_SelectTeam();
 
 
             default:

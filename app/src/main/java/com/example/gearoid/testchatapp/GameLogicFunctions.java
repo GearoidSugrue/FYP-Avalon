@@ -1,6 +1,8 @@
 package com.example.gearoid.testchatapp;
 
+import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
 import com.example.gearoid.testchatapp.multiplayer.Session;
+import com.example.gearoid.testchatapp.singletons.Player;
 
 /**
  * Created by gearoid on 25/03/15.
@@ -89,8 +91,8 @@ public class GameLogicFunctions {
     }
 
     public static void setNextLeader() {
-        Session.masterAllPlayers.get(getCurrentLeaderIndexInAllPlayerList()).isLeader = false;
-        Session.masterAllPlayers.get(getNextLeaderIndexInAllPlayerList()).isLeader = true;
+        Session.allPlayersBasic.get(getCurrentLeaderIndexInAllPlayerList()).isLeader = false;
+        Session.allPlayersBasic.get(getNextLeaderIndexInAllPlayerList()).isLeader = true;
         if (Session.leaderOrderIterator == Session.leaderOrderList.size() - 1) {
             Session.leaderOrderIterator = 0;
         } else {
@@ -131,6 +133,10 @@ public class GameLogicFunctions {
             }
         }
         return 1;
+    }
+
+    public static PlayerBasic getUserPlayer(){
+        return Session.allPlayersBasic.get(Player.getInstance().playerID);
     }
 
 }

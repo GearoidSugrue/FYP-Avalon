@@ -15,10 +15,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.gearoid.testchatapp.DrawableFactory;
+import com.example.gearoid.testchatapp.GameLogicFunctions;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.character.CharacterFactory;
 import com.example.gearoid.testchatapp.character.ICharacter;
+import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.Player;
 
@@ -32,7 +34,7 @@ public class PlayerCharacterFragment extends DialogFragment {
     View mContentView = null;
     ListView visiblePlayersView;
     PlayerListViewAdapter adapterVisiblePlayers;
-    ArrayList<Player> visiblePlayersArray;
+    ArrayList<PlayerBasic> visiblePlayersArray;
     String characterName;
 
     public static PlayerCharacterFragment newInstance() {
@@ -41,8 +43,8 @@ public class PlayerCharacterFragment extends DialogFragment {
 
         PlayerCharacterFragment frag = new PlayerCharacterFragment();
 
-        Player.getInstance().character = CharacterFactory.createPlayer(CharacterFactory.CharacterType.MERLIN); //TODO delete this...
-        Player.getInstance().character.setCharacterName("Merlin");
+//        Player.getInstance().character = CharacterFactory.createPlayer(CharacterFactory.CharacterType.MERLIN); //TODO delete this...
+//        Player.getInstance().character.setCharacterName("Merlin");
 
 //        Bundle args = new Bundle();
         //args.putSerializable("BOARD", currentBoard);
@@ -67,14 +69,14 @@ public class PlayerCharacterFragment extends DialogFragment {
 //        questNumber = extras.getInt("QUEST_NUM");
 
 
-        ICharacter playerCharacter = Player.getInstance().character;
+        ICharacter playerCharacter = GameLogicFunctions.getUserPlayer().character;
         characterName = playerCharacter.getCharacterName();
 
         visiblePlayersArray = new ArrayList<>();
 
-        for (int i = 0; i < Session.masterAllPlayers.size(); i++) {
+        for (int i = 0; i < Session.allPlayersBasic.size(); i++) {
 
-            Player otherPlayer = Session.masterAllPlayers.get(i);
+            PlayerBasic otherPlayer = Session.allPlayersBasic.get(i);
 
             if (otherPlayer.character.isVisableTo(playerCharacter)) {
                 Log.d("PlayerCharacterFragment", otherPlayer.character + " is visible to player (" + playerCharacter + ")");

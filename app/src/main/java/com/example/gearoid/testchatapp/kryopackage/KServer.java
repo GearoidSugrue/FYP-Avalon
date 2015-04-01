@@ -4,6 +4,7 @@ package com.example.gearoid.testchatapp.kryopackage;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
+import com.example.gearoid.testchatapp.multiplayer.Session;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -23,7 +24,9 @@ public class KServer {
 		
 		KRegisterAndPort.register(server);// Import KryoRegisterAndPort to remove 'KryoRegisterAndPort.'
 
-		server.addListener(new ListenerServer());
+        Session.serverListener = ListenerServer.initialize();
+
+		server.addListener(Session.serverListener);
 		
 //		ClientNetListener netListener = new ClientNetListener();
 //		netListener.init(client);
