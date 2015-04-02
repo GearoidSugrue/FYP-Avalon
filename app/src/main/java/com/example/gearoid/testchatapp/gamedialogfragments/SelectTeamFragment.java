@@ -16,9 +16,8 @@ import android.widget.TextView;
 import com.example.gearoid.testchatapp.ApplicationContext;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
-import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
+import com.example.gearoid.testchatapp.multiplayer.Player;
 import com.example.gearoid.testchatapp.multiplayer.Session;
-import com.example.gearoid.testchatapp.singletons.Player;
 
 import java.util.ArrayList;
 
@@ -32,8 +31,8 @@ public class SelectTeamFragment extends DialogFragment {
     ListView candidatePlayersView;
     PlayerListViewAdapter adapterChosenTeam;
     PlayerListViewAdapter adapterCandidatePlayers;
-    ArrayList<PlayerBasic> chosenTeamArray;
-    ArrayList<PlayerBasic> candidatePlayersArray;
+    ArrayList<Player> chosenTeamArray;
+    ArrayList<Player> candidatePlayersArray;
     int teamSize;
     int questNumber;
 
@@ -68,7 +67,7 @@ public class SelectTeamFragment extends DialogFragment {
         chosenTeamArray = new ArrayList<>();
 
         candidatePlayersArray = new ArrayList<>();
-        candidatePlayersArray.addAll(Session.allPlayersBasic);
+        candidatePlayersArray.addAll(Session.allPlayers);
     }
 
     @Override
@@ -126,7 +125,7 @@ public class SelectTeamFragment extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                PlayerBasic player = (PlayerBasic) parent.getItemAtPosition(position);
+                Player player = (Player) parent.getItemAtPosition(position);
                 Log.d("SelectTeam Fragment", "Player clicked:" + player.userName);
 
                 if(adapterChosenTeam.getCount() < teamSize){
@@ -142,7 +141,7 @@ public class SelectTeamFragment extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                PlayerBasic player = (PlayerBasic) parent.getItemAtPosition(position);
+                Player player = (Player) parent.getItemAtPosition(position);
                 Log.d("SelectTeam Fragment", "Player clicked:" + player.userName);
 
                 adapterChosenTeam.remove(player);

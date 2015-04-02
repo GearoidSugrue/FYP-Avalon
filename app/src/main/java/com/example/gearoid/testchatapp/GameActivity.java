@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.gearoid.testchatapp.character.Assassin;
-import com.example.gearoid.testchatapp.character.EvilCharacter;
 import com.example.gearoid.testchatapp.gamedialogfragments.AssassinateFragment;
 import com.example.gearoid.testchatapp.gamedialogfragments.GameFinishedFragment;
 import com.example.gearoid.testchatapp.gamedialogfragments.LadyOfLakeFragment;
@@ -29,7 +28,12 @@ import com.example.gearoid.testchatapp.gamedialogfragments.TeamVoteResultFragmen
 import com.example.gearoid.testchatapp.kryopackage.ListenerClient;
 import com.example.gearoid.testchatapp.kryopackage.ListenerServer;
 import com.example.gearoid.testchatapp.kryopackage.Packet;
-import com.example.gearoid.testchatapp.singletons.Player;
+import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
+import com.example.gearoid.testchatapp.multiplayer.Session;
+import com.example.gearoid.testchatapp.singletons.PlayerConnection;
+import com.example.gearoid.testchatapp.singletons.ServerInstance;
+
+import java.util.ArrayList;
 
 import static com.example.gearoid.testchatapp.GameLogicFunctions.*;
 import static com.example.gearoid.testchatapp.multiplayer.Session.*;
@@ -74,11 +78,11 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         initialiseButtons();
 
         if (serverListener != null) {
-            serverListener.setActivityServerListener(this);
+            serverListener.attachActivityToServerListener(this);
         }
 
         if (clientListener != null) {
-            clientListener.setActivityClientListener(this);
+            clientListener.attachActivityToClientListener(this);
         }
 
 
@@ -131,8 +135,8 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             @Override
             public void onClick(View v) {
 
-                DialogFragment newFragment = TeamVoteFragment.newInstance(new int[]{0, 1}, 1, 3); //TODO change to voteCount + QuestCount
-                newFragment.show(getFragmentManager(), "teamdialog");
+//                DialogFragment newFragment = TeamVoteFragment.newInstance(new int[]{0, 1}, 1, 3); //TODO change to voteCount + QuestCount
+//                newFragment.show(getFragmentManager(), "teamdialog");
             }
         });
 
@@ -140,8 +144,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             @Override
             public void onClick(View v) {
 
-                DialogFragment newFragment = QuestVoteFragment.newInstance(new int[]{0, 1}, Player.getInstance().character instanceof EvilCharacter, 1); //TODO change to questNum...
-                newFragment.show(getFragmentManager(), "questdialog");
+
             }
         });
 
@@ -149,8 +152,8 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             @Override
             public void onClick(View v) {
 
-                DialogFragment newFragment = SelectTeamFragment.newInstance(3, 2); //TODO change to questNum...
-                newFragment.show(getFragmentManager(), "teamselectdialog");
+//                DialogFragment newFragment = SelectTeamFragment.newInstance(3, 2); //TODO change to questNum...
+//                newFragment.show(getFragmentManager(), "teamselectdialog");
             }
         });
 
@@ -182,8 +185,8 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             @Override
             public void onClick(View v) {
 
-                DialogFragment newFragment = TeamVoteResultFragment.newInstance(false, new int[]{0, 1}, new int[]{0, 1}, 2, 3); //TODO change to questNum...
-                newFragment.show(getFragmentManager(), "teamvoteresultdialog");
+//                DialogFragment newFragment = TeamVoteResultFragment.newInstance(false, new int[]{0, 1}, new int[]{0, 1}, 2, 3); //TODO change to questNum...
+//                newFragment.show(getFragmentManager(), "teamvoteresultdialog");
             }
         });
 
@@ -191,8 +194,8 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             @Override
             public void onClick(View v) {
 
-                DialogFragment newFragment = GameFinishedFragment.newInstance(true, new int[]{0, 1}, new int[]{0, 1}); //TODO change to questNum...
-                newFragment.show(getFragmentManager(), "teamvoteresultdialog");
+//                DialogFragment newFragment = GameFinishedFragment.newInstance(true, new int[]{0, 1}, new int[]{0, 1}); //TODO change to questNum...
+//                newFragment.show(getFragmentManager(), "teamvoteresultdialog");
             }
         });
 
@@ -209,8 +212,8 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             @Override
             public void onClick(View v) {
 
-                DialogFragment newFragment = QuestResultFragment.newInstance(new int[]{0, 1}, new boolean[]{true, true}, currentQuest, calculateFailRequiredForQuest(currentBoard, currentQuest)); //TODO change to questNum...
-                newFragment.show(getFragmentManager(), "questresultdialog");
+//                DialogFragment newFragment = QuestResultFragment.newInstance(new int[]{0, 1}, new boolean[]{true, true}, currentQuest, calculateFailRequiredForQuest(currentBoard, currentQuest)); //TODO change to questNum...
+//                newFragment.show(getFragmentManager(), "questresultdialog");
             }
         });
 
@@ -253,6 +256,9 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
 
     public void setTeamSelectState() {
 
+        voteCount++;
+        setNextLeader();
+
         if (getUserPlayer().isLeader) {
             updateGameStatusText("Your The Leader - Select A Team");
             teamSelectFrag.setVisibility(View.VISIBLE);
@@ -275,8 +281,11 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     }
 
     public void setQuestVoteState() {
+
+        voteCount = 0;
+
         if (getUserPlayer().isOnQuest) {
-            updateGameStatusText("Your On A Quest");
+            updateGameStatusText("Your On A Quest. Please Vote.");
             questVoteFrag.setVisibility(View.VISIBLE);
         } else {
             updateGameStatusText("Waiting For Quest Team");
@@ -328,89 +337,216 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void onVoteSelected(boolean voteResult) {
         Log.d("GameActivity", "Vote Result received from team vote dialog: " + voteResult);
 
-        //TODO Send vote result to server
+        Packet.Packet_TeamVoteReply packet = (Packet.Packet_TeamVoteReply) PacketFactory.createPack(PacketFactory.PacketType.TEAM_VOTE_REPLY);
+        packet.vote = voteResult;
+        packet.playerID = PlayerConnection.getInstance().playerID;
+
+        Session.client_sendPacketToServer(packet);
     }
 
     @Override
     public void onQuestVoteSelected(boolean voteResult) {
         Log.d("GameActivity", "Vote Result received from quest vote dialog: " + voteResult);
 
-        //TODO Send vote result to server
+        Packet.Packet_QuestVoteReply packet = (Packet.Packet_QuestVoteReply) PacketFactory.createPack(PacketFactory.PacketType.QUEST_VOTE_REPLY);
+        packet.vote = voteResult;
+        packet.playerID = PlayerConnection.getInstance().playerID;
 
+        Session.client_sendPacketToServer(packet);
     }
 
     @Override
     public void onTeamSelected(int[] teamIndexes) {
         Log.d("GameActivity", "Team selected received from TeamSelect dialog.");
-        //TODO Send player indexes to server result to server
 
+        Packet.Packet_SelectTeamReply packet = (Packet.Packet_SelectTeamReply) PacketFactory.createPack(PacketFactory.PacketType.SELECT_TEAM_REPLY);
+        packet.teamPos = teamIndexes;
+        packet.playerID = PlayerConnection.getInstance().playerID;
 
+        Session.client_sendPacketToServer(packet);
     }
 
     @Override
     public void onAssassination(boolean isSuccess) {
         Log.d("GameActivity", "OnAssassinate received from Assassinate dialog. Result: " + isSuccess);
-        //TODO Send info to server
 
+        Packet.Packet_AssassinateReply packet = (Packet.Packet_AssassinateReply) PacketFactory.createPack(PacketFactory.PacketType.ASSASSINATE_REPLY);
+        packet.isSuccess = isSuccess;
+        packet.playerID = PlayerConnection.getInstance().playerID;
+
+        Session.client_sendPacketToServer(packet);
     }
 
     @Override
-    public void ladyOfLakeActivated(int playerIndex) {
-        Log.d("GameActivity", "LadyOfLakeActivated received from LadyOfLake dialog. Player ID " + playerIndex);
-        //TODO Send player info to server
+    public void ladyOfLakeActivated(int selectedPlayerIndex) {
+        Log.d("GameActivity", "LadyOfLakeActivated received from LadyOfLake dialog. Player ID " + selectedPlayerIndex);
 
+        Packet.Packet_LadyOfLakeReply packet = (Packet.Packet_LadyOfLakeReply) PacketFactory.createPack(PacketFactory.PacketType.LADYOFLAKE_REPLY);
+        packet.selectedPlayerIndex = selectedPlayerIndex;
+        packet.playerID = PlayerConnection.getInstance().playerID;
+
+        Session.client_sendPacketToServer(packet);
     }
 
     @Override
     public void onGameFinishedSelection(boolean playAgain) {
         Log.d("GameActivity", "GameFinished option received from GameFinished dialog. PlayAgain = " + playAgain);
-        //TODO Send info to server
 
+        Packet.Packet_GameFinishedReply packet = (Packet.Packet_GameFinishedReply) PacketFactory.createPack(PacketFactory.PacketType.GAME_FINISHED_REPLY);
+        packet.playAgain = playAgain;
+        packet.playerID = PlayerConnection.getInstance().playerID;
+
+        Session.client_sendPacketToServer(packet);
     }
 
     @Override
     public void onQuestVoteResultRevealed(int voteNumber, boolean voteResult) {
         Log.d("GameActivity", "QuestVoteResultRevealed from QuestResultDialog. Vote Number: " + voteNumber + ", Vote Result: " + voteResult);
-        //TODO Send info to server
 
+        Packet.Packet_QuestVoteResultRevealed packet = (Packet.Packet_QuestVoteResultRevealed) PacketFactory.createPack(PacketFactory.PacketType.QUESTVOTE_REVEALED);
+        packet.voteNumber = voteNumber;
+        packet.voteResult = voteResult;
+        packet.playerID = PlayerConnection.getInstance().playerID;
+
+        Session.client_sendPacketToServer(packet);
     }
 
     @Override
     public void onQuestVoteResultsFinished(boolean result) {
         Log.d("GameActivity", "onQuestVoteResultsFinished from QuestResultDialog. Quest Result: " + result);
-        //TODO Send info to server
 
+        Packet.Packet_QuestVoteResultFinished packet = (Packet.Packet_QuestVoteResultFinished) PacketFactory.createPack(PacketFactory.PacketType.QUESTVOTE_FINISHED);
+        packet.result = result;
+        packet.playerID = PlayerConnection.getInstance().playerID;
+
+        Session.client_sendPacketToServer(packet);
     }
 
     @Override
-    public void onPacketReceived(String message) {
-        Log.d("GameActivity", "onPacketReceived from ListenerServer. Message: " + message);
+    public void server_OnMessagePacketReceived(String message) {
+        Log.d("GameActivity", "server_OnMessagePacketReceived from ListenerServer. Message: " + message);
 
         ApplicationContext.showToast("IActivityServerListener Works!!!");
     }
 
     @Override
-    public void startTeamVoteDialog(int[] proposedTeam, int questNumber, int voteCount) {
-        Log.d("GameActivity", "startTeamVoteDialog from ListenerServer");
+    public void server_OnTeamVoteReplyReceived(Packet.Packet_TeamVoteReply voteInfo) {
+        Log.d("GameActivity", "server_OnTeamVoteReplyReceived from ListenerServer. Player ID: " + voteInfo.playerID);
+
+        teamVoteReplies.add(voteInfo);
+
+        if(teamVoteReplies.size() == Session.allPlayers.size()){
+
+            Packet.Packet_TeamVoteResult packetTeamVoteResult = (Packet.Packet_TeamVoteResult) PacketFactory.createPack(PacketFactory.PacketType.TEAM_VOTE_RESULT);
+            packetTeamVoteResult.quest = currentQuest;
+            packetTeamVoteResult.voteNumber = voteCount;
+            packetTeamVoteResult.playerApprovedPos = getApprovedPlayerPos(teamVoteReplies);
+            packetTeamVoteResult.playerRejectedPos = getRejectedPlayerPos(teamVoteReplies);
+
+            if(packetTeamVoteResult.playerApprovedPos.length > packetTeamVoteResult.playerRejectedPos.length){
+                packetTeamVoteResult.isApproved = true;
+
+                updateAllPlayersGameState(GameState.QUEST_VOTE);
+
+                Packet.Packet_QuestVote packetQuestVote = (Packet.Packet_QuestVote) PacketFactory.createPack(PacketFactory.PacketType.QUEST_VOTE);
+                packetQuestVote.quest = currentQuest;
+                packetQuestVote.teamMemberPos = currentProposedTeam;
+
+                server_sendToSelectedPlayers(currentProposedTeam, packetQuestVote);
+                teamVoteReplies.clear();
+                Session.server_sendToEveryone(packetTeamVoteResult);
+
+            } else {
+
+                if(voteCount > 4){ //Game Over, Evil Wins
+
+                    endGame(false);
+                } else {
+                    packetTeamVoteResult.isApproved = false;
+
+                    setNextVoteAndLeader();
+
+                    teamVoteReplies.clear();
+                    Session.server_sendToEveryone(packetTeamVoteResult);
+                }
+            }
+        }
+    }
+
+
+
+    @Override
+    public void server_OnQuestVoteReplyReceived(Packet.Packet_QuestVoteReply voteInfo) {
+        Log.d("GameActivity", "server_OnQuestVoteReplyReceived from ListenerServer");
 
     }
 
     @Override
-    public void startTeamVoteResultDialog() {
-        Log.d("GameActivity", "startTeamVoteResultDialog from ListenerServer");
+    public void server_OnSelectTeamReplyReceived(Packet.Packet_SelectTeamReply teamInfo) {
+        Log.d("GameActivity", "server_OnSelectTeamReplyReceived from ListenerServer");
+
+        Packet.Packet_TeamVote packet = (Packet.Packet_TeamVote) PacketFactory.createPack(PacketFactory.PacketType.TEAM_VOTE);
+        packet.proposedTeam = teamInfo.teamPos;
+        packet.quest = currentQuest;
+        packet.voteCount = voteCount;
+
+        teamVoteReplies = new ArrayList<>();
+
+        ServerInstance.server.getServer().sendToAllTCP(packet);
+    }
+
+    @Override
+    public void server_OnAssassinateReplyReceived(Packet.Packet_AssassinateReply assassinateInfo) {
+        Log.d("GameActivity", "server_OnAssassinateReplyReceived from ListenerServer");
+
+        Packet.Packet_GameFinished packet = (Packet.Packet_GameFinished) PacketFactory.createPack(PacketFactory.PacketType.GAME_FINISHED);
+
+        if(assassinateInfo.isSuccess){
+            packet.gameResult = false;
+        } else {
+            packet.gameResult = true;
+        }
+
+        ServerInstance.server.getServer().sendToAllTCP(packet);
+    }
+
+    @Override
+    public void server_OnLadyOfLakeReplyReceived(Packet.Packet_LadyOfLakeReply ladyOfLakeInfo) {
+        Log.d("GameActivity", "server_OnLadyOfLakeReplyReceived from ListenerServer");
+
+        Session.allPlayers.get(ladyOfLakeInfo.playerID).hasUsedLadyOfLake = true;
+        Session.allPlayers.get(ladyOfLakeInfo.selectedPlayerIndex).hasLadyOfLake = true;
+
+        Packet.Packet_GameFinished packet = (Packet.Packet_GameFinished) PacketFactory.createPack(PacketFactory.PacketType.GAME_FINISHED);
+
+       // packet
+
+        //ServerInstance.server.getServer().sendToAllTCP(packet);
+    }
+
+    @Override
+    public void server_OnGameFinishedReplyReceived(Packet.Packet_GameFinishedReply gameInfo) {
+        Log.d("GameActivity", "server_OnGameFinishedReplyReceived from ListenerServer");
 
     }
 
     @Override
-    public void client_OnPacketReceived(String message) {
-        Log.d("GameActivity", "client_OnPacketReceived from ListenerClient");
+    public void server_OnQuestVoteResultRevealedReceived(Packet.Packet_QuestVoteResultRevealed voteInfo) {
+        Log.d("GameActivity", "server_OnQuestVoteResultRevealedReceived from ListenerServer");
+
+        ServerInstance.server.getServer().sendToAllExceptTCP(Session.masterAllPlayerConnections.get(voteInfo.playerID).playerConnection.getID(), voteInfo);
+    }
+
+    @Override
+    public void client_OnMessagePacketReceived(String message) {
+        Log.d("GameActivity", "client_OnMessagePacketReceived from ListenerClient");
 
     }
 
     @Override
-    public void client_UpdateGameState(GameState nextGameState) {
-        Log.d("GameActivity", "client_UpdateGameState from ListenerClient");
-        currentGameState = nextGameState;
+    public void client_OnUpdateGameStateReceived(Packet.Packet_UpdateGameState nextGameStateInfo) {
+        Log.d("GameActivity", "client_OnUpdateGameStateReceived from ListenerClient");
+        currentGameState = nextGameStateInfo.nextGameState;
         checkGameStateAndUpdateScreen();
     }
 
@@ -478,7 +614,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         Log.d("GameActivity", "client_OnQuestVoteReceived from ListenerClient");
 
         questVoteFrag.setVisibility(View.VISIBLE);
-        final DialogFragment newFragment = QuestVoteFragment.newInstance(questInfo.teamMemberPos, GameLogicFunctions.getUserPlayer().character instanceof EvilCharacter , questInfo.quest.getValue());
+        final DialogFragment newFragment = QuestVoteFragment.newInstance(questInfo.teamMemberPos, GameLogicFunctions.getUserPlayer().character.getAllegiance(), questInfo.quest.getValue());
 
         questVoteFrag.setOnClickListener(null);
         questVoteFrag.setOnClickListener(new View.OnClickListener() {
@@ -491,6 +627,37 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         });
 
         newFragment.show(getFragmentManager(), "questdialog");
+    }
+
+    @Override
+    public void client_OnQuestVoteResultReceived(Packet.Packet_QuestVoteResult questResultInfo) {
+        Log.d("GameActivity", "client_OnQuestVoteResultReceived from ListenerClient");
+
+        questResultFrag.setVisibility(View.VISIBLE);
+        final DialogFragment newFragment = QuestResultFragment.newInstance(questResultInfo.teamMemberPos, questResultInfo.votes, questResultInfo.quest, GameLogicFunctions.calculateFailRequiredForQuest(currentBoard, questResultInfo.quest));
+
+        questResultFrag.setOnClickListener(null);
+        questResultFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("GameActivity", "questVoteFrag clicked, Starting questresultdialog.");
+
+                newFragment.show(getFragmentManager(), "questresultdialog");
+            }
+        });
+
+        newFragment.show(getFragmentManager(), "questresultdialog");
+    }
+
+    @Override
+    public void client_OnQuestVoteResultRevealed(Packet.Packet_QuestVoteResultRevealed voteInfo) {
+        Log.d("GameActivity", "client_OnQuestVoteResultRevealed from ListenerClient. VoteNumber: " + voteInfo.voteNumber + " voteResult: " + voteInfo.voteResult);
+
+        QuestResultFragment fragment = (QuestResultFragment) getFragmentManager().findFragmentByTag("questresultdialog");
+
+        if(fragment != null){
+            fragment.showVote(voteInfo.voteNumber, voteInfo.voteResult);
+        }
     }
 
     @Override
@@ -511,6 +678,27 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         });
 
         newFragment.show(getFragmentManager(), "teamselectdialog");
+    }
+
+    @Override
+    public void client_OnGameFinishedReceived(final Packet.Packet_GameFinished gameResultInfo) {
+        Log.d("GameActivity", "client_OnGameFinishedReceived from ListenerClient");
+
+        gameFinishedFrag.setVisibility(View.VISIBLE);
+        final DialogFragment newFragment = GameFinishedFragment.newInstance(gameResultInfo.gameResult, getEvilAllegiancePositions(), getGoodAllegiancePositions());
+
+        gameFinishedFrag.setOnClickListener(null);
+        gameFinishedFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("GameActivity", "teamSelectFrag clicked, Starting gamefinisheddialog.");
+
+                newFragment.show(getFragmentManager(), "gamefinisheddialog");
+            }
+        });
+
+        newFragment.show(getFragmentManager(), "gamefinisheddialog");
+
     }
 
 

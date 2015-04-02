@@ -5,9 +5,8 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.example.gearoid.testchatapp.kryopackage.Packet.*;
 import com.example.gearoid.testchatapp.character.*;
-import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
-import com.example.gearoid.testchatapp.multiplayer.Session;
-import com.example.gearoid.testchatapp.singletons.Player;
+import com.example.gearoid.testchatapp.multiplayer.Player;
+import com.example.gearoid.testchatapp.singletons.PlayerConnection;
 
 /**
  * Created by gearoid on 17/01/15.
@@ -36,13 +35,19 @@ public class KRegisterAndPort {
         kryo.register(Packet_TeamVote.class);
         kryo.register(Packet_TeamVoteResult.class);
         kryo.register(Packet_QuestVote.class);
-
+        kryo.register(Packet_QuestVoteResult.class);
         kryo.register(Packet_SelectTeam.class);
+        kryo.register(Packet_GameFinished.class);
 
 
-
-
-
+        kryo.register(Packet_TeamVoteReply.class);
+        kryo.register(Packet_QuestVoteReply.class);
+        kryo.register(Packet_SelectTeamReply.class);
+        kryo.register(Packet_AssassinateReply.class);
+        kryo.register(Packet_LadyOfLakeReply.class);
+        kryo.register(Packet_GameFinishedReply.class);
+        kryo.register(Packet_QuestVoteResultRevealed.class);
+        kryo.register(Packet_QuestVoteResultFinished.class);
 
 
 
@@ -77,8 +82,8 @@ public class KRegisterAndPort {
         kryo.register(Assassin.class);
 
         //kryo.register(Board.class); //enum board???
+        kryo.register(PlayerConnection.class);
         kryo.register(Player.class);
-        kryo.register(PlayerBasic.class);
         kryo.register(com.example.gearoid.testchatapp.multiplayer.Session.GameState.class);
 
         kryo.register(com.example.gearoid.testchatapp.GameLogicFunctions.Board.class);

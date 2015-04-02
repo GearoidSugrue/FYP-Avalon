@@ -4,13 +4,11 @@ public class EvilCharacter implements ICharacter {
 
 	boolean isLeader = false;
 	boolean hasLadyOfLake = false;
-	String characterName = ConstantsChara.MINION_OF_MORDRED;
+    public boolean isOnQuest = false;
+    String characterName = ConstantsChara.MINION_OF_MORDRED;
     String shortDescription = "Minion of Mordred";
 	String playerName = "";
 
-	//	public GoodCharacter(){		
-//	}
-	
 	@Override
 	public void setPlayerName(String playerName) {
 		this.playerName = playerName;		
@@ -20,50 +18,25 @@ public class EvilCharacter implements ICharacter {
 	public String getPlayerName() {
 		return this.playerName;
 	}
-	
-	@Override
-	public String getCharacterName() {
-		return characterName;
-	}
 
     @Override
     public void setCharacterName(String name) {
         characterName = name;
     }
 
+	@Override
+	public String getCharacterName() {
+		return characterName;
+	}
+
     @Override
     public String getShortDescription() {
         return shortDescription;
     }
 
-    @Override
-	public boolean getLeader() {
-		return isLeader;
-	}
 
 	@Override
-	public boolean getLadyOfLake() {
-		return hasLadyOfLake;
-	}
-
-	@Override
-	public void getVisablePlayers() {//return type ...string, players, etc????
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setLeader(boolean isLeader) {
-		this.isLeader = true;	
-	}
-
-	@Override
-	public void setLadyofLake(boolean hasLadyOfLake) {
-		this.hasLadyOfLake = true;
-	}
-
-	@Override
-	public boolean isVisableTo(ICharacter character) {
+	public boolean isVisibleTo(ICharacter character) {
 
 		if(character instanceof EvilCharacter && character instanceof Oberon == false){
 			return true;
@@ -72,4 +45,39 @@ public class EvilCharacter implements ICharacter {
 		}		
 		return false;
 	}
+
+    @Override
+    public boolean getAllegiance() {
+        return false;
+    }
+
+    @Override
+    public void setIsLeader(boolean isLeader) {
+        this.isLeader = isLeader;
+    }
+
+    @Override
+    public boolean getIsLeader() {
+        return this.isLeader;
+    }
+
+    @Override
+    public void setIsLadyOfLake(boolean hasLadyOfLake) {
+        this.hasLadyOfLake = hasLadyOfLake;
+    }
+
+    @Override
+    public boolean getIsLadyOfLake() {
+        return this.hasLadyOfLake;
+    }
+
+    @Override
+    public void setIsOnQuest(boolean isOnQuest) {
+        this.isOnQuest = isOnQuest;
+    }
+
+    @Override
+    public boolean getIsOnQuest() {
+        return this.isOnQuest;
+    }
 }

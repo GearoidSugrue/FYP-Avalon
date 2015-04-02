@@ -14,9 +14,8 @@ import android.widget.TextView;
 
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
-import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
+import com.example.gearoid.testchatapp.multiplayer.Player;
 import com.example.gearoid.testchatapp.multiplayer.Session;
-import com.example.gearoid.testchatapp.singletons.Player;
 
 import java.util.ArrayList;
 
@@ -33,12 +32,12 @@ public class GameFinishedFragment extends DialogFragment {
     ListView defeatedPlayersView;
     PlayerListViewAdapter adapterVictoriousPlayers;
     PlayerListViewAdapter adapterDefeatedPlayers;
-    ArrayList<PlayerBasic> victoriousPlayersArray;
-    ArrayList<PlayerBasic> defeatedPlayersArray;
+    ArrayList<Player> victoriousPlayersArray;
+    ArrayList<Player> defeatedPlayersArray;
     boolean gameResult;
 
 
-    public static GameFinishedFragment newInstance(boolean gameResult, int[] victoriousPlayersPositions, int[] defeatedPlayersPositions) {
+    public static GameFinishedFragment newInstance(boolean gameResult, int[] evilPlayersPositions, int[] goodPlayersPositions) {
         Log.d("GameFinishedFragment", "Creating instance of a GameFinishedFragment");
 
         GameFinishedFragment frag = new GameFinishedFragment();
@@ -46,8 +45,8 @@ public class GameFinishedFragment extends DialogFragment {
         // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putBoolean("GAME_RESULT", gameResult);
-        args.putIntArray("VICTORIOUS_PLAYER_POS", victoriousPlayersPositions);
-        args.putIntArray("DEFEATED_PLAYER_POS", defeatedPlayersPositions);
+        args.putIntArray("EVIL_PLAYER_POS", evilPlayersPositions);
+        args.putIntArray("GOOD_PLAYER_POS", goodPlayersPositions);
         frag.setArguments(args);
 
         return frag;
@@ -63,20 +62,28 @@ public class GameFinishedFragment extends DialogFragment {
 
         Bundle extras = getArguments();
         gameResult = extras.getBoolean("GAME_RESULT");
-        victoriousPlayerPos = extras.getIntArray("VICTORIOUS_PLAYER_POS");
-        defeatedPlayerPos = extras.getIntArray("DEFEATED_PLAYER_POS");
+        int[] evilPlayers = extras.getIntArray("EVIL_PLAYER_POS");
+        int[] goodPlayers= extras.getIntArray("GOOD_PLAYER_POS");
+
+        if(gameResult){
+            victoriousPlayerPos = goodPlayers;
+            defeatedPlayerPos = evilPlayers;
+        } else {
+            victoriousPlayerPos = evilPlayers;
+            defeatedPlayerPos = goodPlayers;
+        }
 
         victoriousPlayersArray = new ArrayList<>();
         defeatedPlayersArray = new ArrayList<>();
 
         for (int i = 0; i < victoriousPlayerPos.length; i++) {
             Log.d("GameFinishedFragment", "adding player to adapterVictoriousPlayers. int[" + i + "] = " + victoriousPlayerPos[i]);
-            victoriousPlayersArray.add(Session.allPlayersBasic.get(victoriousPlayerPos[i]));
+            victoriousPlayersArray.add(Session.allPlayers.get(victoriousPlayerPos[i]));
         }
 
         for (int i = 0; i < defeatedPlayerPos.length; i++) {
             Log.d("GameFinishedFragment", "adding player to adapterDefeatedPlayers. int[" + i + "] = " + defeatedPlayerPos[i]);
-            defeatedPlayersArray.add(Session.allPlayersBasic.get(defeatedPlayerPos[i]));
+            defeatedPlayersArray.add(Session.allPlayers.get(defeatedPlayerPos[i]));
         }
 
     }

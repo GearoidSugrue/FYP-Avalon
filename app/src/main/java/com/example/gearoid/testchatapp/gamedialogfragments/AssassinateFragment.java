@@ -18,9 +18,8 @@ import com.example.gearoid.testchatapp.DrawableFactory;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.character.Merlin;
-import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
+import com.example.gearoid.testchatapp.multiplayer.Player;
 import com.example.gearoid.testchatapp.multiplayer.Session;
-import com.example.gearoid.testchatapp.singletons.Player;
 
 import java.util.ArrayList;
 
@@ -35,8 +34,8 @@ public class AssassinateFragment extends DialogFragment {
     ListView candidatePlayersView;
     PlayerListViewAdapter adapterChosenPlayer;
     PlayerListViewAdapter adapterCandidatePlayers;
-    ArrayList<PlayerBasic> chosenPlayerArray;
-    ArrayList<PlayerBasic> candidatePlayersArray;
+    ArrayList<Player> chosenPlayerArray;
+    ArrayList<Player> candidatePlayersArray;
     boolean isFinished = false;
     boolean isSucess = false;
 
@@ -71,7 +70,7 @@ public class AssassinateFragment extends DialogFragment {
         chosenPlayerArray = new ArrayList<>();
 
         candidatePlayersArray = new ArrayList<>();
-        candidatePlayersArray.addAll(Session.allPlayersBasic);
+        candidatePlayersArray.addAll(Session.allPlayers);
     }
 
     @Override
@@ -125,7 +124,7 @@ public class AssassinateFragment extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                PlayerBasic player = (PlayerBasic) parent.getItemAtPosition(position);
+                Player player = (Player) parent.getItemAtPosition(position);
                 Log.d("AssassinateFragment", "Player clicked:" + player.userName);
 
                 if(!isFinished) {
@@ -141,7 +140,7 @@ public class AssassinateFragment extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                PlayerBasic player = (PlayerBasic) parent.getItemAtPosition(position);
+                Player player = (Player) parent.getItemAtPosition(position);
                 Log.d("AssassinateFragment", "Player clicked:" + player.userName);
 
                 if(!isFinished) {
@@ -191,7 +190,7 @@ public class AssassinateFragment extends DialogFragment {
 
         isFinished = true;
         TextView result = (TextView) mContentView.findViewById(R.id.textView_assassinResult);
-        PlayerBasic player = adapterChosenPlayer.getItem(0);
+        Player player = adapterChosenPlayer.getItem(0);
 
         if (player.character instanceof Merlin) {
             isSucess = true;

@@ -6,7 +6,7 @@ import com.example.gearoid.testchatapp.character.ICharacter;
 /**
  * Created by gearoid on 31/03/15.
  */
-public class PlayerBasic{
+public class Player {
 
 
     public int playerID = -1;
@@ -17,7 +17,9 @@ public class PlayerBasic{
     public boolean hasLadyOfLake = false;
     public boolean isOnQuest = false;
 
-    public PlayerBasic(){
+    public boolean hasUsedLadyOfLake = false;
+
+    public Player(){
 
     }
 }

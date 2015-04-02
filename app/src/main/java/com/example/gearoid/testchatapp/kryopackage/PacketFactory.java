@@ -8,8 +8,9 @@ public class PacketFactory {
 
     public enum PacketType {
         REQUEST_DETAILS, SEND_DETAILS, START_GAME, IS_LADYOFLAKE, UPDATE_GAMESTATE, TEAM_VOTE,
-        TEAM_VOTE_RESULT, QUEST_VOTE,       SELECT_TEAM
-
+        TEAM_VOTE_RESULT, QUEST_VOTE,  QUEST_VOTE_RESULT, SELECT_TEAM, GAME_FINISHED,
+        TEAM_VOTE_REPLY, QUEST_VOTE_REPLY, SELECT_TEAM_REPLY, ASSASSINATE_REPLY, LADYOFLAKE_REPLY, GAME_FINISHED_REPLY,
+        QUESTVOTE_REVEALED, QUESTVOTE_FINISHED
     }
 
     public static Packet createPack(PacketType nameEnum){
@@ -23,7 +24,20 @@ public class PacketFactory {
             case TEAM_VOTE: return new Packet_TeamVote();
             case TEAM_VOTE_RESULT: return new Packet_TeamVoteResult();
             case QUEST_VOTE: return new Packet_QuestVote();
+            case QUEST_VOTE_RESULT: return new Packet_QuestVoteResult();
             case SELECT_TEAM: return new Packet_SelectTeam();
+            case GAME_FINISHED: return new Packet_GameFinished();
+
+            case TEAM_VOTE_REPLY: return new Packet_TeamVoteReply();
+            case QUEST_VOTE_REPLY: return new Packet_QuestVoteReply();
+            case SELECT_TEAM_REPLY: return new Packet_SelectTeamReply();
+            case ASSASSINATE_REPLY: return new Packet_AssassinateReply();
+            case LADYOFLAKE_REPLY: return new Packet_LadyOfLakeReply();
+            case GAME_FINISHED_REPLY: return new Packet_GameFinishedReply();
+            case QUESTVOTE_REVEALED: return new Packet_QuestVoteResultRevealed();
+            case QUESTVOTE_FINISHED: return new Packet_QuestVoteResultFinished();
+
+
 
 
             default:

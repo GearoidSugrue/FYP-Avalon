@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import com.example.gearoid.testchatapp.singletons.Player;
+import com.example.gearoid.testchatapp.singletons.PlayerConnection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +22,13 @@ public class PlayerListFragment extends ListFragment {
 
     PlayerListAdapter listAdapter = null;
     View mContentView = null;
-    private List<Player> playerList = new ArrayList<Player>();
+    private List<PlayerConnection> playerConnectionList = new ArrayList<PlayerConnection>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        listAdapter = new PlayerListAdapter(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, playerList);
+        listAdapter = new PlayerListAdapter(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, playerConnectionList);
         setListAdapter(listAdapter);
 
 
@@ -49,9 +49,9 @@ public class PlayerListFragment extends ListFragment {
             @Override
             public void onItemClick(AdapterView<?> arg0, View v,
                                            int position, long id) {
-                Player player = (Player) getListAdapter().getItem(position);
-                Log.d("Fragment PlayerList", "Player clicked: " + player.userName);
-                ((PlayerListFragListener) getActivity()).playerClicked(player);
+                PlayerConnection playerConnection = (PlayerConnection) getListAdapter().getItem(position);
+                Log.d("Fragment PlayerList", "Player clicked: " + playerConnection.userName);
+                ((PlayerListFragListener) getActivity()).playerClicked(playerConnection);
             }
         });
 
@@ -60,9 +60,9 @@ public class PlayerListFragment extends ListFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View v,
                                            int position, long id) {
-                Player player = (Player) getListAdapter().getItem(position);
-                Log.d("Fragment PlayerList", "Player Long clicked: " + player.userName);
-                ((PlayerListFragListener) getActivity()).playerLongClicked(player);
+                PlayerConnection playerConnection = (PlayerConnection) getListAdapter().getItem(position);
+                Log.d("Fragment PlayerList", "Player Long clicked: " + playerConnection.userName);
+                ((PlayerListFragListener) getActivity()).playerLongClicked(playerConnection);
 
                 return true;
             }
@@ -80,19 +80,19 @@ public class PlayerListFragment extends ListFragment {
         return mContentView;
     }
 
-    public class PlayerListAdapter extends ArrayAdapter<Player> {
+    public class PlayerListAdapter extends ArrayAdapter<PlayerConnection> {
 
-        private List<Player> items;
+        private List<PlayerConnection> items;
 
         /**
          * @param context
          * @param textViewResourceId
-         * @param players
+         * @param playerConnections
          */
         public PlayerListAdapter(Context context, int resource, int textViewResourceId,
-                                    List<Player> players) {
-            super(context, resource, textViewResourceId, players);
-            this.items = players;
+                                    List<PlayerConnection> playerConnections) {
+            super(context, resource, textViewResourceId, playerConnections);
+            this.items = playerConnections;
 
         }
 
@@ -103,12 +103,12 @@ public class PlayerListFragment extends ListFragment {
                 LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = vi.inflate(android.R.layout.simple_list_item_1, null);
             }
-            Player player = items.get(position);
-            if (player != null) {
+            PlayerConnection playerConnection = items.get(position);
+            if (playerConnection != null) {
                 TextView top = (TextView) v.findViewById(android.R.id.text1);
 
                 if (top != null) {
-                    top.setText(player.userName);
+                    top.setText(playerConnection.userName);
                     //top.setTextColor(Color.BLACK);
                 }
 //                        v.setBackground(getResources().getDrawable(R.drawable.misc_redloyaltystrip));
@@ -124,8 +124,8 @@ public class PlayerListFragment extends ListFragment {
 
     public interface PlayerListFragListener {
 
-        void playerClicked(Player playerClicked);
-        void playerLongClicked(Player playerClicked);
+        void playerClicked(PlayerConnection playerConnectionClicked);
+        void playerLongClicked(PlayerConnection playerConnectionClicked);
     }
 
 }

@@ -10,7 +10,7 @@ public class Merlin extends GoodCharacter {
 	}
 
 	@Override
-	public boolean isVisableTo(ICharacter character) {
+	public boolean isVisibleTo(ICharacter character) {
 
         if(character instanceof Percival){
 			return true;

@@ -63,6 +63,9 @@ public class KServer {
 		server.getConnections();//What this for????
 		
 	}
+
+
+
 	 public Connection[] getConnections(){
 		 Connection[] connections = server.getConnections();
 		 return connections;

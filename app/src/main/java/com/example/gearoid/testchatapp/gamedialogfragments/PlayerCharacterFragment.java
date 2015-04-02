@@ -18,11 +18,9 @@ import com.example.gearoid.testchatapp.DrawableFactory;
 import com.example.gearoid.testchatapp.GameLogicFunctions;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
-import com.example.gearoid.testchatapp.character.CharacterFactory;
 import com.example.gearoid.testchatapp.character.ICharacter;
-import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
+import com.example.gearoid.testchatapp.multiplayer.Player;
 import com.example.gearoid.testchatapp.multiplayer.Session;
-import com.example.gearoid.testchatapp.singletons.Player;
 
 import java.util.ArrayList;
 
@@ -34,7 +32,7 @@ public class PlayerCharacterFragment extends DialogFragment {
     View mContentView = null;
     ListView visiblePlayersView;
     PlayerListViewAdapter adapterVisiblePlayers;
-    ArrayList<PlayerBasic> visiblePlayersArray;
+    ArrayList<Player> visiblePlayersArray;
     String characterName;
 
     public static PlayerCharacterFragment newInstance() {
@@ -68,17 +66,17 @@ public class PlayerCharacterFragment extends DialogFragment {
 //        teamSize = extras.getInt("TEAM_SIZE");
 //        questNumber = extras.getInt("QUEST_NUM");
 
-
         ICharacter playerCharacter = GameLogicFunctions.getUserPlayer().character;
+        Log.d("PlayerCharacterFragment", "Trying to get Characater name: " + playerCharacter.getShortDescription());
         characterName = playerCharacter.getCharacterName();
 
         visiblePlayersArray = new ArrayList<>();
 
-        for (int i = 0; i < Session.allPlayersBasic.size(); i++) {
+        for (int i = 0; i < Session.allPlayers.size(); i++) {
 
-            PlayerBasic otherPlayer = Session.allPlayersBasic.get(i);
+            Player otherPlayer = Session.allPlayers.get(i);
 
-            if (otherPlayer.character.isVisableTo(playerCharacter)) {
+            if (otherPlayer.character.isVisibleTo(playerCharacter)) {
                 Log.d("PlayerCharacterFragment", otherPlayer.character + " is visible to player (" + playerCharacter + ")");
                 visiblePlayersArray.add(otherPlayer);
             }

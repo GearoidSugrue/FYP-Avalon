@@ -8,7 +8,7 @@ public class Oberon extends EvilCharacter{
 	}
 	
 	@Override
-	public boolean isVisableTo(ICharacter character) {
+	public boolean isVisibleTo(ICharacter character) {
 		
 		if(character instanceof Merlin){
 			return true;

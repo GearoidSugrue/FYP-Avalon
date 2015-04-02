@@ -14,13 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.ApplicationContext;
 import com.example.gearoid.testchatapp.DrawableFactory;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.character.EvilCharacter;
-import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
+import com.example.gearoid.testchatapp.multiplayer.Player;
 import com.example.gearoid.testchatapp.multiplayer.Session;
-import com.example.gearoid.testchatapp.singletons.Player;
 
 import java.util.ArrayList;
 
@@ -35,8 +35,8 @@ public class LadyOfLakeFragment extends DialogFragment {
     ListView candidatePlayersView;
     PlayerListViewAdapter adapterChosenPlayer;
     PlayerListViewAdapter adapterCandidatePlayers;
-    ArrayList<PlayerBasic> chosenPlayerArray;
-    ArrayList<PlayerBasic> candidatePlayersArray;
+    ArrayList<Player> chosenPlayerArray;
+    ArrayList<Player> candidatePlayersArray;
     boolean isFinished = false;
     int playerIndex = 0;
 
@@ -71,7 +71,7 @@ public class LadyOfLakeFragment extends DialogFragment {
         chosenPlayerArray = new ArrayList<>();
 
         candidatePlayersArray = new ArrayList<>();
-        candidatePlayersArray.addAll(Session.allPlayersBasic);
+        candidatePlayersArray.addAll(Session.allPlayers);
     }
 
     @Override
@@ -125,14 +125,18 @@ public class LadyOfLakeFragment extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                PlayerBasic player = (PlayerBasic) parent.getItemAtPosition(position);
+                Player player = (Player) parent.getItemAtPosition(position);
                 Log.d("LadyOfLakeFragment", "Player clicked:" + player.userName);
 
                 if (!isFinished) {
-                    adapterChosenPlayer.clear();
-                    adapterChosenPlayer.add(player);
-                    final ImageView chosenPlayer = (ImageView) mContentView.findViewById(R.id.imageView_ladyOfLakeloyaltyCard);
-                    chosenPlayer.setVisibility(View.VISIBLE);
+                    if(!player.hasUsedLadyOfLake) {
+                        adapterChosenPlayer.clear();
+                        adapterChosenPlayer.add(player);
+                        final ImageView chosenPlayer = (ImageView) mContentView.findViewById(R.id.imageView_ladyOfLakeloyaltyCard);
+                        chosenPlayer.setVisibility(View.VISIBLE);
+                    } else {
+                        ApplicationContext.showToast("This player has used The Lady of The Lake");
+                    }
                 }
             }
         });
@@ -141,7 +145,7 @@ public class LadyOfLakeFragment extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                PlayerBasic player = (PlayerBasic) parent.getItemAtPosition(position);
+                Player player = (Player) parent.getItemAtPosition(position);
                 Log.d("LadyOfLakeFragment", "Player clicked:" + player.userName);
 
                 if (!isFinished) {
@@ -192,7 +196,7 @@ public class LadyOfLakeFragment extends DialogFragment {
     public void useLadyOfLake() {
 
         isFinished = true;
-        PlayerBasic player = adapterChosenPlayer.getItem(0);
+        Player player = adapterChosenPlayer.getItem(0);
         final ImageView chosenPlayer = (ImageView) mContentView.findViewById(R.id.imageView_ladyOfLakeloyaltyCard);
         TextView result = (TextView) mContentView.findViewById(R.id.textView_ladyOfLakeResult);
 

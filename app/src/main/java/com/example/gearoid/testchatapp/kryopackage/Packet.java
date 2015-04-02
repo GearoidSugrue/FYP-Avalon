@@ -5,9 +5,9 @@ import java.util.LinkedList;
 
 import com.example.gearoid.testchatapp.GameLogicFunctions;
 import com.example.gearoid.testchatapp.character.ICharacter;
-import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
+import com.example.gearoid.testchatapp.multiplayer.Player;
 import com.example.gearoid.testchatapp.multiplayer.Session;
-import com.example.gearoid.testchatapp.singletons.Player;
+import com.example.gearoid.testchatapp.singletons.PlayerConnection;
 
 //package com.example.gearoid.testchatapp.kyro;
 
@@ -17,20 +17,31 @@ import com.example.gearoid.testchatapp.singletons.Player;
  */
 public class Packet {
 
-    public static class Packet_RequestDetails extends Packet { public Player player; }
+    public static class Packet_RequestDetails extends Packet { public PlayerConnection playerConnection; }
     public static class Packet_SendDetails extends Packet { public int newPlayerNumber = -1;}
 
     public static class Packet_TeamVote extends Packet { public int[] proposedTeam; public GameLogicFunctions.Quest quest; public int voteCount;}
     public static class Packet_TeamVoteResult extends Packet { public boolean isApproved; public int[] playerApprovedPos; public int[] playerRejectedPos; public GameLogicFunctions.Quest quest; public int voteNumber;}
     public static class Packet_QuestVote extends Packet { public int[] teamMemberPos; public GameLogicFunctions.Quest quest;}
-
+    public static class Packet_QuestVoteResult extends Packet { public int[] teamMemberPos; public boolean[] votes; public GameLogicFunctions.Quest quest;}
     public static class Packet_SelectTeam extends Packet { public int teamSize; public GameLogicFunctions.Quest quest;}
+    public static class Packet_GameFinished extends Packet { public boolean gameResult; }
 
+    public static class Packet_TeamVoteReply extends Packet { public boolean vote; public int playerID;}
+    public static class Packet_QuestVoteReply extends Packet { public boolean vote; public int playerID;}
+    public static class Packet_SelectTeamReply extends Packet { public int[] teamPos; public int playerID;}
+    public static class Packet_AssassinateReply extends Packet { public boolean isSuccess; public int playerID;}
+    public static class Packet_LadyOfLakeReply extends Packet { public int selectedPlayerIndex; public int playerID;}
+    public static class Packet_GameFinishedReply extends Packet { public boolean playAgain; public int playerID;}
+    public static class Packet_QuestVoteResultRevealed extends Packet { public int voteNumber; public boolean voteResult; public int playerID;}
+    public static class Packet_QuestVoteResultFinished extends Packet { public boolean result; public int playerID;}
 
-    public static class Packet_StartGame extends Packet { public ArrayList<PlayerBasic> allPlayersBasic; public ArrayList<Integer> leaderOrderList; public GameLogicFunctions.Board currentBoard;}
+    public static class Packet_StartGame extends Packet { public ArrayList<Player> allPlayers; public ArrayList<Integer> leaderOrderList; public GameLogicFunctions.Board currentBoard;}
     public static class Packet_IsLadyOfLake extends Packet { public boolean isLadyOfLake;}
 
     public static class Packet_UpdateGameState extends Packet {public Session.GameState nextGameState;}
+
+
 
     public static class Packet00_ClientDetails  extends Packet { public String playerName = "nobody";} //need to be public to be accessed outside the package
     public static class Packet0_Phase_Leader  extends Packet { }
@@ -39,7 +50,7 @@ public class Packet {
         
     public static class Packet3_AllPlayers extends Packet {    	
     	int playerNumber ;    	
-    	LinkedList<Player> allPlayers ;
+    	LinkedList<PlayerConnection> allPlayerConnections;
     }    
     public static class Packet30_AllPlayers extends Packet {    	
     	int playerID = 0 ;    	
@@ -64,7 +75,7 @@ public class Packet {
     }
     public static class packet9_IsUsingLadyOfLake extends Packet {
     	boolean isActivatingLadyLake;
-    	Player selectedPlayer; //This to let the Server know who the token is being used on. 
+    	PlayerConnection selectedPlayerConnection; //This to let the Server know who the token is being used on.
     	//The server will then tell the other devices about it and pass the token onto the selected player.
     }
     public static class packet10_LadyOfLakeToken extends Packet {//Server passes this to the (next)player who is to receive the token.

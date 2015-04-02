@@ -4,7 +4,8 @@ public class GoodCharacter implements ICharacter {
 
 	boolean isLeader = false;
 	boolean hasLadyOfLake = false;
-	String characterName = ConstantsChara.KNIGHT_OF_ARTHUR;//Use constant
+    public boolean isOnQuest = false;
+    String characterName = ConstantsChara.KNIGHT_OF_ARTHUR;//Use constant
     String shortDescription = "Loyal Servant of Arthur";
     String playerName = "";
 	
@@ -21,14 +22,14 @@ public class GoodCharacter implements ICharacter {
 		return this.playerName;
 	}	
 	
-	@Override
-	public String getCharacterName() {
-		return characterName;
-	}
-
-    @Override
+	    @Override
     public void setCharacterName(String name) {
         characterName = name;
+    }
+
+    @Override
+    public String getCharacterName() {
+        return characterName;
     }
 
     @Override
@@ -36,35 +37,43 @@ public class GoodCharacter implements ICharacter {
         return shortDescription;
     }
 
-    @Override
-	public boolean getLeader() {
-		return isLeader;
-	}
-
 	@Override
-	public boolean getLadyOfLake() {
-		return hasLadyOfLake;
-	}
-
-	@Override
-	public void getVisablePlayers() {//return type ...string, players, etc????
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setLeader(boolean isLeader) {
-		this.isLeader = true;	
-	}
-
-	@Override
-	public void setLadyofLake(boolean hasLadyOfLake) {
-		this.hasLadyOfLake = true;
-	}
-
-	@Override
-	public boolean isVisableTo(ICharacter character) {
+	public boolean isVisibleTo(ICharacter character) {
 		return false;//Good characters are visable by no one...(evil see other evil)
 	}
 
+    @Override
+    public boolean getAllegiance() {
+        return true;
+    }
+
+    @Override
+    public void setIsLeader(boolean isLeader) {
+        this.isLeader = isLeader;
+    }
+
+    @Override
+    public boolean getIsLeader() {
+        return this.isLeader;
+    }
+
+    @Override
+    public void setIsLadyOfLake(boolean hasLadyOfLake) {
+        this.hasLadyOfLake = hasLadyOfLake;
+    }
+
+    @Override
+    public boolean getIsLadyOfLake() {
+        return this.hasLadyOfLake;
+    }
+
+    @Override
+    public void setIsOnQuest(boolean isOnQuest) {
+        this.isOnQuest = isOnQuest;
+    }
+
+    @Override
+    public boolean getIsOnQuest() {
+        return this.isOnQuest;
+    }
 }

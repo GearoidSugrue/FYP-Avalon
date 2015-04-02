@@ -18,14 +18,12 @@ import com.example.gearoid.testchatapp.ApplicationContext;
 import com.example.gearoid.testchatapp.GameLogicFunctions;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
-import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
+import com.example.gearoid.testchatapp.multiplayer.Player;
 import com.example.gearoid.testchatapp.multiplayer.Session;
-import com.example.gearoid.testchatapp.singletons.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Random;
 
 /**
  * Created by gearoid on 30/03/15.
@@ -42,13 +40,13 @@ public class QuestResultFragment extends DialogFragment {
     Drawable fail;
     ListView teamMembersView;
     PlayerListViewAdapter adapterTeamMembers;
-    ArrayList<PlayerBasic> teamMembersArray;
+    ArrayList<Player> teamMembersArray;
     Button finishGame;
     TextView resultTextview;
     int[] playerPos;
     boolean[] votes;
     int failsRequired, votesRevealedCount = 0;
-    boolean isFinished, questResult;
+    boolean isFinished, isLeader, questResult;
     boolean vote1Revealed, vote2Revealed, vote3Revealed, vote4Revealed, vote5Revealed;
     GameLogicFunctions.Quest quest;
 
@@ -78,6 +76,8 @@ public class QuestResultFragment extends DialogFragment {
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);
 
+        isLeader = GameLogicFunctions.getUserPlayer().isLeader;
+
         Bundle extras = getArguments();
         playerPos = extras.getIntArray("TEAM_MEMBERS");
         votes = extras.getBooleanArray("VOTES");
@@ -90,7 +90,7 @@ public class QuestResultFragment extends DialogFragment {
 
         for (int i = 0; i < playerPos.length; i++) {
             Log.d("QuestResultFrag", "adding player to adapterTeamMembers. int[" + i + "] = " + playerPos[i]);
-            teamMembersArray.add(Session.allPlayersBasic.get(playerPos[i]));
+            teamMembersArray.add(Session.allPlayers.get(playerPos[i]));
         }
     }
 
@@ -136,7 +136,7 @@ public class QuestResultFragment extends DialogFragment {
 
         teamMembersView = (ListView) rootView.findViewById(R.id.listview_questTeam);
 
-       // randomiseCardOrder();
+        // randomiseCardOrder();
 
         //TODO add team member adapter...
 
@@ -167,7 +167,7 @@ public class QuestResultFragment extends DialogFragment {
             ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (1.5 * item.getMeasuredHeight()));
             teamMembersView.setLayoutParams(params);
             resultTextview.setLayoutParams(params);
-        } else if(adapterCount < 3) {
+        } else if (adapterCount < 3) {
             View margin = (View) mContentView.findViewById(R.id.rightBlankSpaceRow1);
             margin.setVisibility(View.GONE);
 
@@ -189,8 +189,11 @@ public class QuestResultFragment extends DialogFragment {
             public void onClick(View v) {
 
                 if (isFinished) {
-                    QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
-                    activity.onQuestVoteResultsFinished(questResult);
+                    if (isLeader) {
+                        QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
+                        activity.onQuestVoteResultsFinished(questResult);
+                    }
+
                     closeDialog();
                 }
             }
@@ -207,17 +210,22 @@ public class QuestResultFragment extends DialogFragment {
                 Log.d("QuestResultFragment", "image1 clicked. Result: " + votes[0]);
 
                 if (!vote1Revealed) {
-                    if (votes[0]) {
-                        image1.setImageDrawable(success);
-                    } else {
-                        image1.setImageDrawable(fail);
-                    }
-                    vote1Revealed = true;
-                    votesRevealedCount++;
-                    checkAllVotesRevealed();
+                    if (isLeader) {
 
-                    QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
-                    activity.onQuestVoteResultRevealed(0, votes[0]);
+                        if (votes[0]) {
+                            image1.setImageDrawable(success);
+                        } else {
+                            image1.setImageDrawable(fail);
+                        }
+                        vote1Revealed = true;
+                        votesRevealedCount++;
+                        checkAllVotesRevealed();
+
+                        QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
+                        activity.onQuestVoteResultRevealed(0, votes[0]);
+                    } else {
+                        ApplicationContext.showToast("Only The Leader Can Reveal Quest Result");
+                    }
                 }
             }
         });
@@ -228,18 +236,21 @@ public class QuestResultFragment extends DialogFragment {
                 Log.d("QuestResultFragment", "image2 clicked. Result: " + votes[1]);
 
                 if (!vote2Revealed) {
+                    if (isLeader) {
+                        if (votes[1]) {
+                            image2.setImageDrawable(success);
+                        } else {
+                            image2.setImageDrawable(fail);
+                        }
+                        vote2Revealed = true;
+                        votesRevealedCount++;
+                        checkAllVotesRevealed();
 
-                    if (votes[1]) {
-                        image2.setImageDrawable(success);
+                        QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
+                        activity.onQuestVoteResultRevealed(1, votes[1]);
                     } else {
-                        image2.setImageDrawable(fail);
+                        ApplicationContext.showToast("Only The Leader Can Reveal Quest Result");
                     }
-                    vote2Revealed = true;
-                    votesRevealedCount++;
-                    checkAllVotesRevealed();
-
-                    QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
-                    activity.onQuestVoteResultRevealed(1, votes[1]);
                 }
             }
         });
@@ -250,17 +261,21 @@ public class QuestResultFragment extends DialogFragment {
                 Log.d("QuestResultFragment", "image3 clicked. Result: " + votes[2]);
 
                 if (!vote3Revealed) {
-                    if (votes[2]) {
-                        image3.setImageDrawable(success);
-                    } else {
-                        image3.setImageDrawable(fail);
-                    }
-                    vote3Revealed = true;
-                    votesRevealedCount++;
-                    checkAllVotesRevealed();
+                    if (isLeader) {
+                        if (votes[2]) {
+                            image3.setImageDrawable(success);
+                        } else {
+                            image3.setImageDrawable(fail);
+                        }
+                        vote3Revealed = true;
+                        votesRevealedCount++;
+                        checkAllVotesRevealed();
 
-                    QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
-                    activity.onQuestVoteResultRevealed(2, votes[2]);
+                        QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
+                        activity.onQuestVoteResultRevealed(2, votes[2]);
+                    } else {
+                        ApplicationContext.showToast("Only The Leader Can Reveal Quest Result");
+                    }
                 }
 
             }
@@ -272,17 +287,21 @@ public class QuestResultFragment extends DialogFragment {
                 Log.d("QuestResultFragment", "image4 clicked. Result: " + votes[3]);
 
                 if (!vote4Revealed) {
-                    if (votes[3]) {
-                        image4.setImageDrawable(success);
-                    } else {
-                        image4.setImageDrawable(fail);
-                    }
-                    vote4Revealed = true;
-                    votesRevealedCount++;
-                    checkAllVotesRevealed();
+                    if (isLeader) {
+                        if (votes[3]) {
+                            image4.setImageDrawable(success);
+                        } else {
+                            image4.setImageDrawable(fail);
+                        }
+                        vote4Revealed = true;
+                        votesRevealedCount++;
+                        checkAllVotesRevealed();
 
-                    QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
-                    activity.onQuestVoteResultRevealed(3, votes[3]);
+                        QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
+                        activity.onQuestVoteResultRevealed(3, votes[3]);
+                    } else {
+                        ApplicationContext.showToast("Only The Leader Can Reveal Quest Result");
+                    }
                 }
 
             }
@@ -294,26 +313,30 @@ public class QuestResultFragment extends DialogFragment {
                 Log.d("QuestResultFragment", "image5 clicked. Result: " + votes[4]);
 
                 if (!vote5Revealed) {
-                    if (votes[4]) {
-                        image5.setImageDrawable(success);
-                    } else {
-                        image5.setImageDrawable(fail);
-                    }
-                    vote5Revealed = true;
-                    votesRevealedCount++;
-                    checkAllVotesRevealed();
+                    if (isLeader) {
+                        if (votes[4]) {
+                            image5.setImageDrawable(success);
+                        } else {
+                            image5.setImageDrawable(fail);
+                        }
+                        vote5Revealed = true;
+                        votesRevealedCount++;
+                        checkAllVotesRevealed();
 
-                    QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
-                    activity.onQuestVoteResultRevealed(4, votes[4]);
+                        QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
+                        activity.onQuestVoteResultRevealed(4, votes[4]);
+                    } else {
+                        ApplicationContext.showToast("Only The Leader Can Reveal Quest Result");
+                    }
                 }
             }
         });
 
     }
 
-    public void checkAllVotesRevealed(){
+    public void checkAllVotesRevealed() {
 
-        if(votesRevealedCount == votes.length){
+        if (votesRevealedCount == votes.length) {
             finishGame.setVisibility(View.VISIBLE);
             teamMembersView.setVisibility(View.GONE);
             isFinished = true;
@@ -325,7 +348,7 @@ public class QuestResultFragment extends DialogFragment {
                 }
             }
 
-            if(fails >= failsRequired){
+            if (fails >= failsRequired) {
                 questResult = false;
                 resultTextview.setText("Quest Failed");
                 resultTextview.setTextColor(getResources().getColor(R.color.RedWine));
@@ -338,12 +361,42 @@ public class QuestResultFragment extends DialogFragment {
         }
     }
 
+    public void showVote(int voteNumber, boolean voteResult) {
+
+        votesRevealedCount++;
+        checkAllVotesRevealed();
+        Drawable result;
+
+        if (voteResult) {
+            result = getResources().getDrawable(R.drawable.misc_success);
+        } else {
+            result = getResources().getDrawable(R.drawable.misc_fail);
+        }
+
+        if (voteNumber == 1) {
+            image1.setImageDrawable(result);
+
+        } else if (voteNumber == 2) {
+            image2.setImageDrawable(result);
+
+        } else if (voteNumber == 3) {
+            image3.setImageDrawable(result);
+
+        } else if (voteNumber == 4) {
+            image4.setImageDrawable(result);
+
+        } else if (voteNumber == 5) {
+            image5.setImageDrawable(result);
+        }
+    }
+
     public void closeDialog() {
         this.dismiss();
     }
 
     public interface QuestResultDialogListener {
         void onQuestVoteResultRevealed(int voteNumber, boolean voteResult);
+
         void onQuestVoteResultsFinished(boolean result);
     }
 }

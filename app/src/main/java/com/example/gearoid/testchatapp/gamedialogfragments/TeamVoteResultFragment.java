@@ -1,7 +1,6 @@
 package com.example.gearoid.testchatapp.gamedialogfragments;
 
 import android.app.DialogFragment;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,15 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.gearoid.testchatapp.GameLogicFunctions;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
-import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
+import com.example.gearoid.testchatapp.multiplayer.Player;
 import com.example.gearoid.testchatapp.multiplayer.Session;
-import com.example.gearoid.testchatapp.singletons.Player;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by gearoid on 30/03/15.
@@ -36,8 +32,8 @@ public class TeamVoteResultFragment extends DialogFragment {
     ListView rejectedPlayersView;
     PlayerListViewAdapter adapterApprovedPlayers;
     PlayerListViewAdapter adapterRejectedPlayers;
-    ArrayList<PlayerBasic> approvedPlayersArray;
-    ArrayList<PlayerBasic> rejectedPlayersArray;
+    ArrayList<Player> approvedPlayersArray;
+    ArrayList<Player> rejectedPlayersArray;
     int questNumber;
     int voteNumber;
     boolean isAccepted;
@@ -79,12 +75,12 @@ public class TeamVoteResultFragment extends DialogFragment {
 
         for (int i = 0; i < playerApprovePos.length; i++) {
             Log.d("TeamVoteResultFragment", "adding player to adapterVictoriousPlayers. int[" + i + "] = " + playerApprovePos[i]);
-            approvedPlayersArray.add(Session.allPlayersBasic.get(playerApprovePos[i]));
+            approvedPlayersArray.add(Session.allPlayers.get(playerApprovePos[i]));
         }
 
         for (int i = 0; i < playerRejectPos.length; i++) {
             Log.d("TeamVoteResultFragment", "adding player to adapterDefeatedPlayers. int[" + i + "] = " + playerRejectPos[i]);
-            rejectedPlayersArray.add(Session.allPlayersBasic.get(playerRejectPos[i]));
+            rejectedPlayersArray.add(Session.allPlayers.get(playerRejectPos[i]));
         }
 
     }

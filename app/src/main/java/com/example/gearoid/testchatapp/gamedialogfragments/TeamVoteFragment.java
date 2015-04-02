@@ -15,9 +15,8 @@ import android.widget.ListView;
 import com.example.gearoid.testchatapp.GameLogicFunctions;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
-import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
+import com.example.gearoid.testchatapp.multiplayer.Player;
 import com.example.gearoid.testchatapp.multiplayer.Session;
-import com.example.gearoid.testchatapp.singletons.Player;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -39,9 +38,9 @@ public class TeamVoteFragment extends DialogFragment {
     PlayerListViewAdapter adapterProposedTeam;
     PlayerListViewAdapter adapterCurrentLeader;
     PlayerListViewAdapter adapterNextLeader;
-    ArrayList<PlayerBasic> proposedPlayersArray;
-    ArrayList<PlayerBasic> currentLeaderArray;
-    ArrayList<PlayerBasic> nextLeaderArray;
+    ArrayList<Player> proposedPlayersArray;
+    ArrayList<Player> currentLeaderArray;
+    ArrayList<Player> nextLeaderArray;
     int questNumber;
     int voteCount;
 
@@ -68,7 +67,6 @@ public class TeamVoteFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //characterName = getArguments().getString("character");
         Log.d("TeamVoteFrag", "onCreate called");
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);
@@ -84,11 +82,11 @@ public class TeamVoteFragment extends DialogFragment {
 
         for(int i=0; i < playerPos.length; i++){
             Log.d("TeamVoteFrag", "adding player to adapterVictoriousPlayers. int[" + i + "] = " + playerPos[i]);
-            proposedPlayersArray.add(Session.allPlayersBasic.get(playerPos[i]));
+            proposedPlayersArray.add(Session.allPlayers.get(playerPos[i]));
         }
 
-        currentLeaderArray.add(Session.allPlayersBasic.get(GameLogicFunctions.getCurrentLeaderIndexInAllPlayerList()));
-        nextLeaderArray.add(Session.allPlayersBasic.get(GameLogicFunctions.getNextLeaderIndexInAllPlayerList()));
+        currentLeaderArray.add(Session.allPlayers.get(GameLogicFunctions.getCurrentLeaderID()));
+        nextLeaderArray.add(Session.allPlayers.get(GameLogicFunctions.getNextLeaderID()));
     }
 
     @Override
@@ -97,21 +95,20 @@ public class TeamVoteFragment extends DialogFragment {
         Log.d("TeamVoteFrag", "onCreateView called");
 
         Toolbar mActionBarToolbar = (Toolbar) rootView.findViewById(R.id.frag_teamVote_toolbar);
-        mActionBarToolbar.setTitle("Quest " + questNumber + " - Vote " + voteCount);
+        String lastVote = "";
+
+        if (voteCount == 5){
+            lastVote = " - Last Vote!";
+        }
+
+        mActionBarToolbar.setTitle("Quest " + questNumber + " - Vote " + voteCount + lastVote);
         mActionBarToolbar.setLogo(getResources().getDrawable(R.drawable.icon_votetoken));
 
-//        mActionBarToolbar.
-//        rootView.setSupportActionBar(mActionBarToolbar);
-//        getSupportActionBar().setTitle("My title");
-
-        //getDialog().setTitle("Team Vote");
         image1 = (ImageView) rootView.findViewById(R.id.imageView_teamVote1);
         image2 = (ImageView) rootView.findViewById(R.id.imageView_teamVote2);
 
         randomiseTokenOrder();
         setOnClicklisteners();
-        //image1.setBackground(getResources().getDrawable(R.drawable.token_approve));
-        //image1.setBackgroundColor(Color.BLACK);
 
         proposedPlayerView = (ListView) rootView.findViewById(R.id.listview_proposedTeam);
         currentLeaderView = (ListView) rootView.findViewById(R.id.listview_currentLeader);

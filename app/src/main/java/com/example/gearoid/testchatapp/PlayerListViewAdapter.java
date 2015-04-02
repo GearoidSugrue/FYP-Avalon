@@ -2,7 +2,6 @@ package com.example.gearoid.testchatapp;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +9,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
-import com.example.gearoid.testchatapp.singletons.Player;
+import com.example.gearoid.testchatapp.multiplayer.Player;
 
 import java.util.List;
 
 /**
  * Created by gearoid on 25/03/15.
  */
-public class PlayerListViewAdapter extends ArrayAdapter<PlayerBasic> {
+public class PlayerListViewAdapter extends ArrayAdapter<Player> {
 
     int resource;
-    private List<PlayerBasic> items;
+    private List<Player> items;
     Context context;
 
     /**
@@ -30,7 +28,7 @@ public class PlayerListViewAdapter extends ArrayAdapter<PlayerBasic> {
      * @param players
      */
     public PlayerListViewAdapter(Context context, int resource, int textViewResourceId,
-                                 List<PlayerBasic> players) {
+                                 List<Player> players) {
         super(context, resource, textViewResourceId, players);
         this.items = players;
         this.context = context;
@@ -50,7 +48,7 @@ public class PlayerListViewAdapter extends ArrayAdapter<PlayerBasic> {
 //            v = vi.inflate(R.layout.row_devices, null);
         }
         if (items.size() > 0) {
-            PlayerBasic player = items.get(position);
+            Player player = items.get(position);
             if (player != null) {
                 TextView top = (TextView) v.findViewById(R.id.textview_playerName);
 

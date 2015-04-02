@@ -1,8 +1,18 @@
 package com.example.gearoid.testchatapp;
 
-import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
+import com.example.gearoid.testchatapp.kryopackage.Packet;
+import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
+import com.example.gearoid.testchatapp.multiplayer.Player;
 import com.example.gearoid.testchatapp.multiplayer.Session;
-import com.example.gearoid.testchatapp.singletons.Player;
+import com.example.gearoid.testchatapp.singletons.PlayerConnection;
+
+import java.util.ArrayList;
+
+import static com.example.gearoid.testchatapp.multiplayer.Session.currentBoard;
+import static com.example.gearoid.testchatapp.multiplayer.Session.currentQuest;
+import static com.example.gearoid.testchatapp.multiplayer.Session.server_sendToEveryone;
+import static com.example.gearoid.testchatapp.multiplayer.Session.server_sendToPlayer;
+import static com.example.gearoid.testchatapp.multiplayer.Session.voteCount;
 
 /**
  * Created by gearoid on 25/03/15.
@@ -78,7 +88,7 @@ public class GameLogicFunctions {
         return arr = new int[]{0, 0, 0, 0, 0};
     }
 
-    public static int getCurrentLeaderIndexInAllPlayerList() {
+    public static int getCurrentLeaderID() {
 
         return Session.leaderOrderList.get(Session.leaderOrderIterator);
 
@@ -91,8 +101,8 @@ public class GameLogicFunctions {
     }
 
     public static void setNextLeader() {
-        Session.allPlayersBasic.get(getCurrentLeaderIndexInAllPlayerList()).isLeader = false;
-        Session.allPlayersBasic.get(getNextLeaderIndexInAllPlayerList()).isLeader = true;
+        Session.allPlayers.get(getCurrentLeaderID()).isLeader = false;
+        Session.allPlayers.get(getNextLeaderID()).isLeader = true;
         if (Session.leaderOrderIterator == Session.leaderOrderList.size() - 1) {
             Session.leaderOrderIterator = 0;
         } else {
@@ -100,7 +110,7 @@ public class GameLogicFunctions {
         }
     }
 
-    public static int getNextLeaderIndexInAllPlayerList() {
+    public static int getNextLeaderID() {
 
         if (Session.leaderOrderIterator ==  Session.leaderOrderList.size() - 1) {
             return  Session.leaderOrderList.get(0);
@@ -110,12 +120,13 @@ public class GameLogicFunctions {
 
 //        ArrayList<Player> players = Session.leaderOrderAllPlayers;
 //
-//        if (getCurrentLeaderIndexInAllPlayerList() == players.size() - 1) {
+//        if (getCurrentLeaderID() == players.size() - 1) {
 //            return 0;
 //        } else {
-//            return getCurrentLeaderIndexInAllPlayerList() + 1;
+//            return getCurrentLeaderID() + 1;
 //        }
     }
+
 
     public static int calculatePlayersRequiredForQuest(Board board, Quest questNumber) {//Move this???
         return GameLogicFunctions.getBoardConfiguration(board)[questNumber.value]; //Returns the number of players that go on a particular quest
@@ -135,8 +146,108 @@ public class GameLogicFunctions {
         return 1;
     }
 
-    public static PlayerBasic getUserPlayer(){
-        return Session.allPlayersBasic.get(Player.getInstance().playerID);
+    public static Player getUserPlayer(){
+        return Session.allPlayers.get(PlayerConnection.getInstance().playerID);
+    }
+
+    public static int[] getEvilAllegiancePositions(){
+        int[] evilPlayers = new int[calculateNumberOfEvilPlayers(Session.currentBoard)];
+        int pos = 0;
+
+        for(int i=0; i < Session.allPlayers.size(); i++){
+            Player player = Session.allPlayers.get(i);
+
+            if(!player.character.getAllegiance()){
+                evilPlayers[pos] = player.playerID;
+                pos++;
+            }
+        }
+        return evilPlayers;
+    }
+
+    public static int[] getGoodAllegiancePositions(){
+
+        int[] goodPlayers = new int[Session.allPlayers.size() - calculateNumberOfEvilPlayers(Session.currentBoard)];
+        int pos = 0;
+
+        for(int i=0; i < Session.allPlayers.size(); i++){
+            Player player = Session.allPlayers.get(i);
+
+            if(player.character.getAllegiance()){
+                goodPlayers[pos] = player.playerID;
+                pos++;
+            }
+        }
+        return goodPlayers;
+    }
+
+    public static int[] convertIntegers(ArrayList<Integer> integers)
+    {
+        int[] ret = new int[integers.size()];
+        for (int i=0; i < ret.length; i++)
+        {
+            ret[i] = integers.get(i).intValue();
+        }
+        return ret;
+    }
+
+    public static int[] getApprovedPlayerPos(ArrayList<Packet.Packet_TeamVoteReply> allVotes){
+
+        ArrayList<Integer> pos = new ArrayList<>();
+
+        for(int i=0; i < allVotes.size(); i++){
+
+            Packet.Packet_TeamVoteReply aVote = allVotes.get(i);
+            if(aVote.vote){
+                pos.add(aVote.playerID);
+            }
+        }
+
+        return convertIntegers(pos);
+    }
+
+    public static int[] getRejectedPlayerPos(ArrayList<Packet.Packet_TeamVoteReply> allVotes){
+
+        ArrayList<Integer> pos = new ArrayList<>();
+
+        for(int i=0; i < allVotes.size(); i++){
+
+            Packet.Packet_TeamVoteReply aVote = allVotes.get(i);
+            if(!aVote.vote){
+                pos.add(aVote.playerID);
+            }
+        }
+
+        return convertIntegers(pos);
+    }
+
+    public static void setNextVoteAndLeader(){
+
+//        voteCount++; //Turn these two into packet. Forbid server from updating info, only clients can.
+//        setNextLeader(); //
+
+        updateAllPlayersGameState(Session.GameState.TEAM_SELECT);
+
+        Packet.Packet_SelectTeam packetSelectTeam = (Packet.Packet_SelectTeam) PacketFactory.createPack(PacketFactory.PacketType.SELECT_TEAM);
+        packetSelectTeam.quest = currentQuest;
+        packetSelectTeam.teamSize = GameLogicFunctions.calculateFailRequiredForQuest(currentBoard, currentQuest);
+
+        server_sendToPlayer(GameLogicFunctions.getCurrentLeaderID(), packetSelectTeam);
+    }
+
+    public static void endGame(boolean result){
+
+        Packet.Packet_GameFinished packetGameFinished = (Packet.Packet_GameFinished) PacketFactory.createPack(PacketFactory.PacketType.GAME_FINISHED);
+        packetGameFinished.gameResult = result;
+
+        server_sendToEveryone(packetGameFinished);
+    }
+
+    public static void updateAllPlayersGameState(Session.GameState nextGameState){
+
+        Packet.Packet_UpdateGameState packetGameState = (Packet.Packet_UpdateGameState) PacketFactory.createPack(PacketFactory.PacketType.UPDATE_GAMESTATE);
+        packetGameState.nextGameState = nextGameState;
+        Session.server_sendToEveryone(packetGameState);
     }
 
 }

@@ -10,8 +10,8 @@ import com.example.gearoid.testchatapp.character.ICharacter;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.example.gearoid.testchatapp.multiplayer.PlayerBasic;
-import com.example.gearoid.testchatapp.singletons.Player;
+import com.example.gearoid.testchatapp.multiplayer.Player;
+import com.example.gearoid.testchatapp.singletons.PlayerConnection;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 
 
@@ -25,10 +25,16 @@ public class ListenerServer extends Listener {
     IActivityServerListener activity;
 
     public interface IActivityServerListener {
-        void onPacketReceived(String message);
+        void server_OnMessagePacketReceived(String message);
 
-        void startTeamVoteDialog(int[] proposedTeam, int questNumber, int voteCount);
-        void startTeamVoteResultDialog();
+        void server_OnTeamVoteReplyReceived(Packet_TeamVoteReply voteInfo);
+        void server_OnQuestVoteReplyReceived(Packet_QuestVoteReply voteInfo);
+        void server_OnSelectTeamReplyReceived(Packet_SelectTeamReply teamInfo);
+        void server_OnAssassinateReplyReceived(Packet_AssassinateReply assassinateInfo);
+        void server_OnLadyOfLakeReplyReceived(Packet_LadyOfLakeReply ladyOfLakeInfo);
+        void server_OnGameFinishedReplyReceived(Packet_GameFinishedReply gameInfo);
+        void server_OnQuestVoteResultRevealedReceived(Packet_QuestVoteResultRevealed voteInfo);
+
     }
 
     public static ListenerServer initialize() {//not used...delete???
@@ -37,7 +43,7 @@ public class ListenerServer extends Listener {
         return  new ListenerServer();
     }
 
-    public void setActivityServerListener(IActivityServerListener activity){
+    public void attachActivityToServerListener(IActivityServerListener activity){
         this.activity = activity;
     }
 
@@ -57,30 +63,30 @@ public class ListenerServer extends Listener {
     public void received(Connection con, Object obj) {
 
         if (obj instanceof Packet_RequestDetails) {
-            Player player = ((Packet_RequestDetails) obj).player;
+            PlayerConnection playerConnection = ((Packet_RequestDetails) obj).playerConnection;
 
-            if (player.playerID >= 0) {
-                Log.d("Packet Received", "Old player reconnected: " + player.userName + ", ID: " + player.playerID);
-                if (Session.masterAllPlayers.size() > player.playerID) {
-                    Session.masterAllPlayers.get(player.playerID).playerConnection = con;//Should this be non static way!???
+            if (playerConnection.playerID >= 0) {
+                Log.d("Packet Received", "Old player reconnected: " + playerConnection.userName + ", ID: " + playerConnection.playerID);
+                if (Session.masterAllPlayerConnections.size() > playerConnection.playerID) {
+                    Session.masterAllPlayerConnections.get(playerConnection.playerID).playerConnection = con;//Should this be non static way!???
                 } else {
-                    Log.d("Packet Received", "Error: All players list is missing entries! " + player.userName + ", ID: " + player.playerID);
+                    Log.d("Packet Received", "Error: All players list is missing entries! " + playerConnection.userName + ", ID: " + playerConnection.playerID);
                 }
 
             } else {
-                Log.d("Packet Received", "New player connected: " + player.userName);
+                Log.d("Packet Received", "New player connected: " + playerConnection.userName);
                 Packet_SendDetails sendPacket = (Packet_SendDetails) PacketFactory.createPack(PacketFactory.PacketType.SEND_DETAILS);
 
-                int idNum = Session.masterAllPlayers.size();//TODO add thread safe way to get IDs
+                int idNum = Session.masterAllPlayerConnections.size();//TODO add thread safe way to get IDs
 
                 sendPacket.newPlayerNumber = idNum;
-                player.playerConnection = con;
-                Session.masterAllPlayers.add(player);
+                playerConnection.playerConnection = con;
+                Session.masterAllPlayerConnections.add(playerConnection);
 
-                PlayerBasic playerBasic = new PlayerBasic();
-                playerBasic.userName = player.userName;
-                playerBasic.playerID = idNum;
-                Session.allPlayersBasic.add(playerBasic);
+                Player player = new Player();
+                player.userName = playerConnection.userName;
+                player.playerID = idNum;
+                Session.allPlayers.add(player);
 
                 con.sendTCP(sendPacket);
                 //Add to specific position using the thread safe ID generated earlier
@@ -88,10 +94,42 @@ public class ListenerServer extends Listener {
 
         }
 
-        if(obj instanceof Packet_TeamVote){
+        if(obj instanceof Packet_TeamVoteReply){
+            Packet_TeamVoteReply packet = (Packet_TeamVoteReply) obj;
 
-
+            activity.server_OnTeamVoteReplyReceived(packet);
         }
+        if(obj instanceof Packet_QuestVoteReply){
+            Packet_QuestVoteReply packet = (Packet_QuestVoteReply) obj;
+
+            activity.server_OnQuestVoteReplyReceived(packet);
+        }
+        if(obj instanceof Packet_SelectTeamReply){
+            Packet_SelectTeamReply packet = (Packet_SelectTeamReply) obj;
+
+            activity.server_OnSelectTeamReplyReceived(packet);
+        }
+        if(obj instanceof Packet_AssassinateReply){
+            Packet_AssassinateReply packet = (Packet_AssassinateReply) obj;
+
+            activity.server_OnAssassinateReplyReceived(packet);
+        }
+        if(obj instanceof Packet_LadyOfLakeReply){
+            Packet_LadyOfLakeReply packet = (Packet_LadyOfLakeReply) obj;
+
+            activity.server_OnLadyOfLakeReplyReceived(packet);
+        }
+        if(obj instanceof Packet_GameFinishedReply){
+            Packet_GameFinishedReply packet = (Packet_GameFinishedReply) obj;
+
+            activity.server_OnGameFinishedReplyReceived(packet);
+        }
+        if(obj instanceof Packet_QuestVoteResultRevealed){
+            Packet_QuestVoteResultRevealed packet = (Packet_QuestVoteResultRevealed) obj;
+
+            activity.server_OnQuestVoteResultRevealedReceived(packet);
+        }
+
 
 
 
@@ -102,7 +140,7 @@ public class ListenerServer extends Listener {
             ApplicationContext.showToast("[S] Received Packet from: " + userName);
 
             if(activity !=null){
-                activity.onPacketReceived(userName);
+                activity.server_OnMessagePacketReceived(userName);
                 //activity.startTeamVoteDialog();
             }
 
@@ -119,28 +157,28 @@ public class ListenerServer extends Listener {
             System.out.println(con.getID() + " also known as: " + con.toString() + " says: " + message);
 
             if(activity !=null){
-                activity.onPacketReceived(message);
+                activity.server_OnMessagePacketReceived(message);
             }
             // do something with message...
         }
         if (obj instanceof Packet3_AllPlayers) {
             int senderNumber = ((Packet3_AllPlayers) obj).playerNumber;
-            LinkedList<Player> allPlayers = ((Packet3_AllPlayers) obj).allPlayers;
+            LinkedList<PlayerConnection> allPlayerConnections = ((Packet3_AllPlayers) obj).allPlayerConnections;
 
             System.out.println("[Server] All Player Packet Recieved from player number: " + senderNumber);
             System.out.println("[Server] All of their details are as follows:");
 
-            for (int i = 0; i < allPlayers.size(); i++) {
-                Player aPlayer = allPlayers.get(i);
-                System.out.print(aPlayer.userName + " is ");
+            for (int i = 0; i < allPlayerConnections.size(); i++) {
+                PlayerConnection aPlayerConnection = allPlayerConnections.get(i);
+                System.out.print(aPlayerConnection.userName + " is ");
 
-                if (aPlayer.hasLadyOfLake) {
-                    System.out.print(" and has the Lady of The Lake token!");
-                }
-                if (aPlayer.isLeader) {
-                    System.out.print(" Is the Leader!!!");
-                }
-                System.out.println();
+//                if (aPlayerConnection.hasLadyOfLake) {
+//                    System.out.print(" and has the Lady of The Lake token!");
+//                }
+//                if (aPlayerConnection.isLeader) {
+//                    System.out.print(" Is the Leader!!!");
+//                }
+//                System.out.println();
             }
             //String message = ((Packet3_AllPlayers) o).message;
             // do something with allCharacters...

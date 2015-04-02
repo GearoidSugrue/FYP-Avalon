@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
@@ -164,7 +163,7 @@ public class                  WiFiDirectServiceActivity extends ActionBarActivit
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ApplicationContext.getContext(), GameSetupActivity.class);
-                    int numberOfConnections = Session.masterAllPlayers.size();
+                    int numberOfConnections = Session.masterAllPlayerConnections.size();
                     Log.d(TAG, "Number of devices connected to KryoServer is: " + numberOfConnections);
                     intent.putExtra("PLAYER_COUNT", numberOfConnections); //TODO Fix this. Pass in number of connected devices
                     startActivity(intent);
