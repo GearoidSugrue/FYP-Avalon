@@ -34,6 +34,7 @@ public class ListenerServer extends Listener {
         void server_OnLadyOfLakeReplyReceived(Packet_LadyOfLakeReply ladyOfLakeInfo);
         void server_OnGameFinishedReplyReceived(Packet_GameFinishedReply gameInfo);
         void server_OnQuestVoteResultRevealedReceived(Packet_QuestVoteResultRevealed voteInfo);
+        void server_OnQuestVoteResultFinishedReceived(Packet_QuestVoteResultFinished resultInfo);
 
     }
 
@@ -86,7 +87,8 @@ public class ListenerServer extends Listener {
                 Player player = new Player();
                 player.userName = playerConnection.userName;
                 player.playerID = idNum;
-                Session.allPlayers.add(player);
+//                Session.allPlayers.add(player);
+                Session.masterAllPlayers.add(player);
 
                 con.sendTCP(sendPacket);
                 //Add to specific position using the thread safe ID generated earlier
@@ -128,6 +130,11 @@ public class ListenerServer extends Listener {
             Packet_QuestVoteResultRevealed packet = (Packet_QuestVoteResultRevealed) obj;
 
             activity.server_OnQuestVoteResultRevealedReceived(packet);
+        }
+        if(obj instanceof Packet_QuestVoteResultFinished){
+            Packet_QuestVoteResultFinished packet = (Packet_QuestVoteResultFinished) obj;
+
+            activity.server_OnQuestVoteResultFinishedReceived(packet);
         }
 
 

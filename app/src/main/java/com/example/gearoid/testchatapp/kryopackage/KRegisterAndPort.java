@@ -88,6 +88,7 @@ public class KRegisterAndPort {
 
         kryo.register(com.example.gearoid.testchatapp.GameLogicFunctions.Board.class);
         kryo.register(com.example.gearoid.testchatapp.GameLogicFunctions.Quest.class);
+        kryo.register(com.example.gearoid.testchatapp.kryopackage.Packet.Packet_UpdateGameState.class);
         //kryo.register(com.esotericsoftware.kryonet.Client.class);
         kryo.register(Connection.class);
         kryo.register(com.esotericsoftware.kryonet.Server.class);
@@ -95,6 +96,10 @@ public class KRegisterAndPort {
 
         kryo.register(java.util.LinkedList.class);
         kryo.register(java.util.ArrayList.class);
+        kryo.register(int[].class);
+        kryo.register(boolean[].class);
+
+
         
         
 

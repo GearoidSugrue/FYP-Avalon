@@ -35,16 +35,16 @@ public class QuestVoteFragment extends DialogFragment {
     PlayerListViewAdapter adapterTeamMembers;
     ArrayList<Player> teamMembersArray;
     int[] playerPos;
-    boolean isEvil;
+    boolean isGood;
     int questNumber;
 
-    public static QuestVoteFragment newInstance(int[] teamMembersPos, boolean isEvil, int questNumber) {
+    public static QuestVoteFragment newInstance(int[] teamMembersPos, boolean isGood, int questNumber) {
         QuestVoteFragment frag = new QuestVoteFragment();
 
         // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putIntArray("TEAM_MEMBERS", teamMembersPos);
-        args.putBoolean("IS_EVIL", isEvil);
+        args.putBoolean("IS_GOOD", isGood);
         args.putInt("QUEST_NUM", questNumber);
         frag.setArguments(args);
         Log.d("QuestVoteFragment", "Creating instance of a QuestVoteFragment fragment");
@@ -63,7 +63,7 @@ public class QuestVoteFragment extends DialogFragment {
 
         Bundle extras = getArguments();
         playerPos = extras.getIntArray("TEAM_MEMBERS");
-        isEvil = extras.getBoolean("IS_EVIL", false);
+        isGood = extras.getBoolean("IS_GOOD", false);
         questNumber = extras.getInt("QUEST_NUM");
 
         teamMembersArray = new ArrayList<>();
@@ -119,7 +119,7 @@ public class QuestVoteFragment extends DialogFragment {
 
     }
 
-    public void randomiseCardOrder() {//TODO add isEvil check
+    public void randomiseCardOrder() {//TODO add isGood check
         Log.d("QuestVoteFrag", "randomiseCardOrder called");
 
         Random randomGenerator = new Random();
@@ -148,7 +148,7 @@ public class QuestVoteFragment extends DialogFragment {
             public void onClick(View v) {
                 Log.d("QuestVoteFrag", "image1 clicked. Result: " + isImage1Sucess);
 
-                if(isEvil){
+                if(!isGood){
                     returnVoteResultAndClose(isImage1Sucess);
                 } else if(isImage1Sucess){
                     returnVoteResultAndClose(isImage1Sucess);
@@ -162,7 +162,7 @@ public class QuestVoteFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 Log.d("QuestVoteFrag", "image2 clicked. Result: " + isImage1Sucess);
-                if(isEvil){
+                if(!isGood){
                     returnVoteResultAndClose(isImage2Sucess);
                 } else if(isImage2Sucess){
                     returnVoteResultAndClose(isImage2Sucess);

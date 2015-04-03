@@ -56,7 +56,8 @@
             android:layout_weight="1"
             android:textColor="@color/MediumPurple"
             style="?android:attr/borderlessButtonStyle"
-            android:textAllCaps="true" />
+            android:textAllCaps="true"
+            android:visibility="gone"/>
 
         <Button
             android:layout_width="0dp"
@@ -66,6 +67,7 @@
             android:layout_weight="1"
             android:textColor="@color/SlateGray"
             style="?android:attr/borderlessButtonStyle"
+            android:visibility="gone"
             android:textAllCaps="true" />
 
         <Button
@@ -76,6 +78,7 @@
             android:layout_weight="1"
             android:textColor="@color/MuddyBrown"
             style="?android:attr/borderlessButtonStyle"
+            android:visibility="gone"
             android:textAllCaps="true" />
 
         <Button
@@ -85,6 +88,7 @@
             android:id="@+id/button_assassinateFrag"
             android:layout_weight="1"
             android:textColor="@color/RedWine"
+            android:visibility="gone"
             style="?android:attr/borderlessButtonStyle"
             android:textAllCaps="true" />
 
@@ -107,6 +111,7 @@
             android:layout_weight="1"
             android:textColor="@color/TiffanyBlueDark"
             style="?android:attr/borderlessButtonStyle"
+            android:visibility="gone"
             android:textAllCaps="true" />
 
         <Button
@@ -117,6 +122,7 @@
             android:layout_weight="1"
             android:textColor="@color/MediumPurple"
             style="?android:attr/borderlessButtonStyle"
+            android:visibility="gone"
             android:textAllCaps="true" />
 
         <Button
@@ -127,6 +133,7 @@
             android:layout_weight="1"
             android:textColor="@color/MidnightBlue"
             style="?android:attr/borderlessButtonStyle"
+            android:visibility="gone"
             android:textAllCaps="true" />
 
         <Button
@@ -147,6 +154,7 @@
             android:layout_weight="1"
             android:textColor="@color/SlateGray"
             style="?android:attr/borderlessButtonStyle"
+            android:visibility="gone"
             android:textAllCaps="true" />
 
     </LinearLayout>

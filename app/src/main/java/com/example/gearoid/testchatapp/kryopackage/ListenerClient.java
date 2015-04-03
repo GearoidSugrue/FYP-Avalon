@@ -76,6 +76,7 @@ public class ListenerClient extends Listener {
         System.out.println("[Client " + client.getID() + ", "
                 + client.toString() + "]: Connection to Server established");
         Session.myConnection = arg0;
+       // PlayerConnection.getInstance().playerConnection = arg0
 
         reconnectCount.set(0);
         // System.out.println(arg0.getID() + ", " + arg0.toString());
@@ -128,7 +129,7 @@ public class ListenerClient extends Listener {
         if (obj instanceof Packet_StartGame) {
             Packet_StartGame packet = (Packet_StartGame) obj;
 
-            Session.allPlayers.addAll(packet.allPlayers);
+            Session.allPlayers.addAll(packet.allPlayers);//todo HOST DEVICE HAS BOTH SERVER AND CLIENT ADDING TO THIS
             Session.leaderOrderList.addAll(packet.leaderOrderList);
             Session.currentBoard = packet.currentBoard;
 

@@ -72,7 +72,7 @@ public class KClient {
         new Thread(client).start();
         // pass in IP and TCP_PORT to constructor????
         try {
-            client.connect(20000, host, KRegisterAndPort.TCP_PORT,
+            client.connect(20000, host, KRegisterAndPort.TCP_PORT,//was 20000
                     KRegisterAndPort.UDP_PORT);// timeout, IP
             // address, TCP_PORT
             // number

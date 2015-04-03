@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import static com.example.gearoid.testchatapp.multiplayer.Session.currentBoard;
 import static com.example.gearoid.testchatapp.multiplayer.Session.currentQuest;
+import static com.example.gearoid.testchatapp.multiplayer.Session.questVoteReplies;
 import static com.example.gearoid.testchatapp.multiplayer.Session.server_sendToEveryone;
 import static com.example.gearoid.testchatapp.multiplayer.Session.server_sendToPlayer;
 import static com.example.gearoid.testchatapp.multiplayer.Session.voteCount;
@@ -129,7 +130,7 @@ public class GameLogicFunctions {
 
 
     public static int calculatePlayersRequiredForQuest(Board board, Quest questNumber) {//Move this???
-        return GameLogicFunctions.getBoardConfiguration(board)[questNumber.value]; //Returns the number of players that go on a particular quest
+        return GameLogicFunctions.getBoardConfiguration(board)[questNumber.value - 1]; //Returns the number of players that go on a particular quest
     }
 
     public static int calculateFailRequiredForQuest(Board board, Quest questNumber) {
@@ -219,6 +220,15 @@ public class GameLogicFunctions {
         }
 
         return convertIntegers(pos);
+    }
+
+    public static boolean[] getQuestVotesFromPackets(ArrayList<Packet.Packet_QuestVoteReply> questVoteReplies){
+        boolean[] votes = new boolean[questVoteReplies.size()];
+
+        for (int i=0; i < questVoteReplies.size(); i ++) {
+            votes[i] = questVoteReplies.get(i).vote;
+        }
+        return votes;
     }
 
     public static void setNextVoteAndLeader(){

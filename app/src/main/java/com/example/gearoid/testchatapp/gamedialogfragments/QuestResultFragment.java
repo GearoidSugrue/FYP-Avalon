@@ -101,8 +101,13 @@ public class QuestResultFragment extends DialogFragment {
 
         mContentView = rootView;
 
+        String leaderText = "";
+        if(isLeader){
+            leaderText = " - Leader";
+        }
+
         Toolbar mActionBarToolbar = (Toolbar) rootView.findViewById(R.id.frag_questVoteResult_toolbar);
-        mActionBarToolbar.setTitle("Quest " + quest.getValue() + " Result");
+        mActionBarToolbar.setTitle("Quest " + quest.getValue() + " Result" + leaderText);
         mActionBarToolbar.setLogo(getResources().getDrawable(R.drawable.icon_questvote));
 
         success = getResources().getDrawable(R.drawable.misc_success);
@@ -222,7 +227,7 @@ public class QuestResultFragment extends DialogFragment {
                         checkAllVotesRevealed();
 
                         QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
-                        activity.onQuestVoteResultRevealed(0, votes[0]);
+                        activity.onQuestVoteResultRevealed(1, votes[0]);
                     } else {
                         ApplicationContext.showToast("Only The Leader Can Reveal Quest Result");
                     }
@@ -247,7 +252,7 @@ public class QuestResultFragment extends DialogFragment {
                         checkAllVotesRevealed();
 
                         QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
-                        activity.onQuestVoteResultRevealed(1, votes[1]);
+                        activity.onQuestVoteResultRevealed(2, votes[1]);
                     } else {
                         ApplicationContext.showToast("Only The Leader Can Reveal Quest Result");
                     }
@@ -272,7 +277,7 @@ public class QuestResultFragment extends DialogFragment {
                         checkAllVotesRevealed();
 
                         QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
-                        activity.onQuestVoteResultRevealed(2, votes[2]);
+                        activity.onQuestVoteResultRevealed(3, votes[2]);
                     } else {
                         ApplicationContext.showToast("Only The Leader Can Reveal Quest Result");
                     }
@@ -298,7 +303,7 @@ public class QuestResultFragment extends DialogFragment {
                         checkAllVotesRevealed();
 
                         QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
-                        activity.onQuestVoteResultRevealed(3, votes[3]);
+                        activity.onQuestVoteResultRevealed(4, votes[3]);
                     } else {
                         ApplicationContext.showToast("Only The Leader Can Reveal Quest Result");
                     }
@@ -324,7 +329,7 @@ public class QuestResultFragment extends DialogFragment {
                         checkAllVotesRevealed();
 
                         QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
-                        activity.onQuestVoteResultRevealed(4, votes[4]);
+                        activity.onQuestVoteResultRevealed(5, votes[4]);
                     } else {
                         ApplicationContext.showToast("Only The Leader Can Reveal Quest Result");
                     }
