@@ -68,8 +68,8 @@ public class ListenerServer extends Listener {
 
             if (playerConnection.playerID >= 0) {
                 Log.d("Packet Received", "Old player reconnected: " + playerConnection.userName + ", ID: " + playerConnection.playerID);
-                if (Session.masterAllPlayerConnections.size() > playerConnection.playerID) {
-                    Session.masterAllPlayerConnections.get(playerConnection.playerID).playerConnection = con;//Should this be non static way!???
+                if (Session.serverAllPlayerConnections.size() > playerConnection.playerID) {
+                    Session.serverAllPlayerConnections.get(playerConnection.playerID).playerConnection = con;//Should this be non static way!???
                 } else {
                     Log.d("Packet Received", "Error: All players list is missing entries! " + playerConnection.userName + ", ID: " + playerConnection.playerID);
                 }
@@ -78,17 +78,17 @@ public class ListenerServer extends Listener {
                 Log.d("Packet Received", "New player connected: " + playerConnection.userName);
                 Packet_SendDetails sendPacket = (Packet_SendDetails) PacketFactory.createPack(PacketFactory.PacketType.SEND_DETAILS);
 
-                int idNum = Session.masterAllPlayerConnections.size();//TODO add thread safe way to get IDs
+                int idNum = Session.serverAllPlayerConnections.size();//TODO add thread safe way to get IDs
 
                 sendPacket.newPlayerNumber = idNum;
                 playerConnection.playerConnection = con;
-                Session.masterAllPlayerConnections.add(playerConnection);
+                Session.serverAllPlayerConnections.add(playerConnection);
 
                 Player player = new Player();
                 player.userName = playerConnection.userName;
                 player.playerID = idNum;
 //                Session.allPlayers.add(player);
-                Session.masterAllPlayers.add(player);
+                Session.serverAllPlayers.add(player);
 
                 con.sendTCP(sendPacket);
                 //Add to specific position using the thread safe ID generated earlier

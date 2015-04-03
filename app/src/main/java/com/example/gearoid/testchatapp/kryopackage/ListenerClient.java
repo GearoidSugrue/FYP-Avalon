@@ -57,9 +57,14 @@ public class ListenerClient extends Listener {
 
         void client_OnQuestVoteResultRevealed(Packet_QuestVoteResultRevealed voteInfo);
 
+        void client_OnLadyOfLakeUpdateReceived(Packet_LadyOfLakeUpdate updateInfo);
+
         void client_OnSelectTeamReceived(Packet_SelectTeam questInfo);
 
+        void client_OnStartNextQuestReceived(Packet_StartNextQuest previousQuestResult);
+
         void client_OnGameFinishedReceived(Packet_GameFinished gameResultInfo);
+
 
 
     }
@@ -122,10 +127,10 @@ public class ListenerClient extends Listener {
         if (obj instanceof Packet_SendDetails) {
             PlayerConnection.getInstance().playerID = ((Packet_SendDetails) obj).newPlayerNumber;
         }
-        if (obj instanceof Packet_IsLadyOfLake) {
-//            PlayerConnection.getInstance().hasLadyOfLake = ((Packet_IsLadyOfLake) obj).isLadyOfLake;
-            Session.allPlayers.get(PlayerConnection.getInstance().playerID).hasLadyOfLake = ((Packet_IsLadyOfLake) obj).isLadyOfLake;
-        }
+//        if (obj instanceof Packet_LadyOfLakeUpdate) {
+////            PlayerConnection.getInstance().hasLadyOfLake = ((Packet_IsLadyOfLake) obj).isLadyOfLake;
+//            Session.allPlayers.get(PlayerConnection.getInstance().playerID).hasLadyOfLake = ((Packet_LadyOfLakeUpdate) obj).isLadyOfLake;
+//        }
         if (obj instanceof Packet_StartGame) {
             Packet_StartGame packet = (Packet_StartGame) obj;
 
@@ -143,46 +148,49 @@ public class ListenerClient extends Listener {
         }
         if (obj instanceof Packet_UpdateGameState) {
             Packet_UpdateGameState packet = (Packet_UpdateGameState) obj;
-
             activity.client_OnUpdateGameStateReceived(packet);
         }
         if (obj instanceof Packet_TeamVote) {
             Packet_TeamVote packet = (Packet_TeamVote) obj;
-
             activity.client_OnTeamVoteReceived(packet);
             //activity.clientStartTeamVoteDialog(packet.proposedTeam, packet.quest, packet.voteCount);
         }
         if (obj instanceof Packet_TeamVoteResult) {
             Packet_TeamVoteResult packet = (Packet_TeamVoteResult) obj;
-
             activity.client_OnTeamVoteResultReceived(packet);
             //activity.clientStartTeamVoteResultDialog(packet.isApproved, packet.playerApprovedPos, packet.playerRejectedPos, packet.quest, packet.voteNumber);
         }
         if (obj instanceof Packet_QuestVote) {
             Packet_QuestVote packet = (Packet_QuestVote) obj;
-
             activity.client_OnQuestVoteReceived(packet);
         }
         if (obj instanceof Packet_SelectTeam) {
             Packet_SelectTeam packet = (Packet_SelectTeam) obj;
-
             activity.client_OnSelectTeamReceived(packet);
         }
         if (obj instanceof Packet_QuestVoteResult) {
             Packet_QuestVoteResult packet = (Packet_QuestVoteResult) obj;
-
             activity.client_OnQuestVoteResultReceived(packet);
         }
         if (obj instanceof Packet_GameFinished) {
             Packet_GameFinished packet = (Packet_GameFinished) obj;
-
             activity.client_OnGameFinishedReceived(packet);
         }
         if(obj instanceof Packet_QuestVoteResultRevealed){
             Packet_QuestVoteResultRevealed packet = (Packet_QuestVoteResultRevealed) obj;
-
             activity.client_OnQuestVoteResultRevealed(packet);
         }
+        if(obj instanceof Packet_StartNextQuest){
+            Packet_StartNextQuest packet = (Packet_StartNextQuest) obj;
+            activity.client_OnStartNextQuestReceived(packet);
+
+        }
+        if(obj instanceof Packet_LadyOfLakeUpdate){
+            Packet_LadyOfLakeUpdate packet = (Packet_LadyOfLakeUpdate) obj;
+            activity.client_OnLadyOfLakeUpdateReceived(packet);
+        }
+
+
 
 
 
@@ -235,7 +243,7 @@ public class ListenerClient extends Listener {
             int senderNumber = ((Packet3_AllPlayers) obj).playerNumber;
             LinkedList<PlayerConnection> allPlayerConnections = ((Packet3_AllPlayers) obj).allPlayerConnections;
 
-            //GameLogicClient.masterAllPlayers = masterAllPlayers;
+            //GameLogicClient.serverAllPlayers = serverAllPlayers;
 
             System.out.println("[[Client " + client.getID() + ", "
                     + client.toString()

@@ -163,7 +163,7 @@ public class                  WiFiDirectServiceActivity extends ActionBarActivit
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ApplicationContext.getContext(), GameSetupActivity.class);
-                    int numberOfConnections = Session.masterAllPlayerConnections.size();
+                    int numberOfConnections = Session.serverAllPlayerConnections.size();
                     Log.d(TAG, "Number of devices connected to KryoServer is: " + numberOfConnections);
                     intent.putExtra("PLAYER_COUNT", numberOfConnections); //TODO Fix this. Pass in number of connected devices
                     startActivity(intent);
@@ -568,7 +568,7 @@ public class                  WiFiDirectServiceActivity extends ActionBarActivit
 
     public void disconnect() {//add kryo stuff, send packet to Host saying its disconnecting and close kryo client
 
-        //TODO send a packet to kryonet Server informing it of disconnect so it can remove player from masterAllPlayers list
+        //TODO send a packet to kryonet Server informing it of disconnect so it can remove player from serverAllPlayers list
 
         final WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager()
                 .findFragmentById(R.id.frag_service_list);

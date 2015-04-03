@@ -1,5 +1,7 @@
 package com.example.gearoid.testchatapp;
 
+import android.util.Log;
+
 import com.example.gearoid.testchatapp.kryopackage.Packet;
 import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
 import com.example.gearoid.testchatapp.multiplayer.Player;
@@ -10,9 +12,12 @@ import java.util.ArrayList;
 
 import static com.example.gearoid.testchatapp.multiplayer.Session.currentBoard;
 import static com.example.gearoid.testchatapp.multiplayer.Session.currentQuest;
-import static com.example.gearoid.testchatapp.multiplayer.Session.questVoteReplies;
+import static com.example.gearoid.testchatapp.multiplayer.Session.server_currentProposedTeam;
+import static com.example.gearoid.testchatapp.multiplayer.Session.server_questVoteReplies;
 import static com.example.gearoid.testchatapp.multiplayer.Session.server_sendToEveryone;
 import static com.example.gearoid.testchatapp.multiplayer.Session.server_sendToPlayer;
+import static com.example.gearoid.testchatapp.multiplayer.Session.server_sendToSelectedPlayers;
+import static com.example.gearoid.testchatapp.multiplayer.Session.server_teamVoteReplies;
 import static com.example.gearoid.testchatapp.multiplayer.Session.voteCount;
 
 /**
@@ -27,6 +32,7 @@ public class GameLogicFunctions {
     public enum Quest {
         FIRST(1), SECOND(2), THIRD(3), FOURTH(4), FIFTH(5);
         private int value;
+        private boolean result;
 
         private Quest(int value) {
             this.value = value;
@@ -34,6 +40,12 @@ public class GameLogicFunctions {
 
         public int getValue(){
             return this.value;
+        }
+        public void setScore(boolean result){
+            this.result = result;
+        }
+        public boolean getScore(){
+            return this.result;
         }
     }
 
@@ -93,8 +105,8 @@ public class GameLogicFunctions {
 
         return Session.leaderOrderList.get(Session.leaderOrderIterator);
 
-//        for (int i = 0; i < Session.masterAllPlayers.size(); i++) {
-//            if (Session.masterAllPlayers.get(i).isLeader) {
+//        for (int i = 0; i < Session.serverAllPlayers.size(); i++) {
+//            if (Session.serverAllPlayers.get(i).isLeader) {
 //                return i;
 //            }
 //        }
@@ -231,18 +243,93 @@ public class GameLogicFunctions {
         return votes;
     }
 
-    public static void setNextVoteAndLeader(){
 
-//        voteCount++; //Turn these two into packet. Forbid server from updating info, only clients can.
-//        setNextLeader(); //
 
-        updateAllPlayersGameState(Session.GameState.TEAM_SELECT);
+    public static boolean checkIfGoodHaveWon(ArrayList<Quest> completedQuests){
+        int goodVictories = 0;
+        boolean goodWon = false;
+
+        for(int i=0; i < completedQuests.size(); i++){
+
+            if(completedQuests.get(i).getScore()){
+                goodVictories++;
+            }
+        }
+
+        if(goodVictories >= 3){
+            goodWon = true;
+        }
+        return goodWon;
+    }
+
+    public static boolean checkIfEvilHaveWon(ArrayList<Quest> completedQuests){
+        int evilVictories = 0;
+        boolean evilWon = false;
+
+        for(int i=0; i < completedQuests.size(); i++){
+
+            if(!completedQuests.get(i).getScore()){
+                evilVictories++;
+            }
+        }
+
+        if(evilVictories >= 3){
+            evilWon = true;
+        }
+        return evilWon;
+    }
+
+    public static Quest getNextQuest(Quest currentQuest){
+        Log.d("GameLogicFunctions", "Getting next Quest. CurrentQuest: " + currentQuest);
+
+        switch (currentQuest){
+            case FIRST: return Quest.SECOND;
+            case SECOND: return Quest.THIRD;
+            case THIRD: return Quest.FOURTH;
+            case FOURTH: return Quest.FIFTH;
+        }
+        return Quest.FIRST;
+    }
+
+    public static void startNewTeamSelectPhase(Quest currentQuest){
+
+//        voteCount++;
+//        setNextLeader(); //done client side
 
         Packet.Packet_SelectTeam packetSelectTeam = (Packet.Packet_SelectTeam) PacketFactory.createPack(PacketFactory.PacketType.SELECT_TEAM);
         packetSelectTeam.quest = currentQuest;
         packetSelectTeam.teamSize = GameLogicFunctions.calculateFailRequiredForQuest(currentBoard, currentQuest);
 
+        updateAllPlayersGameState(Session.GameState.TEAM_SELECT);
         server_sendToPlayer(GameLogicFunctions.getCurrentLeaderID(), packetSelectTeam);
+    }
+
+
+    public static void startNewQuest(boolean previousQuestResult){
+        Log.d("GameLogicFunctions", "startNewQuest. old Quest: " + currentQuest);
+
+        startNewTeamSelectPhase(getNextQuest(currentQuest));
+
+        //currentQuest = getNextQuest(currentQuest);
+        Packet.Packet_StartNextQuest packetStartNextQuest = (Packet.Packet_StartNextQuest) PacketFactory.createPack(PacketFactory.PacketType.START_NEXT_QUEST);
+        packetStartNextQuest.previousQuestResult = previousQuestResult;
+
+        server_sendToEveryone(packetStartNextQuest);
+
+    }
+
+    public static void sendPlayersOnQuest(Quest currentQuest, int[] proposedTeam){
+        Log.d("GameLogicFunctions", "sendPlayersOnQuest. Current Quest: " + currentQuest);
+
+        updateAllPlayersGameState(Session.GameState.QUEST_VOTE);
+
+        Packet.Packet_QuestVote packetQuestVote = (Packet.Packet_QuestVote) PacketFactory.createPack(PacketFactory.PacketType.QUEST_VOTE);
+        packetQuestVote.quest = currentQuest;
+        packetQuestVote.teamMemberPos = proposedTeam;
+
+        server_questVoteReplies = new ArrayList<>();
+
+        server_sendToSelectedPlayers(proposedTeam, packetQuestVote);
     }
 
     public static void endGame(boolean result){

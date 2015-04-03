@@ -31,7 +31,7 @@ public class KRegisterAndPort {
         kryo.register(Packet_SendDetails.class);
 
         kryo.register(Packet_StartGame.class);
-        kryo.register(Packet_IsLadyOfLake.class);
+        kryo.register(Packet_LadyOfLakeUpdate.class);
         kryo.register(Packet_TeamVote.class);
         kryo.register(Packet_TeamVoteResult.class);
         kryo.register(Packet_QuestVote.class);
@@ -48,9 +48,7 @@ public class KRegisterAndPort {
         kryo.register(Packet_GameFinishedReply.class);
         kryo.register(Packet_QuestVoteResultRevealed.class);
         kryo.register(Packet_QuestVoteResultFinished.class);
-
-
-
+        kryo.register(Packet_StartNextQuest.class);
 
 
 

@@ -10,7 +10,6 @@ import com.example.gearoid.testchatapp.SharedPrefManager;
 import com.example.gearoid.testchatapp.kryopackage.ListenerClient;
 import com.example.gearoid.testchatapp.kryopackage.ListenerServer;
 import com.example.gearoid.testchatapp.kryopackage.Packet;
-import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
 import com.example.gearoid.testchatapp.singletons.ClientInstance;
 import com.example.gearoid.testchatapp.singletons.PlayerConnection;
 import com.example.gearoid.testchatapp.singletons.ServerInstance;
@@ -29,9 +28,9 @@ public class Session {
     public static ListenerServer serverListener;
     public static ListenerClient clientListener;
 
-    public static ArrayList<PlayerConnection> masterAllPlayerConnections; //Won't be instantiated until Session object is created TODO fix masterAllPlayers ArrayList
-    public static ArrayList<Player> masterAllPlayers;
-    public static ArrayList<Player> allPlayers; //Won't be instantiated until Session object is created TODO fix masterAllPlayers ArrayList
+    public static ArrayList<PlayerConnection> serverAllPlayerConnections; //Won't be instantiated until Session object is created TODO fix serverAllPlayers ArrayList
+    public static ArrayList<Player> serverAllPlayers;
+    public static ArrayList<Player> allPlayers; //Won't be instantiated until Session object is created TODO fix serverAllPlayers ArrayList
 
     //public static ArrayList<Player> leaderOrderAllPlayers;
     public static ArrayList<Integer> leaderOrderList;
@@ -41,13 +40,19 @@ public class Session {
     public static GameLogicFunctions.Board currentBoard;
     public static GameLogicFunctions.Quest currentQuest = GameLogicFunctions.Quest.FIRST;
     public static int voteCount = 0;
+    public static boolean serverIsLadyOfLakeOn = false;
     public static GameState currentGameState = GameState.TEAM_SELECT;
     public static TextView gameStatusView;
     public static String gameStatusText;
+    public static ArrayList<GameLogicFunctions.Quest> serverQuestResults;
+    public static ArrayList<GameLogicFunctions.Quest> clientQuestResults;
 
-    public static ArrayList<Packet.Packet_TeamVoteReply> teamVoteReplies;
+
+    //public static GameLogicFunctions.Quest quest1Result;
+
+    public static ArrayList<Packet.Packet_TeamVoteReply> server_teamVoteReplies;
     public static int[] server_currentProposedTeam;
-    public static ArrayList<Packet.Packet_QuestVoteReply> questVoteReplies;
+    public static ArrayList<Packet.Packet_QuestVoteReply> server_questVoteReplies;
 
     //public static Drawable boardImage;//Is this necessary??? Use Board enum instead...
 
@@ -58,15 +63,17 @@ public class Session {
     }
 
     public Session() {//Find a better way??..
-        masterAllPlayerConnections = new ArrayList<>();
+        serverAllPlayerConnections = new ArrayList<>();
         allPlayers = new ArrayList<>();
     }
 
 
     public static void host() {
-        masterAllPlayerConnections = new ArrayList<>();
+        serverAllPlayerConnections = new ArrayList<>();
         allPlayers = new ArrayList<>();
-        masterAllPlayers = new ArrayList<>();
+        serverAllPlayers = new ArrayList<>();
+        serverQuestResults = new ArrayList<>();
+        currentQuest = GameLogicFunctions.Quest.FIRST;
 
 //        ServerInstance.getInstance();
 //        ServerInstance.server.getServer().start();
@@ -79,6 +86,9 @@ public class Session {
         if (!ClientInstance.getKryoClientInstance().getClient().isConnected()) {
             allPlayers = new ArrayList<>();
             leaderOrderList = new ArrayList<>();
+            clientQuestResults = new ArrayList<>();
+            currentQuest = GameLogicFunctions.Quest.FIRST;
+
             PlayerConnection.getInstance().userName = SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext());//TODO find better way to do this
             PlayerConnection.getInstance().playerID = -1;
             Thread thread = new Thread() {//The host is also a player!!
@@ -126,7 +136,7 @@ public class Session {
 
         for (int i = 0; i < playerIDs.length; i++) {
 
-            int conID = Session.masterAllPlayerConnections.get(playerIDs[i]).playerConnection.getID();
+            int conID = Session.serverAllPlayerConnections.get(playerIDs[i]).playerConnection.getID();
             ServerInstance.server.getServer().sendToTCP(conID, obj);
         }
 
@@ -136,7 +146,7 @@ public class Session {
         Log.d("Session", "Server: Sending Object to player: " + playerID);
 
 
-        ServerInstance.server.getServer().sendToTCP(Session.masterAllPlayerConnections.get(playerID).playerConnection.getID(), obj);
+        ServerInstance.server.getServer().sendToTCP(Session.serverAllPlayerConnections.get(playerID).playerConnection.getID(), obj);
     }
 }
 

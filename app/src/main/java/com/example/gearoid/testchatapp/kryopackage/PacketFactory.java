@@ -7,10 +7,10 @@ import com.example.gearoid.testchatapp.kryopackage.Packet.*;
 public class PacketFactory {
 
     public enum PacketType {
-        REQUEST_DETAILS, SEND_DETAILS, START_GAME, IS_LADYOFLAKE, UPDATE_GAMESTATE, TEAM_VOTE,
+        REQUEST_DETAILS, SEND_DETAILS, START_GAME, LADYOFLAKE_UPDATE, UPDATE_GAMESTATE, TEAM_VOTE,
         TEAM_VOTE_RESULT, QUEST_VOTE,  QUEST_VOTE_RESULT, SELECT_TEAM, GAME_FINISHED,
         TEAM_VOTE_REPLY, QUEST_VOTE_REPLY, SELECT_TEAM_REPLY, ASSASSINATE_REPLY, LADYOFLAKE_REPLY, GAME_FINISHED_REPLY,
-        QUESTVOTE_REVEALED, QUESTVOTE_FINISHED
+        QUESTVOTE_REVEALED, QUESTVOTE_FINISHED, START_NEXT_QUEST
     }
 
     public static Packet createPack(PacketType nameEnum){
@@ -19,7 +19,7 @@ public class PacketFactory {
             case REQUEST_DETAILS: return new Packet_RequestDetails();
             case SEND_DETAILS: return new Packet_SendDetails();
             case START_GAME: return new Packet_StartGame();
-            case IS_LADYOFLAKE: return new Packet_IsLadyOfLake();
+            case LADYOFLAKE_UPDATE: return new Packet_LadyOfLakeUpdate();
             case UPDATE_GAMESTATE: return new Packet_UpdateGameState();
             case TEAM_VOTE: return new Packet_TeamVote();
             case TEAM_VOTE_RESULT: return new Packet_TeamVoteResult();
@@ -36,6 +36,9 @@ public class PacketFactory {
             case GAME_FINISHED_REPLY: return new Packet_GameFinishedReply();
             case QUESTVOTE_REVEALED: return new Packet_QuestVoteResultRevealed();
             case QUESTVOTE_FINISHED: return new Packet_QuestVoteResultFinished();
+            case START_NEXT_QUEST: return new Packet_StartNextQuest();
+
+
 
 
 

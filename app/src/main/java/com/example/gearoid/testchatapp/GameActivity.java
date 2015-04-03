@@ -333,23 +333,28 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void setTeamVoteState() {
         Log.d("GameActivity", "setTeamVoteState");
 
+        updateGameStatusText("Vote On Selected Team");
+
 //        Button teamVoteBut = (Button) findViewById(R.id.button_teamVoteFrag);
 //        teamVoteBut.setVisibility(View.VISIBLE);
-        setButtonVisible(teamVoteFrag);
+        //setButtonVisible(teamVoteFrag);
 
     }
 
     public void setTeamVoteResultState() {
         Log.d("GameActivity", "setTeamVoteResultState");
 
+        updateGameStatusText("View Team Vote Result");
+
+
 //        Button teamVoteResultBut = (Button) findViewById(R.id.button_teamVoteResultFrag);
 //        teamVoteResultFrag.setVisibility(View.VISIBLE);
 
-        if (getUserPlayer().isLeader) {
-//            teamVoteResultBut.setVisibility(View.VISIBLE);
-            setButtonVisible(teamVoteResultFrag);
-
-        }
+//        if (getUserPlayer().isLeader) {
+////            teamVoteResultBut.setVisibility(View.VISIBLE);
+//            setButtonVisible(teamVoteResultFrag);
+//
+//        }
     }
 
     public void setQuestVoteState() {
@@ -362,7 +367,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         if (getUserPlayer().isOnQuest) {
             updateGameStatusText("Your On A Quest. Please Vote.");
 //            questVoteBut.setVisibility(View.VISIBLE);
-            setButtonVisible(questVoteFrag);
+            //setButtonVisible(questVoteFrag);
 
         } else {
             updateGameStatusText("Waiting For Quest Team");
@@ -391,6 +396,9 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
 //            Button ladyOfLakeBut = (Button) findViewById(R.id.button_ladyOfLakeFrag);
 //            ladyOfLakeBut.setVisibility(View.VISIBLE);
             setButtonVisible(ladyOfLakeFrag);
+
+            DialogFragment newFragment = LadyOfLakeFragment.newInstance(); //TODO change to questNum...
+            newFragment.show(getFragmentManager(), "ladyoflakedialog");
 //            ladyOfLakeFrag.setVisibility(View.VISIBLE);
         } else {
             updateGameStatusText("Waiting For Lady of the Lake Holder");
@@ -607,7 +615,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void onQuestVoteResultsFinished(boolean result) {
         Log.d("GameActivity", "onQuestVoteResultsFinished from QuestResultDialog. Quest Result: " + result);
 
-        if(getUserPlayer().isLeader) {
+        if (getUserPlayer().isLeader) {
 
             final Packet.Packet_QuestVoteResultFinished packet = (Packet.Packet_QuestVoteResultFinished) PacketFactory.createPack(PacketFactory.PacketType.QUESTVOTE_FINISHED);
             packet.result = result;
@@ -641,60 +649,54 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void server_OnTeamVoteReplyReceived(Packet.Packet_TeamVoteReply voteInfo) {
         Log.d("GameActivity", "server_OnTeamVoteReplyReceived from ListenerServer. Player ID: " + voteInfo.playerID);
 
-        teamVoteReplies.add(voteInfo);
+        server_teamVoteReplies.add(voteInfo);
 
-        if (teamVoteReplies.size() == Session.allPlayers.size()) {
+        if (server_teamVoteReplies.size() == Session.allPlayers.size()) {
 
             Packet.Packet_TeamVoteResult packetTeamVoteResult = (Packet.Packet_TeamVoteResult) PacketFactory.createPack(PacketFactory.PacketType.TEAM_VOTE_RESULT);
             packetTeamVoteResult.quest = currentQuest;
             packetTeamVoteResult.voteNumber = voteCount;
-            packetTeamVoteResult.playerApprovedPos = getApprovedPlayerPos(teamVoteReplies);
-            packetTeamVoteResult.playerRejectedPos = getRejectedPlayerPos(teamVoteReplies);
+            packetTeamVoteResult.playerApprovedPos = getApprovedPlayerPos(server_teamVoteReplies);
+            packetTeamVoteResult.playerRejectedPos = getRejectedPlayerPos(server_teamVoteReplies);
+
+            server_teamVoteReplies.clear();
 
             if (packetTeamVoteResult.playerApprovedPos.length > packetTeamVoteResult.playerRejectedPos.length) {
                 packetTeamVoteResult.isApproved = true;
 
-                updateAllPlayersGameState(GameState.QUEST_VOTE);
+                sendPlayersOnQuest(currentQuest, server_currentProposedTeam);
 
-                Packet.Packet_QuestVote packetQuestVote = (Packet.Packet_QuestVote) PacketFactory.createPack(PacketFactory.PacketType.QUEST_VOTE);
-                packetQuestVote.quest = currentQuest;
-                packetQuestVote.teamMemberPos = server_currentProposedTeam;
-
-                questVoteReplies = new ArrayList<>();
-
-                server_sendToSelectedPlayers(server_currentProposedTeam, packetQuestVote);
-                teamVoteReplies.clear();
                 Session.server_sendToEveryone(packetTeamVoteResult);
 
             } else {
 
-                if (voteCount > 4) { //Game Over, Evil Wins
+                if (voteCount > 4) {
 
-                    endGame(false);
+                    endGame(false);//Game Finished, Evil Wins.
                 } else {
                     packetTeamVoteResult.isApproved = false;
 
-                    setNextVoteAndLeader(); //needs to be done by clients, send packet
+                    startNewTeamSelectPhase(currentQuest); //needs to be done by clients, send packet
 
-                    teamVoteReplies.clear();
                     Session.server_sendToEveryone(packetTeamVoteResult);
                 }
             }
+
         }
     }
 
 
     @Override
     public void server_OnQuestVoteReplyReceived(Packet.Packet_QuestVoteReply voteInfo) {
-        Log.d("GameActivity", "server_OnQuestVoteReplyReceived from ListenerServer. Player ID: " + voteInfo.playerID + ", questVoteReplies size: " + (questVoteReplies.size() + 1));
+        Log.d("GameActivity", "server_OnQuestVoteReplyReceived from ListenerServer. Player ID: " + voteInfo.playerID + ", server_questVoteReplies size: " + (server_questVoteReplies.size() + 1));
 
-        questVoteReplies.add(voteInfo);
+        server_questVoteReplies.add(voteInfo);
 
-        if (questVoteReplies.size() == calculatePlayersRequiredForQuest(currentBoard, currentQuest)) {
+        if (server_questVoteReplies.size() == calculatePlayersRequiredForQuest(currentBoard, currentQuest)) {
             Packet.Packet_QuestVoteResult packet_questVoteResult = (Packet.Packet_QuestVoteResult) PacketFactory.createPack(PacketFactory.PacketType.QUEST_VOTE_RESULT);
             packet_questVoteResult.quest = currentQuest;
             packet_questVoteResult.teamMemberPos = server_currentProposedTeam;
-            packet_questVoteResult.votes = getQuestVotesFromPackets(questVoteReplies);
+            packet_questVoteResult.votes = getQuestVotesFromPackets(server_questVoteReplies);
 
             updateAllPlayersGameState(GameState.QUEST_VOTE_RESULT);
             server_sendToEveryone(packet_questVoteResult);
@@ -712,7 +714,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         packet.quest = currentQuest;
         packet.voteCount = voteCount;
 
-        teamVoteReplies = new ArrayList<>();
+        server_teamVoteReplies = new ArrayList<>();
 
         Session.server_sendToEveryone(packet);
     }
@@ -736,13 +738,17 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void server_OnLadyOfLakeReplyReceived(Packet.Packet_LadyOfLakeReply ladyOfLakeInfo) {
         Log.d("GameActivity", "server_OnLadyOfLakeReplyReceived from ListenerServer");
 
-        Session.allPlayers.get(ladyOfLakeInfo.playerID).hasUsedLadyOfLake = true;
-        Session.allPlayers.get(ladyOfLakeInfo.selectedPlayerIndex).hasLadyOfLake = true;
+        Session.serverAllPlayers.get(ladyOfLakeInfo.playerID).hasUsedLadyOfLake = true;
+        Session.serverAllPlayers.get(ladyOfLakeInfo.playerID).hasLadyOfLake = false;
+        Session.serverAllPlayers.get(ladyOfLakeInfo.selectedPlayerIndex).hasLadyOfLake = true;
 
-        Packet.Packet_GameFinished packet = (Packet.Packet_GameFinished) PacketFactory.createPack(PacketFactory.PacketType.GAME_FINISHED);
+        Packet.Packet_LadyOfLakeUpdate packetLadyOfLakeUpdate = (Packet.Packet_LadyOfLakeUpdate) PacketFactory.createPack(PacketFactory.PacketType.LADYOFLAKE_UPDATE);
+        packetLadyOfLakeUpdate.newTokenHolderID = ladyOfLakeInfo.selectedPlayerIndex;
+        packetLadyOfLakeUpdate.previousTokenHolderID = ladyOfLakeInfo.playerID;
 
-        // packet
+        server_sendToEveryone(packetLadyOfLakeUpdate);
 
+        startNewQuest(currentQuest.getScore());
         //ServerInstance.server.getServer().sendToAllTCP(packet);
     }
 
@@ -756,7 +762,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void server_OnQuestVoteResultRevealedReceived(Packet.Packet_QuestVoteResultRevealed voteInfo) {
         Log.d("GameActivity", "server_OnQuestVoteResultRevealedReceived from ListenerServer");
 
-        ServerInstance.server.getServer().sendToAllExceptTCP(Session.masterAllPlayerConnections.get(voteInfo.playerID).playerConnection.getID(), voteInfo);
+        ServerInstance.server.getServer().sendToAllExceptTCP(Session.serverAllPlayerConnections.get(voteInfo.playerID).playerConnection.getID(), voteInfo);
     }
 
     @Override
@@ -764,21 +770,22 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         Log.d("GameActivity", "server_OnQuestVoteResultFinishedReceived from ListenerServer. Result: " + resultInfo.result + ", playerID: " + resultInfo.playerID);
 
 //        if(resultInfo.playerID == getCurrentLeaderID()){
-            Log.d("GameActivity", "server_OnQuestVoteResultFinishedReceived from The Leader");
+        Log.d("GameActivity", "server_OnQuestVoteResultFinishedReceived from The Leader");
 
+        currentQuest.setScore(resultInfo.result);
+        serverQuestResults.add(currentQuest);
 
-            if(resultInfo.result){
+        if (checkIfGoodHaveWon(serverQuestResults)) {
+            endGame(true);
+        } else if (checkIfEvilHaveWon(serverQuestResults)) {
+            endGame(false);
+        }
 
-
-                //if game not finished. Start new quest...update state. check if ladyOfLake user wants to use token
-                //Packet
-
-
-            } else {
-
-            }
-
-//        }
+        if (serverIsLadyOfLakeOn && currentQuest != Quest.FIRST && currentQuest != Quest.FIFTH) {
+            updateAllPlayersGameState(GameState.LADY_OF_LAKE);
+        } else {
+            startNewQuest(resultInfo.result);
+        }
 
         //Save result + check if game is finished + if not start new quest...etc...
 
@@ -787,6 +794,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     @Override
     public void client_OnMessagePacketReceived(String message) {
         Log.d("GameActivity", "client_OnMessagePacketReceived from ListenerClient");
+
 
     }
 
@@ -942,6 +950,21 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     }
 
     @Override
+    public void client_OnLadyOfLakeUpdateReceived(Packet.Packet_LadyOfLakeUpdate updateInfo) {
+        Log.d("GameActivity", "client_OnLadyOfLakeUpdateReceived from ListenerClient.");
+
+        Session.allPlayers.get(updateInfo.newTokenHolderID).hasLadyOfLake = true;
+        Session.allPlayers.get(updateInfo.previousTokenHolderID).hasLadyOfLake = false;
+        Session.allPlayers.get(updateInfo.previousTokenHolderID).hasUsedLadyOfLake = true;
+
+        if(updateInfo.newTokenHolderID == getUserPlayer().playerID){
+            ApplicationContext.showToast(Session.allPlayers.get(updateInfo.previousTokenHolderID).userName + " has used the Lady of The Lake Token on you");
+            ApplicationContext.showToast(Session.allPlayers.get(updateInfo.previousTokenHolderID).userName + " now knows your allegiance");
+        }
+
+    }
+
+    @Override
     public void client_OnSelectTeamReceived(Packet.Packet_SelectTeam questInfo) {
         Log.d("GameActivity", "client_OnSelectTeamReceived from ListenerClient");
 
@@ -965,6 +988,27 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         });
 
         newFragment.show(getFragmentManager(), "teamselectdialog");
+    }
+
+    @Override
+    public void client_OnStartNextQuestReceived(Packet.Packet_StartNextQuest previousQuestResult) {
+        Log.d("GameActivity", "client_OnStartNextQuestReceived from ListenerClient");
+
+        currentQuest.setScore(previousQuestResult.previousQuestResult);
+        clientQuestResults.add(currentQuest);
+
+        currentQuest = getNextQuest(currentQuest);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("GameActivity", "runOnUiThread: updating Toolbar text: Quest " + currentQuest.getValue());
+
+                Toolbar toolbar = (Toolbar) findViewById(R.id.game_toolbar);
+                setSupportActionBar(toolbar);
+                getSupportActionBar().setTitle("Quest " + currentQuest.getValue());
+            }
+        });
     }
 
     @Override

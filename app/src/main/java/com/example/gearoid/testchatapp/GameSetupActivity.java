@@ -290,11 +290,11 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
 //            p4.userName = "Kabuki";
 //            p4.hasLadyOfLake = true;
 //            p5.userName = "Mopsy";
-            Session.masterAllPlayers.add(p1);
-            Session.masterAllPlayers.add(p2);
-//            Session.masterAllPlayers.add(p3);
-//            Session.masterAllPlayers.add(p4);
-//            Session.masterAllPlayers.add(p5);
+            Session.serverAllPlayers.add(p1);
+            Session.serverAllPlayers.add(p2);
+//            Session.serverAllPlayers.add(p3);
+//            Session.serverAllPlayers.add(p4);
+//            Session.serverAllPlayers.add(p5);
 
             checkAndAssignLadyOfLake();
             assignAllPlayersCharacters(getCombinedGoodAndEvilList());
@@ -304,7 +304,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
 
             packet.allPlayers = new ArrayList<>();
             packet.leaderOrderList = new ArrayList<>();
-            packet.allPlayers.addAll(Session.masterAllPlayers);
+            packet.allPlayers.addAll(Session.serverAllPlayers);
             packet.leaderOrderList.addAll(Session.leaderOrderList);
             packet.currentBoard = currentBoard;
 
@@ -321,28 +321,6 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
 //
 //            startActivity(intent);
         }
-
-
-        /*
-        Thread sendPacketThread = new Thread() {//Testing purposes...
-            @Override
-            public void run() {
-                try {
-                    //Packet.Packet00_ClientDetails testPacket = (Packet.Packet00_ClientDetails) PacketFactory.createPacket("Client Details");
-                    //testPacket.playerName = SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext());
-                    ApplicationContext.showToast("[C] Sending Packet...");
-
-                    Packet.Packet2_Message reply = (Packet.Packet2_Message) PacketFactory.createPacket(ConstantsKryo.MESSAGE);
-                    reply.message = "Start";
-                    //ClientInstance.getKryoClientInstance().getClient().sendTCP(testPacket);
-                    ServerInstance.getServerInstance().sendToEveryone(reply);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        sendPacketThread.start();
-        */
     }
 
     public void checkAndAssignLadyOfLake(){
@@ -350,22 +328,24 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
 
         if(ladyOfLake){
             Log.d("GameSetup", "Assigning lady of lake");
+            Session.serverIsLadyOfLakeOn = true;
 
             Random ran = new Random();
-            final int randomIndex = ran.nextInt(Session.masterAllPlayers.size());
+            final int randomIndex = ran.nextInt(Session.serverAllPlayers.size());
 
-            Session.masterAllPlayers.get(randomIndex).hasLadyOfLake = true;
-            final Packet.Packet_IsLadyOfLake packet = (Packet.Packet_IsLadyOfLake) PacketFactory.createPack(PacketFactory.PacketType.IS_LADYOFLAKE);
-            packet.isLadyOfLake = true;
-
-            Thread thread = new Thread() {
-                @Override
-                public void run() {
-                    Session.masterAllPlayerConnections.get(randomIndex).playerConnection.sendTCP(packet);
-                }
-            };
-            thread.start();
-
+            Session.serverAllPlayers.get(randomIndex).hasLadyOfLake = true;
+//            final Packet.Packet_LadyOfLakeUpdate packet = (Packet.Packet_LadyOfLakeUpdate) PacketFactory.createPack(PacketFactory.PacketType.LADYOFLAKE_UPDATE);
+//            packet.isLadyOfLake = true;
+//
+//            Thread thread = new Thread() {
+//                @Override
+//                public void run() {
+//                    Session.serverAllPlayerConnections.get(randomIndex).playerConnection.sendTCP(packet);
+//                }
+//            };
+//            thread.start();
+        } else {
+            Session.serverIsLadyOfLakeOn = false;
         }
     }
 
@@ -389,11 +369,11 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
 
         Log.d("GameSetup", "Assigning players characters");
 
-        if (chosenCharacters.size() == Session.masterAllPlayers.size()) {
+        if (chosenCharacters.size() == Session.serverAllPlayers.size()) {
 
-            for (int i = 0; i < Session.masterAllPlayers.size(); i++) {
+            for (int i = 0; i < Session.serverAllPlayers.size(); i++) {
                 Log.d("GameSetup", "Character: " + chosenCharacters.get(i).getCharacterName());
-                Session.masterAllPlayers.get(i).character = chosenCharacters.get(i);
+                Session.serverAllPlayers.get(i).character = chosenCharacters.get(i);
             }
         }
     }
@@ -402,21 +382,21 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         Session.leaderOrderList = new ArrayList<Integer>();
         Session.leaderOrderIterator = 0;
 
-        for(int i=0; i < Session.masterAllPlayers.size(); i++){
+        for(int i=0; i < Session.serverAllPlayers.size(); i++){
             Session.leaderOrderList.add(i);
             Log.d("GameSetup", "leaderOrderList - " +  Session.leaderOrderList.get(i));
         }
 
         Collections.shuffle(Session.leaderOrderList);
 
-        if(!Session.masterAllPlayers.isEmpty()){
-//            Session.masterAllPlayers.get(Session.leaderOrderList.get(Session.leaderOrderIterator)).isLeader = true;
-            //Session.masterAllPlayers.get(3).isLeader = true;
+        if(!Session.serverAllPlayers.isEmpty()){
+//            Session.serverAllPlayers.get(Session.leaderOrderList.get(Session.leaderOrderIterator)).isLeader = true;
+            //Session.serverAllPlayers.get(3).isLeader = true;
 
-            for(int i=0; i < Session.masterAllPlayers.size(); i++){
+            for(int i=0; i < Session.serverAllPlayers.size(); i++){
 
-                if(Session.masterAllPlayers.get(i).userName.equalsIgnoreCase("Gearoid")){
-                    Session.masterAllPlayers.get(i).isLeader = true;
+                if(Session.serverAllPlayers.get(i).userName.equalsIgnoreCase("Gearoid")){
+                    Session.serverAllPlayers.get(i).isLeader = true;
                 }
 
                 Log.d("GameSetup", "leaderOrderList - " +  Session.leaderOrderList.get(i));
@@ -424,7 +404,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         }
 
 //        Session.leaderOrderAllPlayers = new ArrayList<Player>();
-//        Session.leaderOrderAllPlayers.addAll(Session.masterAllPlayers);
+//        Session.leaderOrderAllPlayers.addAll(Session.serverAllPlayers);
 //        Collections.shuffle(Session.leaderOrderAllPlayers);
 //        if(!Session.leaderOrderAllPlayers.isEmpty()){
 //            Session.leaderOrderAllPlayers.get(0).isLeader = true;

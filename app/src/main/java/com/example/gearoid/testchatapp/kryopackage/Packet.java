@@ -36,8 +36,9 @@ public class Packet {
     public static class Packet_QuestVoteResultRevealed extends Packet { public int voteNumber; public boolean voteResult; public int playerID;}
     public static class Packet_QuestVoteResultFinished extends Packet { public boolean result; public int playerID;}
 
+    public static class Packet_StartNextQuest extends Packet { public boolean previousQuestResult; }
     public static class Packet_StartGame extends Packet { public ArrayList<Player> allPlayers; public ArrayList<Integer> leaderOrderList; public GameLogicFunctions.Board currentBoard;}
-    public static class Packet_IsLadyOfLake extends Packet { public boolean isLadyOfLake;}
+    public static class Packet_LadyOfLakeUpdate extends Packet { public int newTokenHolderID; public int previousTokenHolderID;}
 
     public static class Packet_UpdateGameState extends Packet {public Session.GameState nextGameState;}
 
