@@ -10,7 +10,7 @@ public class PacketFactory {
         REQUEST_DETAILS, SEND_DETAILS, START_GAME, LADYOFLAKE_UPDATE, UPDATE_GAMESTATE, TEAM_VOTE,
         TEAM_VOTE_RESULT, QUEST_VOTE,  QUEST_VOTE_RESULT, SELECT_TEAM, GAME_FINISHED,
         TEAM_VOTE_REPLY, QUEST_VOTE_REPLY, SELECT_TEAM_REPLY, ASSASSINATE_REPLY, LADYOFLAKE_REPLY, GAME_FINISHED_REPLY,
-        QUESTVOTE_REVEALED, QUESTVOTE_FINISHED, START_NEXT_QUEST
+        QUESTVOTE_REVEALED, QUESTVOTE_FINISHED, START_NEXT_QUEST, PLAYER_LEFT, PLAYER_RETURNED
     }
 
     public static Packet createPack(PacketType nameEnum){
@@ -37,14 +37,11 @@ public class PacketFactory {
             case QUESTVOTE_REVEALED: return new Packet_QuestVoteResultRevealed();
             case QUESTVOTE_FINISHED: return new Packet_QuestVoteResultFinished();
             case START_NEXT_QUEST: return new Packet_StartNextQuest();
-
-
-
-
-
+            case PLAYER_LEFT: return new Packet_PlayerHasLeftApp();
+            case PLAYER_RETURNED: return new Packet_PlayerHasReturnedToApp();
 
             default:
-                Log.e("PacketFactory", "Packet name not found!!! Returning NULL!"); return null;
+                Log.e("PacketFactory", "Packet name not found! Returning NULL!"); return null;
         }
 
     }

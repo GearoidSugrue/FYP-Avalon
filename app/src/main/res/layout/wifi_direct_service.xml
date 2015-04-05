@@ -37,6 +37,35 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/linearLayout_connectedPlayers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textview_label_connectedPlayers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textSize="@dimen/abc_text_size_medium_material"
+            android:background="@color/GreenLight"
+            android:textColor="@color/White"
+            android:text="Connected Players">
+
+            </TextView>
+
+        <ListView
+            android:id="@+id/listview_connectedPlayers"
+            android:layout_height="?android:attr/listPreferredItemHeight"
+            android:layout_width="fill_parent" />
+
+
+    </LinearLayout>
+
+
     <TextView
         android:id="@+id/textview_label_info"
         android:layout_width="match_parent"
@@ -47,17 +76,18 @@
         android:background="@color/GreenLight"
         android:textColor="@color/White"
         android:text="@string/label_info">
-    </TextView>
+
+        </TextView>
 
     <TextView
         android:id="@+id/status_text"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".3"
+        android:layout_weight=".25"
         android:paddingTop="3dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:scrollbars="vertical" >
+        android:scrollbars="vertical">
 
     </TextView>
 
@@ -78,7 +108,6 @@
         android:textColor="@color/GreenLight"
         android:textAllCaps="true"
         style="?android:attr/borderlessButtonStyle"
-        android:text="Continue to Game Setup"
-         />
+        android:text="Continue to Game Setup" />
 
 </LinearLayout>

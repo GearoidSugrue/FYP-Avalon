@@ -3,8 +3,8 @@ package com.example.gearoid.testchatapp.multiplayer;
 import android.util.Log;
 
 import com.esotericsoftware.kryonet.Connection;
-import com.example.gearoid.testchatapp.ApplicationContext;
-import com.example.gearoid.testchatapp.SharedPrefManager;
+import com.example.gearoid.testchatapp.utils.ApplicationContext;
+import com.example.gearoid.testchatapp.utils.SharedPrefManager;
 import com.example.gearoid.testchatapp.singletons.ClientInstance;
 import com.example.gearoid.testchatapp.singletons.PlayerConnection;
 

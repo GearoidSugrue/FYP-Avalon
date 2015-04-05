@@ -3,7 +3,6 @@ package com.example.gearoid.testchatapp;
 import android.os.Bundle;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +16,8 @@ import android.content.DialogInterface;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.utils.ApplicationContext;
+import com.example.gearoid.testchatapp.utils.SharedPrefManager;
 import com.example.gearoid.testchatapp.wifidirect.peerdiscovery.WiFiDirectActivity;
 import com.example.gearoid.testchatapp.wifidirect.servicediscovery.WiFiDirectServiceActivity;
 

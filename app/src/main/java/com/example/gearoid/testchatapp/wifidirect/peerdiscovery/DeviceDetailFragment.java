@@ -18,9 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.utils.ApplicationContext;
 import com.example.gearoid.testchatapp.R;
-import com.example.gearoid.testchatapp.SharedPrefManager;
+import com.example.gearoid.testchatapp.utils.SharedPrefManager;
 import com.example.gearoid.testchatapp.kryopackage.Packet;
 import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
 import com.example.gearoid.testchatapp.singletons.ClientInstance;

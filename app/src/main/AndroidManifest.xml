@@ -17,11 +17,13 @@
 
     <!-- android:name=".ApplicationContext" : ApplicationContext class. Singleton, allow non-activities access Context -->
     <application
-        android:name=".ApplicationContext"
+        android:name=".utils.ApplicationContext"
         android:allowBackup="true"
         android:icon="@drawable/icon_leader"
         android:label="@string/app_name_short"
         android:theme="@style/AppTheme" >
+
+
         <activity android:name=".MainActivity"
             android:screenOrientation="portrait" >
 
@@ -35,7 +37,7 @@
 
 
         <activity
-            android:name=".GameSetupActivity"
+            android:name=".game.gamesetup.GameSetupActivity"
             android:label="@string/title_activity_setup"
             android:parentActivityName=".wifidirect.servicediscovery.WiFiDirectServiceActivity"
             android:screenOrientation="portrait"
@@ -69,7 +71,7 @@
             android:label="@string/title_activity_game_screen" >
         </activity>
         <activity
-            android:name=".GameActivity"
+            android:name=".game.GameActivity"
             android:label="@string/title_activity_game"
             android:theme="@style/ToolbarTheme" >
         </activity>

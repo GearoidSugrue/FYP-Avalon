@@ -22,7 +22,7 @@ import android.widget.Toast;
 import android.support.v7.app.ActionBarActivity;
 
 
-import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.utils.ApplicationContext;
 import com.example.gearoid.testchatapp.wifidirect.peerdiscovery.DeviceListFragment.DeviceActionListener;
 import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.singletons.ServerInstance;

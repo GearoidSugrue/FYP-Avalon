@@ -3,7 +3,7 @@ package com.example.gearoid.testchatapp.kryopackage;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import com.example.gearoid.testchatapp.GameLogicFunctions;
+import com.example.gearoid.testchatapp.game.GameLogicFunctions;
 import com.example.gearoid.testchatapp.character.ICharacter;
 import com.example.gearoid.testchatapp.multiplayer.Player;
 import com.example.gearoid.testchatapp.multiplayer.Session;
@@ -39,6 +39,11 @@ public class Packet {
     public static class Packet_StartNextQuest extends Packet { public boolean previousQuestResult; }
     public static class Packet_StartGame extends Packet { public ArrayList<Player> allPlayers; public ArrayList<Integer> leaderOrderList; public GameLogicFunctions.Board currentBoard;}
     public static class Packet_LadyOfLakeUpdate extends Packet { public int newTokenHolderID; public int previousTokenHolderID;}
+
+    public static class Packet_PlayerHasLeftApp extends Packet { public String playerName;}
+    public static class Packet_PlayerHasReturnedToApp extends Packet { public String playerName;}
+
+
 
     public static class Packet_UpdateGameState extends Packet {public Session.GameState nextGameState;}
 

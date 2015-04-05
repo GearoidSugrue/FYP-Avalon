@@ -56,7 +56,7 @@
                 android:id="@+id/good_list"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                class="com.example.gearoid.testchatapp.CharacterListFragment">
+                class="com.example.gearoid.testchatapp.game.gamesetup.CharacterListFragment">
 
                 <!-- Preview: layout=@layout/row_devices -->
             </fragment>
@@ -90,7 +90,7 @@
                 android:id="@+id/evil_list"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                class="com.example.gearoid.testchatapp.CharacterListFragment">
+                class="com.example.gearoid.testchatapp.game.gamesetup.CharacterListFragment">
 
                 <!-- Preview: layout=@layout/row_devices -->
             </fragment>
@@ -128,7 +128,7 @@
             android:id="@+id/optional_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            class="com.example.gearoid.testchatapp.CharacterListFragment"
+            class="com.example.gearoid.testchatapp.game.gamesetup.CharacterListFragment"
             android:layout_weight=".5">
 
             <!-- Preview: layout=@layout/row_devices -->

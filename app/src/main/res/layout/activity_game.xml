@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.gearoid.testchatapp.GameActivity"
+    tools:context="com.example.gearoid.testchatapp.game.GameActivity"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:minHeight="?attr/actionBarSize"
-        android:background="@color/MidnightBlue"
+        android:background="@color/HazelGreen"
         android:layout_gravity="center"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
@@ -24,7 +24,7 @@
         android:text="Quest"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:background="@color/MidnightBlueLight"
+        android:background="@color/HazelGreenLight"
         android:textColor="@color/White"
         android:id="@+id/textView_gameStateStatus" />
 
@@ -33,7 +33,7 @@
         android:layout_width="fill_parent"
         android:layout_weight="1"
         android:layout_height="0dp"
-        class="com.example.gearoid.testchatapp.GameBoardFragment">
+        class="com.example.gearoid.testchatapp.game.GameBoardFragment">
 
         <!-- Preview: layout=@layout/row_devices -->
     </fragment>

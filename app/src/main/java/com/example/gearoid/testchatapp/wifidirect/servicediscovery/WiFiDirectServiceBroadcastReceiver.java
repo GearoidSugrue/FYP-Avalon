@@ -8,7 +8,7 @@ import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
 
-import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.utils.ApplicationContext;
 import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.wifidirect.peerdiscovery.WiFiDirectActivity;
 

@@ -2,6 +2,15 @@ package com.example.gearoid.testchatapp.character;
 
 import android.util.Log;
 
+import com.example.gearoid.testchatapp.character.evil.Assassin;
+import com.example.gearoid.testchatapp.character.evil.EvilCharacter;
+import com.example.gearoid.testchatapp.character.evil.Mordred;
+import com.example.gearoid.testchatapp.character.evil.Morgana;
+import com.example.gearoid.testchatapp.character.evil.Oberon;
+import com.example.gearoid.testchatapp.character.good.GoodCharacter;
+import com.example.gearoid.testchatapp.character.good.Merlin;
+import com.example.gearoid.testchatapp.character.good.Percival;
+
 public class CharacterFactory {
 
     public enum CharacterType {

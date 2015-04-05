@@ -16,9 +16,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.gearoid.testchatapp.ApplicationContext;
+import com.example.gearoid.testchatapp.utils.ApplicationContext;
 import com.example.gearoid.testchatapp.R;
-import com.example.gearoid.testchatapp.SharedPrefManager;
+import com.example.gearoid.testchatapp.utils.SharedPrefManager;
 import com.example.gearoid.testchatapp.wifidirect.peerdiscovery.WiFiDirectActivity;
 
 import java.util.ArrayList;

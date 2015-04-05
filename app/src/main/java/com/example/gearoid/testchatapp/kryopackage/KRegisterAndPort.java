@@ -3,6 +3,15 @@ package com.example.gearoid.testchatapp.kryopackage;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
+import com.example.gearoid.testchatapp.character.evil.Assassin;
+import com.example.gearoid.testchatapp.character.evil.EvilCharacter;
+import com.example.gearoid.testchatapp.character.evil.Mordred;
+import com.example.gearoid.testchatapp.character.evil.Morgana;
+import com.example.gearoid.testchatapp.character.evil.Oberon;
+import com.example.gearoid.testchatapp.character.good.GoodCharacter;
+import com.example.gearoid.testchatapp.character.good.Merlin;
+import com.example.gearoid.testchatapp.character.good.Percival;
+import com.example.gearoid.testchatapp.game.GameLogicFunctions;
 import com.example.gearoid.testchatapp.kryopackage.Packet.*;
 import com.example.gearoid.testchatapp.character.*;
 import com.example.gearoid.testchatapp.multiplayer.Player;
@@ -49,7 +58,8 @@ public class KRegisterAndPort {
         kryo.register(Packet_QuestVoteResultRevealed.class);
         kryo.register(Packet_QuestVoteResultFinished.class);
         kryo.register(Packet_StartNextQuest.class);
-
+        kryo.register(Packet_PlayerHasLeftApp.class);
+        kryo.register(Packet_PlayerHasReturnedToApp.class);
 
 
         kryo.register(packet10_LadyOfLakeToken.class);
@@ -84,8 +94,8 @@ public class KRegisterAndPort {
         kryo.register(Player.class);
         kryo.register(com.example.gearoid.testchatapp.multiplayer.Session.GameState.class);
 
-        kryo.register(com.example.gearoid.testchatapp.GameLogicFunctions.Board.class);
-        kryo.register(com.example.gearoid.testchatapp.GameLogicFunctions.Quest.class);
+        kryo.register(GameLogicFunctions.Board.class);
+        kryo.register(GameLogicFunctions.Quest.class);
         kryo.register(com.example.gearoid.testchatapp.kryopackage.Packet.Packet_UpdateGameState.class);
         //kryo.register(com.esotericsoftware.kryonet.Client.class);
         kryo.register(Connection.class);

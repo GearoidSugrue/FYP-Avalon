@@ -1,6 +1,6 @@
 package com.example.gearoid.testchatapp.singletons;
 
-import com.example.gearoid.testchatapp.kryopackage.KClient;
+import com.example.gearoid.testchatapp.kryopackage.client.KClient;
 
 /**
  * Created by gearoid on 24/02/15.

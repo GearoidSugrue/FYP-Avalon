@@ -24,30 +24,42 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.gearoid.testchatapp.ApplicationContext;
-import com.example.gearoid.testchatapp.GameSetupActivity;
+import com.example.gearoid.testchatapp.utils.ApplicationContext;
+import com.example.gearoid.testchatapp.game.gamesetup.GameSetupActivity;
+import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
-import com.example.gearoid.testchatapp.SharedPrefManager;
+import com.example.gearoid.testchatapp.utils.SharedPrefManager;
 import com.example.gearoid.testchatapp.kryopackage.KRegisterAndPort;
+import com.example.gearoid.testchatapp.kryopackage.server.ListenerServer;
 import com.example.gearoid.testchatapp.kryopackage.Packet;
 import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
+import com.example.gearoid.testchatapp.multiplayer.Player;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 import com.example.gearoid.testchatapp.singletons.ClientInstance;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.example.gearoid.testchatapp.multiplayer.Session.serverListener;
 
 /**
  * Created by gearoid on 27/02/15.
  */
 
-public class                  WiFiDirectServiceActivity extends ActionBarActivity implements WiFiDirectServicesList.DeviceClickListener, WifiP2pManager.ConnectionInfoListener, WifiP2pManager.ChannelListener {
+public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFiDirectServicesList.DeviceClickListener, WifiP2pManager.ConnectionInfoListener,
+        WifiP2pManager.ChannelListener, ListenerServer.IConnectionActivityServerListener {
 
     public static int groupOwnerIntent;//15 highest intention to be group owner. May be ignored if a device remembers previous group.
     boolean isHost = false;
+    PlayerListViewAdapter adapterConnectedPlayers;
+    ListView connectedPlayersView;
 
     public static final String TAG = "wifidirectservice";
     private WifiP2pManager manager;
@@ -69,6 +81,7 @@ public class                  WiFiDirectServiceActivity extends ActionBarActivit
     public static final String SERVICE_INSTANCE_HOST = "_avalonhost";//has to be lower case
     public static final String SERVICE_INSTANCE_JOIN = "_avalonjoin";//has to be lower case
     final HashMap<String, String> buddies = new HashMap<String, String>();
+
 
     private TextView statusTxtView;
 
@@ -121,6 +134,8 @@ public class                  WiFiDirectServiceActivity extends ActionBarActivit
             Toolbar tb = (Toolbar) findViewById(R.id.wifidirect_service_toolbar);
             tb.setBackgroundColor(getResources().getColor(R.color.GreenDark));
 
+            initialiseConnectedPlayersList();
+
             //CreateGroup here???
 
         } else {
@@ -153,6 +168,21 @@ public class                  WiFiDirectServiceActivity extends ActionBarActivit
         discoverServiceThread.start();
 
         initialiseButtons();
+    }
+
+    public void initialiseConnectedPlayersList(){
+        LinearLayout connectedPLayersLayout = (LinearLayout) findViewById(R.id.linearLayout_connectedPlayers);
+        connectedPLayersLayout.setVisibility(View.VISIBLE);
+
+        if (serverListener != null) {
+            serverListener.attachConnectionActivityToServerListener(this);
+        }
+
+        connectedPlayersView = (ListView) findViewById(R.id.listview_connectedPlayers);
+        ArrayList<Player> connectedPlayersArray = new ArrayList<>();
+
+        adapterConnectedPlayers = new PlayerListViewAdapter(this, R.layout.row_players, android.R.id.text1, connectedPlayersArray);
+        connectedPlayersView.setAdapter(adapterConnectedPlayers);
     }
 
     public void initialiseButtons() { //TODO hide this until at least 4 other devices are connected
@@ -671,7 +701,7 @@ public class                  WiFiDirectServiceActivity extends ActionBarActivit
     @Override
     protected void onDestroy() { //Called after when finished activity. Ensure wifi direct + kryoNet is not stopped
         Log.d(TAG, "onDestroy() Called");
-        ApplicationContext.showToast("onDestroy() Called");
+        //ApplicationContext.showToast("onDestroy() Called");
 /*
         if (manager != null && channel != null) {
             //removeLocalServices(serviceInfo); //Removes a Local Service.
@@ -800,4 +830,32 @@ public class                  WiFiDirectServiceActivity extends ActionBarActivit
         }
     }
 
+    @Override
+    public void server_OnPlayerConnect(final Player newlyConnectedPlayer) {
+        Log.d(TAG, "server_OnPlayerConnect received from ServerListener. Player name: " + newlyConnectedPlayer.userName);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "runOnUiThread: adding player to adapterConnectedPlayers");
+
+                adapterConnectedPlayers.add(newlyConnectedPlayer);
+
+                if(adapterConnectedPlayers.getCount() == 2){
+                    View item = adapterConnectedPlayers.getView(0, null, connectedPlayersView);
+                    item.measure(0, 0);
+                    ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (2 * item.getMeasuredHeight()));
+                    connectedPlayersView.setLayoutParams(params);
+                } else if(adapterConnectedPlayers.getCount() > 2){
+                    View item = adapterConnectedPlayers.getView(0, null, connectedPlayersView);
+                    item.measure(0, 0);
+                    ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (2.5 * item.getMeasuredHeight()));
+                    connectedPlayersView.setLayoutParams(params);
+                }
+
+            }
+        });
+
+
+    }
 }
