@@ -4,9 +4,11 @@ import android.os.PowerManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.game.GameBoardFragment;
 import com.example.gearoid.testchatapp.utils.ApplicationContext;
 import com.example.gearoid.testchatapp.game.GameLogicFunctions;
@@ -51,6 +53,7 @@ public class Session {
     public static String gameToolbarText = "";
     public static TextView gameStatusView;
     public static String gameStatusText = "";
+    public static TextView gameActionsView;
     public static ArrayList<GameLogicFunctions.Quest> serverQuestResults;
     public static ArrayList<GameLogicFunctions.Quest> clientQuestResults;
     public static PowerManager powerManager;
@@ -65,15 +68,25 @@ public class Session {
 
     public static GameBoardFragment gameBoardFrag;
 
-    public static Button teamVoteFrag;
-    public static Button questVoteFrag;
-    public static Button teamSelectFrag;
-    public static Button assassinateFrag;
-    public static Button ladyOfLakeFrag;
-    public static Button teamVoteResultFrag;
-    public static Button gameFinishedFrag;
-    public static Button playerCharacterFrag;
-    public static Button questResultFrag;
+//    public static Button teamVoteFrag;
+//    public static Button questVoteFrag;
+//    public static Button teamSelectFrag;
+//    public static Button assassinateFrag;
+//    public static Button ladyOfLakeFrag;
+//    public static Button teamVoteResultFrag;
+//    public static Button gameFinishedFrag;
+//    public static Button playerCharacterFrag;
+//    public static Button questResultFrag;
+
+    public static LinearLayout playerCharacterFrag;
+    public static LinearLayout teamVoteFrag;
+    public static LinearLayout questVoteFrag;
+    public static LinearLayout teamSelectFrag;
+    public static LinearLayout assassinateFrag;
+    public static LinearLayout ladyOfLakeFrag;
+    public static LinearLayout teamVoteResultFrag;
+    public static LinearLayout gameFinishedFrag;
+    public static LinearLayout questResultFrag;
 
     public static int teamVoteTitleColor;
     public static int teamVoteStatusColor;

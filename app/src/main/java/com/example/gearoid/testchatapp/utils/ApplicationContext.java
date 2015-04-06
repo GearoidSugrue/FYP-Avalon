@@ -59,7 +59,7 @@ public class ApplicationContext extends Application {
     private Timer mActivityTransitionTimer;
     private TimerTask mActivityTransitionTimerTask;
     public boolean wasInBackground;
-    private final long MAX_ACTIVITY_TRANSITION_TIME_MS = 2000;
+    private final long MAX_ACTIVITY_TRANSITION_TIME_MS = 1500;
 
 
     public void startActivityTransitionTimer() {

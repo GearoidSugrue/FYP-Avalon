@@ -28,17 +28,39 @@
         android:textColor="@color/White"
         android:id="@+id/textView_gameStateStatus" />
 
-    <fragment
-        android:id="@+id/layout_gameBoardFragment"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout_gameBoardLayout"
         android:layout_width="fill_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp"
-        class="com.example.gearoid.testchatapp.game.GameBoardFragment">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="top">
 
-        <!-- Preview: layout=@layout/row_devices -->
-    </fragment>
+        <fragment
+            android:id="@+id/layout_gameBoardFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            class="com.example.gearoid.testchatapp.game.GameBoardFragment">
+
+            <!-- Preview: layout=@layout/row_devices -->
+        </fragment>
+    </LinearLayout>
 
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_gravity="center_horizontal"
+        android:text="Actions"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@color/HazelGreenLight"
+        android:textColor="@color/White"
+        android:id="@+id/textView_gameActionLabel" />
+
+    <Space
+        android:layout_width="fill_parent"
+        android:layout_height="4dp" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/layout_gameButtonsRow1"
@@ -46,7 +68,317 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="bottom"
-        android:layout_weight="0">
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:layout_gravity="center"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:id="@+id/layout_button_playerCharacterFrag">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/imageView_playerCharacterFrag"
+                android:clickable="false"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center"
+                android:src="@drawable/misc_characterback" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View Character"
+                android:clickable="false"
+                android:id="@+id/textview_playerCharacterFrag"
+                android:textColor="@color/HazelGreen"
+                android:textAllCaps="true"
+                android:layout_gravity="center"
+                style="?android:attr/borderlessButtonStyle" />
+
+        </LinearLayout>
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:id="@+id/layout_button_teamVoteFrag">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/imageView_teamVoteFrag"
+                android:clickable="false"
+                android:adjustViewBounds="true"
+                android:src="@drawable/token_voteback" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Team Vote"
+                android:clickable="false"
+                android:id="@+id/textview_teamVoteFrag"
+                android:textColor="@color/MediumPurple"
+                android:textAllCaps="true"
+                style="?android:attr/borderlessButtonStyle" />
+
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:id="@+id/layout_button_teamVoteResultFrag">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/imageView_teamVoteResultFrag"
+                android:clickable="false"
+                android:adjustViewBounds="true"
+                android:src="@drawable/token_votemarker" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Team Vote Result"
+                android:clickable="false"
+                android:id="@+id/textview_teamVoteResultFrag"
+                android:textColor="@color/MediumPurple"
+                android:textAllCaps="true"
+                style="?android:attr/borderlessButtonStyle" />
+
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:id="@+id/layout_button_teamSelectFrag">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/imageView_teamSelectFrag"
+                android:clickable="false"
+                android:adjustViewBounds="true"
+                android:src="@drawable/token_leader" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Select Team"
+                android:clickable="false"
+                android:id="@+id/textview_teamSelectFrag"
+                android:textColor="@color/MuddyBrown"
+                android:textAllCaps="true"
+                style="?android:attr/borderlessButtonStyle" />
+
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:id="@+id/layout_button_questVoteFrag">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/imageView_questVoteFrag"
+                android:clickable="false"
+                android:adjustViewBounds="true"
+                android:src="@drawable/token_teammember" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Go On Quest"
+                android:clickable="false"
+                android:id="@+id/textview_questVoteFrag"
+                android:textColor="@color/SlateGray"
+                android:textAllCaps="true"
+                style="?android:attr/borderlessButtonStyle" />
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:id="@+id/layout_button_questResultFrag">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/imageView_questResultFrag"
+                android:clickable="false"
+                android:adjustViewBounds="true"
+                android:src="@drawable/misc_swordback" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Quest Result"
+                android:clickable="false"
+                android:id="@+id/textview_questResultFrag"
+                android:textColor="@color/SlateGray"
+                android:textAllCaps="true"
+                style="?android:attr/borderlessButtonStyle" />
+
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:id="@+id/layout_button_ladyOfLakeFrag">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/imageView_ladyOfLakeFrag"
+                android:clickable="false"
+                android:adjustViewBounds="true"
+                android:src="@drawable/token_ladyoflake" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Lady of the Lake"
+                android:clickable="false"
+                android:id="@+id/textview_ladyOfLakeFrag"
+                android:textColor="@color/TiffanyBlueDark"
+                android:textAllCaps="true"
+                style="?android:attr/borderlessButtonStyle" />
+
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:id="@+id/layout_button_assassinateFrag">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/imageView_assassinateFrag"
+                android:clickable="false"
+                android:adjustViewBounds="true"
+                android:src="@drawable/evil_assassin" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Assassinate"
+                android:clickable="false"
+                android:id="@+id/textview_assassinateFrag"
+                android:textColor="@color/RedWine"
+                android:textAllCaps="true"
+                style="?android:attr/borderlessButtonStyle" />
+
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:id="@+id/layout_button_gameFinishedFrag">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/imageView_gameFinishedFrag"
+                android:clickable="false"
+                android:adjustViewBounds="true"
+                android:src="@drawable/misc_loyaltyback" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Game Finished"
+                android:clickable="false"
+                android:id="@+id/textview_gameFinishedFrag"
+                android:textColor="@color/MidnightBlue"
+                android:textAllCaps="true"
+                style="?android:attr/borderlessButtonStyle" />
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="View Character"
+            android:id="@+id/button_playerCharacterFrag"
+            android:layout_weight="1"
+            android:textColor="@color/HazelGreen"
+            android:visibility="gone"
+            style="?android:attr/borderlessButtonStyle"
+            android:textAllCaps="true" />
 
         <Button
             android:layout_width="0dp"
@@ -56,8 +388,9 @@
             android:layout_weight="1"
             android:textColor="@color/MediumPurple"
             style="?android:attr/borderlessButtonStyle"
+            android:drawableTop="@drawable/token_voteback"
             android:textAllCaps="true"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <Button
             android:layout_width="0dp"
@@ -67,18 +400,20 @@
             android:layout_weight="1"
             android:textColor="@color/SlateGray"
             style="?android:attr/borderlessButtonStyle"
+            android:drawableTop="@drawable/misc_swordback"
             android:visibility="gone"
             android:textAllCaps="true" />
 
         <Button
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:text="Team Select"
             android:id="@+id/button_teamSelectFrag"
             android:layout_weight="1"
             android:textColor="@color/MuddyBrown"
             style="?android:attr/borderlessButtonStyle"
             android:visibility="gone"
+            android:drawableTop="@drawable/token_leader"
             android:textAllCaps="true" />
 
         <Button
@@ -91,17 +426,6 @@
             android:visibility="gone"
             style="?android:attr/borderlessButtonStyle"
             android:textAllCaps="true" />
-
-    </LinearLayout>
-
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/layout_gameButtonsRow2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom"
-        android:layout_weight="0">
 
         <Button
             android:layout_width="0dp"
@@ -136,15 +460,6 @@
             android:visibility="gone"
             android:textAllCaps="true" />
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="View Character"
-            android:id="@+id/button_playerCharacterFrag"
-            android:layout_weight="1"
-            android:textColor="@color/HazelGreen"
-            style="?android:attr/borderlessButtonStyle"
-            android:textAllCaps="true" />
 
         <Button
             android:layout_width="0dp"

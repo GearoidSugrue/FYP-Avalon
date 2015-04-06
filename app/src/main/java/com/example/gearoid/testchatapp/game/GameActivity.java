@@ -18,7 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.gearoid.testchatapp.utils.ApplicationContext;
@@ -38,7 +38,6 @@ import com.example.gearoid.testchatapp.kryopackage.server.ListenerServer;
 import com.example.gearoid.testchatapp.kryopackage.Packet;
 import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
 import com.example.gearoid.testchatapp.multiplayer.Session;
-import com.example.gearoid.testchatapp.singletons.ClientInstance;
 import com.example.gearoid.testchatapp.singletons.PlayerConnection;
 import com.example.gearoid.testchatapp.singletons.ServerInstance;
 import com.example.gearoid.testchatapp.utils.ScreenReceiver;
@@ -63,7 +62,6 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         Log.d("GameActivity", "onCreate");
-
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Toolbar toolbar = (Toolbar) findViewById(R.id.game_toolbar);
@@ -93,13 +91,8 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         if (!isGameIntialised) {
             Log.d("GameActivity", "onCreate, 1st time initialisation");
 
-            checkGameStateAndUpdateScreen();
-            registerBroadcastReceiverForScreenChange();
-
-
             standardTitleColor = getResources().getColor(R.color.HazelGreen);
             standardStatusColor = getResources().getColor(R.color.HazelGreenLight);
-
 
             teamVoteTitleColor = getResources().getColor(R.color.MediumPurple);
             teamVoteStatusColor = getResources().getColor(R.color.MediumPurpleLight);
@@ -115,6 +108,11 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             viewCharacterStatusColor = getResources().getColor(R.color.HazelGreenLight);
 
             gameStatusView = (TextView) findViewById(R.id.textView_gameStateStatus);
+            gameActionsView = (TextView) findViewById(R.id.textView_gameActionLabel);
+
+            checkGameStateAndUpdateScreen();
+            registerBroadcastReceiverForScreenChange();
+
 //            gameToolbarText = "Quest " + currentQuest.getValue();
 //            gameStatusText = "View Character";
         }
@@ -223,15 +221,25 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     }
 
     public void initialiseButtons() {
-        teamVoteFrag = (Button) findViewById(R.id.button_teamVoteFrag);
-        questVoteFrag = (Button) findViewById(R.id.button_questVoteFrag);
-        teamSelectFrag = (Button) findViewById(R.id.button_teamSelectFrag);
-        assassinateFrag = (Button) findViewById(R.id.button_assassinateFrag);
-        ladyOfLakeFrag = (Button) findViewById(R.id.button_ladyOfLakeFrag);
-        teamVoteResultFrag = (Button) findViewById(R.id.button_teamVoteResultFrag);
-        gameFinishedFrag = (Button) findViewById(R.id.button_gameFinishedFrag);
-        playerCharacterFrag = (Button) findViewById(R.id.button_playerCharacterFrag);
-        questResultFrag = (Button) findViewById(R.id.button_questResultFrag);
+//        teamVoteFrag = (Button) findViewById(R.id.button_teamVoteFrag);
+//        questVoteFrag = (Button) findViewById(R.id.button_questVoteFrag);
+//        teamSelectFrag = (Button) findViewById(R.id.button_teamSelectFrag);
+//        assassinateFrag = (Button) findViewById(R.id.button_assassinateFrag);
+//        ladyOfLakeFrag = (Button) findViewById(R.id.button_ladyOfLakeFrag);
+//        teamVoteResultFrag = (Button) findViewById(R.id.button_teamVoteResultFrag);
+//        gameFinishedFrag = (Button) findViewById(R.id.button_gameFinishedFrag);
+//        playerCharacterFrag = (Button) findViewById(R.id.button_playerCharacterFrag);
+//        questResultFrag = (Button) findViewById(R.id.button_questResultFrag);
+
+        playerCharacterFrag = (LinearLayout) findViewById(R.id.layout_button_playerCharacterFrag);
+        teamVoteFrag = (LinearLayout) findViewById(R.id.layout_button_teamVoteFrag);
+        questVoteFrag = (LinearLayout) findViewById(R.id.layout_button_questVoteFrag);
+        teamSelectFrag = (LinearLayout) findViewById(R.id.layout_button_teamSelectFrag);
+        assassinateFrag = (LinearLayout) findViewById(R.id.layout_button_assassinateFrag);
+        ladyOfLakeFrag = (LinearLayout) findViewById(R.id.layout_button_ladyOfLakeFrag);
+        teamVoteResultFrag = (LinearLayout) findViewById(R.id.layout_button_teamVoteResultFrag);
+        gameFinishedFrag = (LinearLayout) findViewById(R.id.layout_button_gameFinishedFrag);
+        questResultFrag = (LinearLayout) findViewById(R.id.layout_button_questResultFrag);
 
 
         teamSelectFrag.setOnClickListener(new View.OnClickListener() {
@@ -277,19 +285,19 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     }
 
     public void setAllButtonsGone() {
-        final Button teamVoteFrag = (Button) findViewById(R.id.button_teamVoteFrag);
-        final Button questVoteFrag = (Button) findViewById(R.id.button_questVoteFrag);
-        final Button teamSelectFrag = (Button) findViewById(R.id.button_teamSelectFrag);
-        final Button assassinateFrag = (Button) findViewById(R.id.button_assassinateFrag);
-        final Button ladyOfLakeFrag = (Button) findViewById(R.id.button_ladyOfLakeFrag);
-        final Button teamVoteResultFrag = (Button) findViewById(R.id.button_teamVoteResultFrag);
-        final Button gameFinishedFrag = (Button) findViewById(R.id.button_gameFinishedFrag);
-        final Button questResultFrag = (Button) findViewById(R.id.button_questResultFrag);
+//        final Button teamVoteFrag = (Button) findViewById(R.id.button_teamVoteFrag);
+//        final Button questVoteFrag = (Button) findViewById(R.id.button_questVoteFrag);
+//        final Button teamSelectFrag = (Button) findViewById(R.id.button_teamSelectFrag);
+//        final Button assassinateFrag = (Button) findViewById(R.id.button_assassinateFrag);
+//        final Button ladyOfLakeFrag = (Button) findViewById(R.id.button_ladyOfLakeFrag);
+//        final Button teamVoteResultFrag = (Button) findViewById(R.id.button_teamVoteResultFrag);
+//        final Button gameFinishedFrag = (Button) findViewById(R.id.button_gameFinishedFrag);
+//        final Button questResultFrag = (Button) findViewById(R.id.button_questResultFrag);
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.d("GameActivity", "runOnUiThread: setting all buttons invisible (not View Character)");
+                Log.d("GameActivity", "runOnUiThread: setting all buttons(layouts) invisible (not View Character)");
 
                 teamSelectFrag.setVisibility(View.GONE);
                 teamVoteFrag.setVisibility(View.GONE);
@@ -305,25 +313,25 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         });
     }
 
-    public void setButtonGone(final Button button) {
+    public void setButtonLayoutGone(final LinearLayout buttonLayout) {
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.d("GameActivity", "runOnUiThread: setting button invisible: " + button.getText());
+                Log.d("GameActivity", "runOnUiThread: setting button(layout) invisible");
 
-                button.setVisibility(View.GONE);
+                buttonLayout.setVisibility(View.GONE);
             }
         });
     }
 
-    public void setButtonVisible(final Button button) {
+    public void setButtonLayoutVisible(final LinearLayout buttonLayout) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.d("GameActivity", "runOnUiThread: setting button visible: " + button.getText());
+                Log.d("GameActivity", "runOnUiThread: setting button(layout) visible");
 
-                button.setVisibility(View.VISIBLE);
+                buttonLayout.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -371,15 +379,17 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
 
         updateTitleText("Quest " + currentQuest.getValue() + " - Vote " + voteCount);
 
-        if (getUserPlayer().isLeader) {
+        //TODO fix leader and quest
+
+        if (getCurrentLeaderID() == getUserPlayer().playerID )  { //getUserPlayer().isLeader) {
             updateGameStatusText("Your the Leader (Select a team)");
-            setButtonVisible(teamSelectFrag);
+            setButtonLayoutVisible(teamSelectFrag);
             updateTitleAndStatusColor(teamSelectTitleColor, teamSelectStatusColor);
             updateStandardTitleAndStatusColor(teamSelectTitleColor, teamSelectStatusColor);
 
         } else {
             updateGameStatusText("Waiting for " + Session.allPlayers.get(getCurrentLeaderID()).userName + " (The Leader) to select a team");
-            setButtonGone(teamSelectFrag);
+            setButtonLayoutGone(teamSelectFrag);
             updateTitleAndStatusColor(viewCharacterTitleColor, viewCharacterStatusColor);
             updateStandardTitleAndStatusColor(viewCharacterTitleColor, viewCharacterStatusColor);
         }
@@ -418,7 +428,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
 
         } else {
             updateGameStatusText("Waiting for the Quest Team to finish");
-            setButtonGone(questVoteFrag);
+            setButtonLayoutGone(questVoteFrag);
             updateTitleAndStatusColor(viewCharacterTitleColor, viewCharacterStatusColor);
             updateStandardTitleAndStatusColor(viewCharacterTitleColor, viewCharacterStatusColor);
         }
@@ -428,7 +438,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         Log.d("GameActivity", "setQuestVoteResultState");
 
         updateGameStatusText("View Quest " + currentQuest.getValue() + " Result");
-        setButtonVisible(questResultFrag);
+        setButtonLayoutVisible(questResultFrag);
 
         updateTitleAndStatusColor(questVoteTitleColor, questVoteStatusColor);
         updateStandardTitleAndStatusColor(questVoteTitleColor, questVoteStatusColor);
@@ -443,7 +453,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
 
         if (getUserPlayer().hasLadyOfLake) {
             updateGameStatusText("Please use the Lady of The Lake token");
-            setButtonVisible(ladyOfLakeFrag);
+            setButtonLayoutVisible(ladyOfLakeFrag);
 
             DialogFragment newFragment = LadyOfLakeFragment.newInstance(); //TODO change to questNum...
             newFragment.show(getFragmentManager(), "ladyoflakedialog");
@@ -463,7 +473,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
 
         if (getUserPlayer().character instanceof Assassin) {
             updateGameStatusText("Select a player to Assassinate");
-            setButtonVisible(assassinateFrag);
+            setButtonLayoutVisible(assassinateFrag);
         } else {
             updateGameStatusText("Waiting For The Assassin");
 //            updateTitleAndStatusColor(viewCharacterTitleColor, viewCharacterStatusColor);
@@ -490,8 +500,11 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             @Override
             public void run() {
                 Log.d("GameActivity", "Attempting to update gameStatusText: " + text);
-                gameStatusText = text;
-                gameStatusView.setText(text);
+
+                if (!text.equalsIgnoreCase("")) {
+                    gameStatusText = text;
+                    gameStatusView.setText(text);
+                }
             }
         });
     }
@@ -503,7 +516,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             public void run() {
                 Log.d("GameActivity", "Attempting to update TitleText: " + text);
 
-                if(!text.equalsIgnoreCase("")){
+                if (!text.equalsIgnoreCase("")) {
                     gameToolbarText = text;
                     mainToolbar.setTitle(text);
                 }
@@ -521,6 +534,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
 
                 mainToolbar.setBackgroundColor(titleColor);
                 gameStatusView.setBackgroundColor(statusColor);
+                gameActionsView.setBackgroundColor(statusColor);
             }
         });
     }
@@ -542,7 +556,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void onQuestVoteSelected(boolean voteResult) {
         Log.d("GameActivity", "Vote Result received from quest vote dialog: " + voteResult);
 
-        setButtonGone(questVoteFrag);
+        setButtonLayoutGone(questVoteFrag);
 
         final Packet.Packet_QuestVoteReply packet = (Packet.Packet_QuestVoteReply) PacketFactory.createPack(PacketFactory.PacketType.QUEST_VOTE_REPLY);
         packet.vote = voteResult;
@@ -556,7 +570,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void onTeamSelected(int[] teamIndexes) {
         Log.d("GameActivity", "Team selected received from TeamSelect dialog.");
 
-        setButtonGone(teamSelectFrag);
+        setButtonLayoutGone(teamSelectFrag);
 
         final Packet.Packet_SelectTeamReply packet = (Packet.Packet_SelectTeamReply) PacketFactory.createPack(PacketFactory.PacketType.SELECT_TEAM_REPLY);
         packet.teamPos = teamIndexes;
@@ -570,7 +584,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void onAssassination(boolean isSuccess) {
         Log.d("GameActivity", "OnAssassinate received from Assassinate dialog. Result: " + isSuccess);
 
-        setButtonGone(assassinateFrag);
+        setButtonLayoutGone(assassinateFrag);
 
         final Packet.Packet_AssassinateReply packet = (Packet.Packet_AssassinateReply) PacketFactory.createPack(PacketFactory.PacketType.ASSASSINATE_REPLY);
         packet.isSuccess = isSuccess;
@@ -584,7 +598,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void ladyOfLakeActivated(int selectedPlayerIndex) {
         Log.d("GameActivity", "LadyOfLakeActivated received from LadyOfLake dialog. Player ID " + selectedPlayerIndex);
 
-        setButtonGone(ladyOfLakeFrag);
+        setButtonLayoutGone(ladyOfLakeFrag);
 
         final Packet.Packet_LadyOfLakeReply packet = (Packet.Packet_LadyOfLakeReply) PacketFactory.createPack(PacketFactory.PacketType.LADYOFLAKE_REPLY);
         packet.selectedPlayerIndex = selectedPlayerIndex;
@@ -602,20 +616,8 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         packet.playAgain = playAgain;
         packet.playerID = PlayerConnection.getInstance().playerID;
 
-//        Session.client_sendPacketToServer(packet);
-        Thread thread = new Thread() {//The host is also a player!!
-            @Override
-            public void run() {
-                try {
-                    Log.d("Session", "Sending Packet_GameFinishedReply to Server");
-                    ClientInstance.getKryoClientInstance().getClient().sendTCP(packet);
-                } catch (Exception e) {
-                    Log.d("Session", "Error Sending Packet_GameFinishedReply to Server. Player Name: " + PlayerConnection.getInstance().playerID);
-                    e.printStackTrace();
-                }
-            }
-        };
-        thread.start();
+        Log.d("GameActivity", "Sending Packet_GameFinishedReply to Server");
+        Session.client_sendPacketToServer(packet);
     }
 
     @Override
@@ -627,27 +629,15 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         packet.voteResult = voteResult;
         packet.playerID = PlayerConnection.getInstance().playerID;
 
-//        Session.client_sendPacketToServer(packet);
-        Thread thread = new Thread() {//The host is also a player!!
-            @Override
-            public void run() {
-                try {
-                    Log.d("Session", "Sending Packet_QuestVoteResultRevealed to Server");
-                    ClientInstance.getKryoClientInstance().getClient().sendTCP(packet);
-                } catch (Exception e) {
-                    Log.d("Session", "Error Sending Packet_QuestVoteResultRevealed to Server. Player Name: " + PlayerConnection.getInstance().playerID);
-                    e.printStackTrace();
-                }
-            }
-        };
-        thread.start();
+        Log.d("GameActivity", "Sending Packet_QuestVoteResultRevealed to Server");
+        Session.client_sendPacketToServer(packet);
     }
 
     @Override
     public void onQuestVoteResultsFinished(boolean result) {
         Log.d("GameActivity", "onQuestVoteResultsFinished from QuestResultDialog. Quest Result: " + result);
 
-        setButtonGone(questResultFrag);
+        setButtonLayoutGone(questResultFrag);
 
         if (getCurrentLeaderID() == getUserPlayer().playerID) {
 
@@ -655,20 +645,8 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             packet.result = result;
             packet.playerID = PlayerConnection.getInstance().playerID;
 
-//        Session.client_sendPacketToServer(packet);
-            Thread thread = new Thread() {//The host is also a player!!
-                @Override
-                public void run() {
-                    try {
-                        Log.d("Session", "Sending Packet_QuestVoteResultFinished to Server");
-                        ClientInstance.getKryoClientInstance().getClient().sendTCP(packet);
-                    } catch (Exception e) {
-                        Log.d("Session", "Error Sending Packet_QuestVoteResultFinished to Server. Player Name: " + PlayerConnection.getInstance().playerID);
-                        e.printStackTrace();
-                    }
-                }
-            };
-            thread.start();
+            Log.d("GameActivity", "Sending Packet_QuestVoteResultFinished to Server");
+            Session.client_sendPacketToServer(packet);
         }
     }
 
@@ -676,7 +654,6 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void server_OnMessagePacketReceived(String message) {
         Log.d("GameActivity", "server_OnMessagePacketReceived from ListenerServer. Message: " + message);
 
-        ApplicationContext.showToast("IActivityServerListener Works!!!");
     }
 
     @Override
@@ -718,7 +695,6 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
 
         }
     }
-
 
     @Override
     public void server_OnQuestVoteReplyReceived(Packet.Packet_QuestVoteReply voteInfo) {
@@ -840,43 +816,12 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         checkGameStateAndUpdateScreen();
     }
 
-//    @Override
-//    public void clientStartTeamVoteDialog(int[] proposedTeam, GameLogicFunctions.Quest quest, int voteCount) {
-//        Log.d("GameActivity", "clientStartTeamVoteDialog from ListenerClient");
-//        teamVoteFrag.setVisibility(View.VISIBLE);
-//
-//        DialogFragment newFragment = TeamVoteFragment.newInstance(proposedTeam, quest.getValue(), voteCount); //TODO change to voteCount + QuestCount
-//        newFragment.show(getFragmentManager(), "teamdialog");
-//    }
-//
-//    @Override
-//    public void clientStartTeamVoteResultDialog(boolean isApproved, int[] playerApprovedPos, int[] playerRejectedPos, GameLogicFunctions.Quest quest, int voteNumber) {
-//        Log.d("GameActivity", "clientStartTeamVoteResultDialog from ListenerClient");
-//
-//        teamVoteResultFrag.setVisibility(View.VISIBLE);
-//
-//        DialogFragment newFragment = TeamVoteResultFragment.newInstance(isApproved, playerApprovedPos, playerRejectedPos, quest.getValue(), voteNumber); //TODO change to voteCount + QuestCount
-//        newFragment.show(getFragmentManager(), "teamvoteresultdialog");
-//    }
-
     @Override
     public void client_OnTeamVoteReceived(final Packet.Packet_TeamVote voteInfo) {
         Log.d("GameActivity", "client_OnTeamVoteReceived from ListenerClient");
 
-//        teamVoteFrag.setVisibility(View.VISIBLE);
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Log.d("GameActivity", "runOnUiThread: setting teamVoteFrag button visible");
-//
-//                teamVoteFrag.setVisibility(View.VISIBLE);
-//            }
-//        });
+        setButtonLayoutVisible(teamVoteFrag);
 
-        setButtonVisible(teamVoteFrag);
-
-//        Button teamVoteBut = (Button) findViewById(R.id.button_teamVoteFrag);
-//        teamVoteBut.setVisibility(View.VISIBLE);
         final DialogFragment newFragment = TeamVoteFragment.newInstance(voteInfo.proposedTeam, voteInfo.quest.getValue(), voteInfo.voteCount); //TODO change to questNum...
 
         teamVoteFrag.setOnClickListener(null);
@@ -896,11 +841,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void client_OnTeamVoteResultReceived(final Packet.Packet_TeamVoteResult voteResultInfo) {
         Log.d("GameActivity", "client_OnTeamVoteResultReceived from ListenerClient");
 
-//        teamVoteResultFrag.setVisibility(View.VISIBLE);
-        setButtonVisible(teamVoteResultFrag);
-
-//        Button teamVoteResultBut = (Button) findViewById(R.id.button_teamVoteResultFrag);
-//        teamVoteResultBut.setVisibility(View.VISIBLE);
+        setButtonLayoutVisible(teamVoteResultFrag);
 
         final DialogFragment newFragment = TeamVoteResultFragment.newInstance(voteResultInfo.isApproved, voteResultInfo.playerApprovedPos, voteResultInfo.playerRejectedPos, voteResultInfo.quest.getValue(), voteResultInfo.voteNumber); //TODO change to questNum...
 
@@ -921,11 +862,12 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void client_OnQuestVoteReceived(Packet.Packet_QuestVote questInfo) {
         Log.d("GameActivity", "client_OnQuestVoteReceived from ListenerClient");
 
-//        questVoteFrag.setVisibility(View.VISIBLE);
-        setButtonVisible(questVoteFrag);
+        setButtonLayoutVisible(questVoteFrag);
 
-//        Button questVoteBut = (Button) findViewById(R.id.button_questVoteFrag);
-//        questVoteBut.setVisibility(View.VISIBLE);
+        updateGameStatusText("Your on a Quest, please vote");
+        updateTitleAndStatusColor(questVoteTitleColor, questVoteStatusColor);
+        updateStandardTitleAndStatusColor(questVoteTitleColor, questVoteStatusColor);
+
         final DialogFragment newFragment = QuestVoteFragment.newInstance(questInfo.teamMemberPos, GameLogicFunctions.getUserPlayer().character.getAllegiance(), questInfo.quest.getValue());
 
         questVoteFrag.setOnClickListener(null);
@@ -945,11 +887,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void client_OnQuestVoteResultReceived(Packet.Packet_QuestVoteResult questResultInfo) {
         Log.d("GameActivity", "client_OnQuestVoteResultReceived from ListenerClient");
 
-//        questResultFrag.setVisibility(View.VISIBLE);
-        setButtonVisible(questResultFrag);
-
-//        Button questResultBut = (Button) findViewById(R.id.button_questResultFrag);
-//        questResultBut.setVisibility(View.VISIBLE);
+        setButtonLayoutVisible(questResultFrag);
 
         final DialogFragment newFragment = QuestResultFragment.newInstance(questResultInfo.teamMemberPos, questResultInfo.votes, questResultInfo.quest, GameLogicFunctions.calculateFailRequiredForQuest(currentBoard, questResultInfo.quest));
 
@@ -986,7 +924,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
 
     @Override
     public void client_OnLadyOfLakeUpdateReceived(Packet.Packet_LadyOfLakeUpdate updateInfo) {
-        Log.d("GameActivity", "client_OnLadyOfLakeUpdateReceived from ListenerClient.");
+        Log.d("GameActivity", "client_OnLadyOfLakeUpdateReceived from ListenerClient. New Holder ID: " + updateInfo.newTokenHolderID + ", Old holder ID: " + updateInfo.previousTokenHolderID);
 
         Session.allPlayers.get(updateInfo.newTokenHolderID).hasLadyOfLake = true;
         Session.allPlayers.get(updateInfo.previousTokenHolderID).hasLadyOfLake = false;
@@ -996,19 +934,13 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             ApplicationContext.showToast(Session.allPlayers.get(updateInfo.previousTokenHolderID).userName + " has used the Lady of The Lake Token on you");
             ApplicationContext.showToast(Session.allPlayers.get(updateInfo.previousTokenHolderID).userName + " now knows your allegiance");
         }
-
     }
 
     @Override
     public void client_OnSelectTeamReceived(Packet.Packet_SelectTeam questInfo) {
         Log.d("GameActivity", "client_OnSelectTeamReceived from ListenerClient");
 
-//        teamSelectFrag.setVisibility(View.VISIBLE);
-
-
-//        Button teamSelectBut = (Button) findViewById(R.id.button_teamSelectFrag);
-//        teamSelectBut.setVisibility(View.VISIBLE);
-
+        setButtonLayoutVisible(teamSelectFrag);
 
         final DialogFragment newFragment = SelectTeamFragment.newInstance(questInfo.teamSize, questInfo.quest.getValue());
 
@@ -1044,7 +976,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void client_OnGameFinishedReceived(final Packet.Packet_GameFinished gameResultInfo) {
         Log.d("GameActivity", "client_OnGameFinishedReceived from ListenerClient");
 
-        setButtonVisible(gameFinishedFrag);
+        setButtonLayoutVisible(gameFinishedFrag);
 
         final DialogFragment newFragment = GameFinishedFragment.newInstance(gameResultInfo.gameResult, getEvilAllegiancePositions(), getGoodAllegiancePositions());
 

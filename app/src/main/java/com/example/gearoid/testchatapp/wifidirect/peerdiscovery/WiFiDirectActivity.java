@@ -60,7 +60,7 @@ public class WiFiDirectActivity extends ActionBarActivity implements ChannelList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.peerdiscovery);
 
         //crashes app if manifest file does not include what theme is being used
         //layout xml also needs to include the toolbar

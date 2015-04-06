@@ -292,8 +292,10 @@ public class GameLogicFunctions {
         packetSelectTeam.quest = currentQuest;
         packetSelectTeam.teamSize = GameLogicFunctions.calculatePlayersRequiredForQuest(currentBoard, currentQuest);
 
+        int nextLeader = GameLogicFunctions.getNextLeaderID(); //TODO test this....
+
         updateAllPlayersGameState(Session.GameState.TEAM_SELECT);
-        server_sendToPlayer(GameLogicFunctions.getNextLeaderID(), packetSelectTeam);
+        server_sendToPlayer(nextLeader, packetSelectTeam);
     }
 
 
@@ -306,7 +308,7 @@ public class GameLogicFunctions {
         Packet.Packet_StartNextQuest packetStartNextQuest = (Packet.Packet_StartNextQuest) PacketFactory.createPack(PacketFactory.PacketType.START_NEXT_QUEST);
         packetStartNextQuest.previousQuestResult = previousQuestResult;
 
-        server_sendToEveryone(packetStartNextQuest);
+        server_sendToEveryone(packetStartNextQuest); //check this for race conditions with team select state
 
     }
 
