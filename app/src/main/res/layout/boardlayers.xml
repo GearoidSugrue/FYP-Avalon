@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView_gameBoardLayer"
+        android:adjustViewBounds="true"
+        android:src="@drawable/board_5" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+
+        <Space
+            android:layout_width="fill_parent"
+            android:layout_height="4dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <Space
+                android:layout_width="9dp"
+                android:layout_height="fill_parent" />
+
+            <ImageView
+                android:id="@+id/ImageView_Token01"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:src="@drawable/token_evilrounded"
+                android:adjustViewBounds="true"
+                android:visibility="invisible" />
+
+            <Space
+                android:layout_width="2dp"
+                android:layout_height="fill_parent" />
+
+            <ImageView
+                android:id="@+id/ImageView_Token02"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:src="@drawable/token_evilrounded"
+                android:adjustViewBounds="true"
+                android:visibility="invisible"
+                android:layout_gravity="center" />
+
+            <Space
+                android:layout_width="2dp"
+                android:layout_height="fill_parent" />
+
+            <ImageView
+                android:id="@+id/ImageView_Token03"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:src="@drawable/token_evilrounded"
+                android:adjustViewBounds="true"
+                android:visibility="invisible"
+                android:layout_gravity="center" />
+
+            <Space
+                android:layout_width="2dp"
+                android:layout_height="fill_parent" />
+
+            <ImageView
+                android:id="@+id/ImageView_Token04"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:src="@drawable/token_evilrounded"
+                android:adjustViewBounds="true"
+                android:visibility="invisible"
+                android:layout_gravity="center" />
+
+            <Space
+                android:layout_width="2dp"
+                android:layout_height="fill_parent" />
+
+            <ImageView
+                android:id="@+id/ImageView_Token05"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:src="@drawable/token_evilrounded"
+                android:adjustViewBounds="true"
+                android:visibility="invisible"
+                android:layout_gravity="center" />
+
+            <Space
+                android:layout_width="18dp"
+                android:layout_height="fill_parent" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom||left"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <Space
+                android:layout_width="21dp"
+                android:layout_height="fill_parent" />
+
+            <ImageView
+                android:id="@+id/ImageView_voteToken01"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:src="@drawable/token_votemarker"
+                android:adjustViewBounds="true"
+                android:visibility="visible" />
+
+            <Space
+                android:layout_width="9dp"
+                android:layout_height="fill_parent" />
+
+            <ImageView
+                android:id="@+id/ImageView_voteToken02"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:src="@drawable/token_votemarker"
+                android:adjustViewBounds="true"
+                android:visibility="visible"
+                android:layout_gravity="center" />
+
+            <Space
+                android:layout_width="9dp"
+                android:layout_height="fill_parent" />
+
+            <ImageView
+                android:id="@+id/ImageView_voteToken03"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:src="@drawable/token_votemarker"
+                android:adjustViewBounds="true"
+                android:visibility="visible"
+                android:layout_gravity="center" />
+
+            <Space
+                android:layout_width="9dp"
+                android:layout_height="fill_parent" />
+
+            <ImageView
+                android:id="@+id/ImageView_voteToken04"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:src="@drawable/token_votemarker"
+                android:adjustViewBounds="true"
+                android:visibility="visible"
+                android:layout_gravity="center" />
+
+            <Space
+                android:layout_width="9dp"
+                android:layout_height="fill_parent" />
+
+            <ImageView
+                android:id="@+id/ImageView_voteToken05"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:src="@drawable/token_votemarker"
+                android:adjustViewBounds="true"
+                android:visibility="visible"
+                android:layout_gravity="center" />
+
+
+
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="fill_parent"
+            android:layout_height="15dp" />
+
+    </LinearLayout>
+
+
+</FrameLayout>

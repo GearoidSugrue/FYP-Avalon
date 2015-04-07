@@ -21,6 +21,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -282,12 +283,12 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
                     if (!isHost && fullDomain.startsWith(SERVICE_INSTANCE_HOST)) {
                         buddies.put(device.deviceAddress, record.get("buddyname").toString());
-                        appendStatus("DnsSdTxtRecord Found: " + record.get("buddyname").toString());
+                        //appendStatus("DnsSdTxtRecord Found: " + record.get("buddyname").toString());
                         Log.d(TAG, "DnsSdTxtRecord available: " + record.get("buddyname").toString() + fullDomain);
 
                     } else if (isHost && fullDomain.startsWith(SERVICE_INSTANCE_JOIN)) {
                         buddies.put(device.deviceAddress, record.get("buddyname").toString());
-                        appendStatus("[Host] DnsSdTxtRecord Found: " + record.get("buddyname").toString());
+                        //appendStatus("[Host] DnsSdTxtRecord Found: " + record.get("buddyname").toString());
                         Log.d(TAG, "DnsSdTxtRecord available: " + record.get("buddyname").toString() + fullDomain);
                     }
                 }
@@ -306,8 +307,8 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                                 .containsKey(srcDevice.deviceAddress) ? buddies
                                 .get(srcDevice.deviceAddress) : srcDevice.deviceName;
 
-                        ApplicationContext.showToast("DnsSdService found: " + srcDevice.deviceName);
-                        appendStatus("DnsSdService found: " + srcDevice.deviceName);
+                        ApplicationContext.showToast("Host found: " + srcDevice.deviceName);
+                        appendStatus("Host found: " + srcDevice.deviceName);
 
                         // Add to the custom adapter defined specifically for showing
                         // wifi devices.
@@ -344,8 +345,8 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                                 .containsKey(srcDevice.deviceAddress) ? buddies
                                 .get(srcDevice.deviceAddress) : srcDevice.deviceName;
 
-                        ApplicationContext.showToast("DnsSdService found: " + srcDevice.deviceName);
-                        appendStatus("DnsSdService found: " + srcDevice.deviceName);
+                        ApplicationContext.showToast("Player found: " + srcDevice.deviceName);
+                        appendStatus("Player found: " + srcDevice.deviceName);
 
                         // Add to the custom adapter defined specifically for showing
                         // wifi devices.
@@ -529,7 +530,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                     || fragment.getThisDevice().status == WifiP2pDevice.INVITED) {
 
                 clearAllServiceRequests(false);
-                //TODO Create more reliable way to ensure peer discovery is stopped.
+
                 manager.cancelConnect(channel, new WifiP2pManager.ActionListener() {
 
                     @Override
@@ -596,9 +597,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         });
     }
 
-    public void disconnect() {//add kryo stuff, send packet to Host saying its disconnecting and close kryo client
-
-        //TODO send a packet to kryonet Server informing it of disconnect so it can remove player from serverAllPlayers list
+    public void disconnect() {
 
         final WiFiDirectServicesList fragment = (WiFiDirectServicesList) getFragmentManager()
                 .findFragmentById(R.id.frag_service_list);
@@ -631,54 +630,65 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                 .findFragmentById(R.id.frag_service_list);
 
         if (p2pInfo.groupFormed && p2pInfo.isGroupOwner) {
+            Log.d(TAG, "Connected as group owner");
+
             final String ownerIpFinal = p2pInfo.groupOwnerAddress.getHostAddress();
             Session.join(ownerIpFinal);//Host is also a player
 
-            ApplicationContext.showToast("Connected as: Group Owner");
-            Log.d(TAG, "Connected as group owner");
+            fragment.setOtherDeviceStatusToConnected();
 
-            Thread sendPacketThread = new Thread() {//The host is also a player!!
-                @Override
-                public void run() {
-                    try {
-                        sleep(1200);
-                        if (ClientInstance.getKryoClientInstance().getClient().isConnected()) {
-                            Packet.Packet00_ClientDetails testPacket = (Packet.Packet00_ClientDetails) PacketFactory.createPacket("Client Details");
-                            testPacket.playerName = SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext());
-                            ApplicationContext.showToast("[C] Sending Test Packet...");
-                            ClientInstance.getKryoClientInstance().getClient().sendTCP(testPacket);
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            sendPacketThread.start();
+            ApplicationContext.showToast("Connected as: Host");
+
+//            Thread sendPacketThread = new Thread() {//The host is also a player!!
+//                @Override
+//                public void run() {
+//                    try {
+//                        sleep(1200);
+//                        if (ClientInstance.getKryoClientInstance().getClient().isConnected()) {
+//                            Packet.Packet00_ClientDetails testPacket = (Packet.Packet00_ClientDetails) PacketFactory.createPacket("Client Details");
+//                            testPacket.playerName = SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext());
+//                            ApplicationContext.showToast("[C] Sending Test Packet...");
+//                            ClientInstance.getKryoClientInstance().getClient().sendTCP(testPacket);
+//                        }
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            };
+//            sendPacketThread.start();
 
         } else if (p2pInfo.groupFormed) {
+            Log.d(TAG, "Connected as peer");
+
             final String ownerIpFinal = p2pInfo.groupOwnerAddress.getHostAddress();
             Session.join(ownerIpFinal);
 
-            ApplicationContext.showToast("Connected as: Peer");
-            Log.d(TAG, "Connected as peer");
+            TextView waitingForHostView = (TextView) findViewById(R.id.textView_waitingForHost);
+            TextView informationView = (TextView) findViewById(R.id.status_text);
+            informationView.setVisibility(View.GONE);
+            waitingForHostView.setVisibility(View.VISIBLE);
 
-            Thread sendPacketThread = new Thread() {//The host is also a player!!
-                @Override
-                public void run() {
-                    try {
-                        sleep(1500);
-                        if (ClientInstance.getKryoClientInstance().getClient().isConnected()) {
-                            Packet.Packet00_ClientDetails testPacket = (Packet.Packet00_ClientDetails) PacketFactory.createPacket("Client Details");
-                            testPacket.playerName = SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext());
-                            ApplicationContext.showToast("[C] Sending Test Packet...");
-                            ClientInstance.getKryoClientInstance().getClient().sendTCP(testPacket);
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            sendPacketThread.start();
+            fragment.setOtherDeviceStatusToConnected();
+
+            ApplicationContext.showToast("Connected as: Player");
+
+//            Thread sendPacketThread = new Thread() {//The host is also a player!!
+//                @Override
+//                public void run() {
+//                    try {
+//                        sleep(1500);
+//                        if (ClientInstance.getKryoClientInstance().getClient().isConnected()) {
+//                            Packet.Packet00_ClientDetails testPacket = (Packet.Packet00_ClientDetails) PacketFactory.createPacket("Client Details");
+//                            testPacket.playerName = SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext());
+//                            ApplicationContext.showToast("[C] Sending Test Packet...");
+//                            ClientInstance.getKryoClientInstance().getClient().sendTCP(testPacket);
+//                        }
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            };
+//            sendPacketThread.start();
         }
     }
 
@@ -815,17 +825,17 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
 
     @Override //ChannelListener
-    public void onChannelDisconnected() {//for disconnects
-        // Tries one more time
+    public void onChannelDisconnected() {
+
         if (manager != null && !retryChannel) {
             ApplicationContext.showToast("Channel lost. Trying again");
-            //resetData();
+
             retryChannel = true;
             manager.initialize(this, getMainLooper(), this);
             Log.d(TAG, "Channel lost. Trying again");
         } else {
-            ApplicationContext.showToast("Severe! Channel is probably lost permanently. Try Disable/Re-Enable P2P.");
-            Log.d(TAG, "Severe! Channel is probably lost permanently. Try Disable/Re-Enable P2P.");
+            ApplicationContext.showToast("Channel is lost. Try Disable/Re-Enable WiFi");
+            Log.d(TAG, "Channel is lost. Try Disable/Re-Enable WiFi");
 
         }
     }
@@ -840,6 +850,9 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                 Log.d(TAG, "runOnUiThread: adding player to adapterConnectedPlayers");
 
                 adapterConnectedPlayers.add(newlyConnectedPlayer);
+
+                TextView connectedPlayersLabel = (TextView) findViewById(R.id.textview_label_connectedPlayers);
+                connectedPlayersLabel.setText("Connected Players " + adapterConnectedPlayers.getCount() + " (Including You)");
 
                 if(adapterConnectedPlayers.getCount() == 2){
                     View item = adapterConnectedPlayers.getView(0, null, connectedPlayersView);

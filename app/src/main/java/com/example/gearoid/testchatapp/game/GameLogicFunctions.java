@@ -323,16 +323,22 @@ public class GameLogicFunctions {
 
         server_questVoteReplies = new ArrayList<>();
 
-        server_sendToSelectedPlayers(proposedTeam, packetQuestVote);
+        //server_sendToSelectedPlayers(proposedTeam, packetQuestVote);
+        server_sendToEveryone(packetQuestVote);
     }
 
     public static void endGame(boolean result){
         Log.d("GameLogicFunctions", "endGame. Result: " + result);
 
-        Packet.Packet_GameFinished packetGameFinished = (Packet.Packet_GameFinished) PacketFactory.createPack(PacketFactory.PacketType.GAME_FINISHED);
-        packetGameFinished.gameResult = result;
+        if(result){
+            updateAllPlayersGameState(Session.GameState.ASSASSIN);
+        } else {
 
-        server_sendToEveryone(packetGameFinished);
+            Packet.Packet_GameFinished packetGameFinished = (Packet.Packet_GameFinished) PacketFactory.createPack(PacketFactory.PacketType.GAME_FINISHED);
+            packetGameFinished.gameResult = result;
+
+            server_sendToEveryone(packetGameFinished);
+        }
     }
 
     public static void updateAllPlayersGameState(Session.GameState nextGameState){

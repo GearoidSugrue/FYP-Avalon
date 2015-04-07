@@ -38,6 +38,8 @@ public class WiFiDirectServicesList extends ListFragment implements WifiP2pManag
     private View mContentView = null;
     private WifiP2pDevice myDevice;
 
+    public TextView otherDeviceStatusText;
+
     private List<WifiP2pDevice> allNearbyPeers = new ArrayList<WifiP2pDevice>();
 
 
@@ -78,11 +80,13 @@ public class WiFiDirectServicesList extends ListFragment implements WifiP2pManag
                 ((TextView) v.findViewById(android.R.id.text2)).setText("Connecting");
             } else {
                 ((DeviceClickListener) getActivity()).connectP2p(selectedService);
-                ((TextView) v.findViewById(android.R.id.text2)).setText("Connecting");
+                otherDeviceStatusText = ((TextView) v.findViewById(android.R.id.text2));
+                otherDeviceStatusText.setText("Connecting");
             }
         } else {
             ((DeviceClickListener) getActivity()).connectP2p(selectedService);
-            ((TextView) v.findViewById(android.R.id.text2)).setText("Connecting");
+            otherDeviceStatusText = ((TextView) v.findViewById(android.R.id.text2));
+            otherDeviceStatusText.setText("Connecting");
         }
 
     }
@@ -115,6 +119,7 @@ public class WiFiDirectServicesList extends ListFragment implements WifiP2pManag
                 if (statusText != null) {
                     statusText.setText(getDeviceStatus(service.device.status));
                 }
+
             }
             return v;
         }
@@ -213,8 +218,10 @@ public class WiFiDirectServicesList extends ListFragment implements WifiP2pManag
             //TODO seprate device status into 2, host and player. move to functions and call from reciever.
             if (SharedPrefManager.getBooleanDefaults("HOST", ApplicationContext.getContext())) {
                 TextView label_status = (TextView) mContentView.findViewById(R.id.textview_label_status);
-                label_status.setText("Players Connected:");
-                statusView.setText("" + getNumberOfConnectedDevices());
+                label_status.setVisibility(View.GONE);
+                statusView.setVisibility(View.GONE);
+//                label_status.setText("Players Connected:");
+//                statusView.setText("" + getNumberOfConnectedDevices());
             } else if (device.status == WifiP2pDevice.CONNECTED) {
                 statusView.setText("Connected to Host");// - " + SharedPrefManager.getStringDefaults("HOST_NAME", ApplicationContext.getContext()));
 
@@ -228,6 +235,14 @@ public class WiFiDirectServicesList extends ListFragment implements WifiP2pManag
             statusView.setText("WiFi Direct Disabled! Re-enable.");
         }
 
+    }
+
+    public void setOtherDeviceStatusToConnected(){
+        Log.d(WiFiDirectActivity.TAG, "setOtherDeviceStatusToConnected: ");
+
+        if(otherDeviceStatusText != null){
+            otherDeviceStatusText.setText("Connected");
+        }
     }
 
 

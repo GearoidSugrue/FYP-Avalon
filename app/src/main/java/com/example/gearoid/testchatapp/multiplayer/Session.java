@@ -1,5 +1,6 @@
 package com.example.gearoid.testchatapp.multiplayer;
 
+import android.content.BroadcastReceiver;
 import android.os.PowerManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -57,6 +58,7 @@ public class Session {
     public static ArrayList<GameLogicFunctions.Quest> serverQuestResults;
     public static ArrayList<GameLogicFunctions.Quest> clientQuestResults;
     public static PowerManager powerManager;
+    public static BroadcastReceiver mReceiver;
 
 
     //public static GameLogicFunctions.Quest quest1Result;
@@ -68,16 +70,6 @@ public class Session {
 
     public static GameBoardFragment gameBoardFrag;
 
-//    public static Button teamVoteFrag;
-//    public static Button questVoteFrag;
-//    public static Button teamSelectFrag;
-//    public static Button assassinateFrag;
-//    public static Button ladyOfLakeFrag;
-//    public static Button teamVoteResultFrag;
-//    public static Button gameFinishedFrag;
-//    public static Button playerCharacterFrag;
-//    public static Button questResultFrag;
-
     public static LinearLayout playerCharacterFrag;
     public static LinearLayout teamVoteFrag;
     public static LinearLayout questVoteFrag;
@@ -87,6 +79,15 @@ public class Session {
     public static LinearLayout teamVoteResultFrag;
     public static LinearLayout gameFinishedFrag;
     public static LinearLayout questResultFrag;
+
+    public static boolean isTeamVoteFragVisible = false;
+    public static boolean isQuestVoteFragVisible = false;
+    public static boolean isTeamSelectFragVisible = false;
+    public static boolean isAssassinateFragVisible = false;
+    public static boolean isLadyOfLakeFragVisible = false;
+    public static boolean isTeamVoteResultFragVisible = false;
+    public static boolean isGameFinishedFragVisible = false;
+    public static boolean isQuestResultFragVisible = false;
 
     public static int teamVoteTitleColor;
     public static int teamVoteStatusColor;
@@ -103,15 +104,12 @@ public class Session {
     public static int standardTitleColor;
     public static int standardStatusColor;
 
-    //public static Drawable boardImage;//Is this necessary??? Use Board enum instead...
-
-    //public static HashMap<Player, Connection> playerConnections;
 
     public enum GameState {
-        TEAM_SELECT, TEAM_VOTE, TEAM_VOTE_RESULT, QUEST_VOTE, QUEST_VOTE_RESULT, LADY_OF_LAKE, ASSASSIN, FINISHED
+        TEAM_SELECT, QUEST_VOTE, LADY_OF_LAKE, ASSASSIN, //FINISHED
     }
 
-    public Session() {//Find a better way??..
+    public Session() {
         serverAllPlayerConnections = new ArrayList<>();
         allPlayers = new ArrayList<>();
     }
@@ -161,7 +159,7 @@ public class Session {
     public static void client_sendPacketToServer(final Object obj) {
 
 
-        Thread thread = new Thread() {//The host is also a player!!
+        Thread thread = new Thread() {//The host is also a player
             @Override
             public void run() {
                 try {
@@ -176,32 +174,63 @@ public class Session {
         thread.start();
     }
 
-    public static void server_sendToEveryone(Object obj) {
-        Log.d("Session", "Server: Sending Object to everyone");
+    public static void server_sendToEveryone(final Object obj) {
 
-        ServerInstance.server.getServer().sendToAllTCP(obj);
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Log.d("Session", "Server: Sending Object to everyone");
+                    ServerInstance.server.getServer().sendToAllTCP(obj);
+                } catch (Exception e) {
+                    Log.d("Session", "Error Sending Object to everyone");
+                    e.printStackTrace();
+                }
+            }
+        };
+        thread.start();
     }
 
-    public static void server_sendToSelectedPlayers(int[] playerIDs, Object obj) {
+    public static void server_sendToSelectedPlayers(int[] playerIDs, final Object obj) {
         Log.d("Session", "Server: Sending Object to selected players");
 
         for (int i = 0; i < playerIDs.length; i++) {
 
-            int conID = Session.serverAllPlayerConnections.get(playerIDs[i]).playerConnection.getID();
-            ServerInstance.server.getServer().sendToTCP(conID, obj);
-        }
+            final int conID = Session.serverAllPlayerConnections.get(playerIDs[i]).playerConnection.getID();
 
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        Log.d("Session", "Server: Sending Object to Player: " + conID);
+                        ServerInstance.server.getServer().sendToTCP(conID, obj);
+                    } catch (Exception e) {
+                        Log.d("Session", "Error Sending Object to Player: " + conID);
+                        e.printStackTrace();
+                    }
+                }
+            };
+            thread.start();
+        }
     }
 
-    public static void server_sendToPlayer(int playerID, Object obj) {
+    public static void server_sendToPlayer(final int playerID, final Object obj) {
         Log.d("Session", "Server: Sending Object to player: " + playerID);
 
-        //playerID = GameLogicFunctions.getUserPlayer().playerID;
-//        if(playerID == 3 || playerID == 4){//TODO testing purpose, delete later.
-//            playerID = GameLogicFunctions.getUserPlayer().playerID;
-//        }
 
-        ServerInstance.server.getServer().sendToTCP(Session.serverAllPlayerConnections.get(playerID).playerConnection.getID(), obj);
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Log.d("Session", "Server: Sending Object to Player: " + playerID);
+                    ServerInstance.server.getServer().sendToTCP(Session.serverAllPlayerConnections.get(playerID).playerConnection.getID(), obj);
+                } catch (Exception e) {
+                    Log.d("Session", "Error Sending Object to Player: " + playerID);
+                    e.printStackTrace();
+                }
+            }
+        };
+        thread.start();
     }
 }
 

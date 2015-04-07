@@ -20,50 +20,122 @@ public class GameBoardFragment extends Fragment {
     private View mContentView = null;
     private GameLogicFunctions.Board gameBoard;
 
+    ImageView token1;
+    ImageView token2;
+    ImageView token3;
+    ImageView token4;
+    ImageView token5;
+
+    Drawable goodToken;
+    Drawable evilToken;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d("gameBoardFrag", "onActivityCreated called");
 
+        setRetainInstance(true);
 
 //        gameBoard = (GameLogicFunctions.Board) getActivity().getIntent().getSerializableExtra("BOARD");
 //        Log.d("gameBoardFrag", "Got activity intent" + gameBoard);
 
         gameBoard = Session.currentBoard;
 
-        ImageView boardImage = (ImageView) mContentView.findViewById(R.id.imageView_gameBoard);
-
+        ImageView boardImage = (ImageView) mContentView.findViewById(R.id.imageView_gameBoardLayer);
         Drawable image = getBoardImage(gameBoard);
-
         boardImage.setImageDrawable(image);
+
+        goodToken = getResources().getDrawable(R.drawable.token_goodrounded);
+        evilToken = getResources().getDrawable(R.drawable.token_evilrounded);
+
+        //token1.setImageDrawable(goodToken);
+
         //boardImage.setBackground(getBoardImage(gameBoard));
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mContentView = inflater.inflate(R.layout.game_board, null);
+        mContentView = inflater.inflate(R.layout.boardlayers, null);
+        Log.d("gameBoardFrag", "onCreateView called");
 
+        token1 = (ImageView) mContentView.findViewById(R.id.ImageView_Token01);
+        token2 = (ImageView) mContentView.findViewById(R.id.ImageView_Token02);
+        token3 = (ImageView) mContentView.findViewById(R.id.ImageView_Token03);
+        token4 = (ImageView) mContentView.findViewById(R.id.ImageView_Token04);
+        token5 = (ImageView) mContentView.findViewById(R.id.ImageView_Token05);
 
-        //boardImage.setImageDrawable(getResources().getDrawable(R.drawable.misc_swordback));
+        setQuestResultTokensVisible();
 
         return mContentView;
     }
 
+    public void setQuestResultTokensVisible() {
+        Log.d("gameBoardFrag", "setQuestResultTokensVisible called");
 
-    public Drawable getBoardImage(GameLogicFunctions.Board board){
+        if (Session.clientQuestResults != null) {
 
-        Drawable image;
+            for (int i = 0; i < Session.clientQuestResults.size(); i++) {
+                updateBoardQuestResult(Session.clientQuestResults.get(i));
+            }
+        }
+    }
+
+    public void updateBoardQuestResult(GameLogicFunctions.Quest quest) {
+
+        switch (quest) {
+            case FIRST:
+                setQuestResult(token1, quest.getResult());
+                break;
+            case SECOND:
+                setQuestResult(token2, quest.getResult());
+                break;
+            case THIRD:
+                setQuestResult(token3, quest.getResult());
+                break;
+            case FOURTH:
+                setQuestResult(token4, quest.getResult());
+                break;
+            case FIFTH:
+                setQuestResult(token5, quest.getResult());
+                break;
+        }
+    }
+
+    public void setQuestResult(final ImageView token, final boolean result) {
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("GameBoardFragment", "runOnUiThread: GameBoardFragment.setQuestResult(...) ");
+
+                if (result) {
+                    token.setImageDrawable(goodToken);
+                } else {
+                    token.setImageDrawable(evilToken);
+                }
+                token.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public Drawable getBoardImage(GameLogicFunctions.Board board) {
 
         switch (board) {
-            case FIVE: return image = getResources().getDrawable(R.drawable.board_5);
-            case SIX: return image = getResources().getDrawable(R.drawable.board_6);
-            case SEVEN: return image = getResources().getDrawable(R.drawable.board_7);
-            case EIGHT: return image = getResources().getDrawable(R.drawable.board_8);
-            case NINE: return image = getResources().getDrawable(R.drawable.board_9);
-            case TEN: return image = getResources().getDrawable(R.drawable.board_10);
+            case FIVE:
+                return getResources().getDrawable(R.drawable.board_5);
+            case SIX:
+                return getResources().getDrawable(R.drawable.board_6);
+            case SEVEN:
+                return getResources().getDrawable(R.drawable.board_7);
+            case EIGHT:
+                return getResources().getDrawable(R.drawable.board_8);
+            case NINE:
+                return getResources().getDrawable(R.drawable.board_9);
+            case TEN:
+                return getResources().getDrawable(R.drawable.board_10);
         }
-        return image = getResources().getDrawable(R.drawable.board_5);
+        return getResources().getDrawable(R.drawable.board_5);
     }
 
 }

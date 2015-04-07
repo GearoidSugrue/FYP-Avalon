@@ -77,29 +77,6 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_setup, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @Override
     public void characterSelected(int position, boolean isOptionalList, CharacterListFragment.CharacterListAdapter listAdapter) {
 
@@ -186,24 +163,17 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
     private void initializeFragments() {
         goodListFrag = (CharacterListFragment) getFragmentManager()
                 .findFragmentById(R.id.good_list);
-        //goodListFrag.setTitleText(goodCount + " Good Characters");
 
         evilListFrag = (CharacterListFragment) getFragmentManager()
                 .findFragmentById(R.id.evil_list);
-        //evilListFrag.setTitleText(evilCount + " Evil Characters");
 
         optionalListFrag = (CharacterListFragment) getFragmentManager()
                 .findFragmentById(R.id.optional_list);
-        //optionalListFrag.setTitleText("Select Optional Characters To Add");
         optionalListFrag.isOptionalCharacterList = true;
 
         goodListAdapter = (CharacterListFragment.CharacterListAdapter) goodListFrag.getListAdapter();
         evilListAdapter = (CharacterListFragment.CharacterListAdapter) evilListFrag.getListAdapter();
         optionalListAdapter = (CharacterListFragment.CharacterListAdapter) optionalListFrag.getListAdapter();
-
-//        goodListFrag.getView().setBackground(getResources().getDrawable(R.drawable.misc_blueloyalty));
-//        goodListFrag.getView().getBackground().setAlpha(150);
-//        goodListFrag.getView().getBackground().setColorFilter(Color.argb(70, 0, 0, 255), PorterDuff.Mode.DARKEN);
 
         LinearLayout goodLayout = (LinearLayout) findViewById(R.id.layout_goodFrag);
         goodLayout.setBackground(getResources().getDrawable(R.drawable.misc_blueloyalty));
@@ -214,11 +184,6 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         evilLayout.setBackground(getResources().getDrawable(R.drawable.misc_redloyalty));
         evilLayout.getBackground().setAlpha(150);
         evilLayout.getBackground().setColorFilter(Color.argb(70, 255, 0, 0), PorterDuff.Mode.DARKEN);
-
-//
-//        evilListFrag.getView().setBackground(getResources().getDrawable(drawable.misc_redloyalty));
-//        evilListFrag.getView().getBackground().setAlpha(150);
-//        evilListFrag.getView().getBackground().setColorFilter(Color.argb(70, 255, 0, 0), PorterDuff.Mode.DARKEN);
     }
 
     public void setUpGoodCharacterList() {
@@ -274,30 +239,15 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
     }
 
     public void startGameActivity() {
-        //String userName = SharedPrefManager.getStringDefaults("USERNAME", this);
 
-        //Intent intent = new Intent(this, ___.class);
-
-        //startActivity(intent);
         if (goodListAdapter.getCount() < goodCount || evilListAdapter.getCount() < evilCount) {
             ApplicationContext.showToast("Not enough characters!");
         } else {
             Player p1 = new Player(); //TODO Testing purpose. Delete when done.
-//            Player p2 = new Player();
-//            Player p3 = new Player();
-//            Player p4 = new Player();
-//            Player p5 = new Player();
+
             p1.userName = "Tester1";
-//            p2.userName = "Tester2";
-//            p3.userName = "Lemon";
-//            p4.userName = "Kabuki";
-//            p4.hasLadyOfLake = true;
-//            p5.userName = "Mopsy";
+
             Session.serverAllPlayers.add(p1);
-//            Session.serverAllPlayers.add(p2);
-//            Session.serverAllPlayers.add(p3);
-//            Session.serverAllPlayers.add(p4);
-//            Session.serverAllPlayers.add(p5);
 
             checkAndAssignLadyOfLake();
             assignAllPlayersCharacters(getCombinedGoodAndEvilList());
@@ -311,18 +261,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
             packet.leaderOrderList.addAll(Session.leaderOrderList);
             packet.currentBoard = currentBoard;
 
-            Thread thread = new Thread() {
-                @Override
-                public void run() {
-                    ServerInstance.server.getServer().sendToAllTCP(packet);
-                }
-            };
-            thread.start();
-
-//            Intent intent = new Intent(this, GameActivity.class);
-//            intent.putExtra("BOARD", currentBoard);
-//
-//            startActivity(intent);
+            Session.server_sendToEveryone(packet);
         }
     }
 
@@ -337,16 +276,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
             final int randomIndex = ran.nextInt(Session.serverAllPlayers.size());
 
             Session.serverAllPlayers.get(randomIndex).hasLadyOfLake = true;
-//            final Packet.Packet_LadyOfLakeUpdate packet = (Packet.Packet_LadyOfLakeUpdate) PacketFactory.createPack(PacketFactory.PacketType.LADYOFLAKE_UPDATE);
-//            packet.isLadyOfLake = true;
-//
-//            Thread thread = new Thread() {
-//                @Override
-//                public void run() {
-//                    Session.serverAllPlayerConnections.get(randomIndex).playerConnection.sendTCP(packet);
-//                }
-//            };
-//            thread.start();
+
         } else {
             Session.serverIsLadyOfLakeOn = false;
         }
@@ -366,11 +296,9 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
     }
 
     public static void assignAllPlayersCharacters(ArrayList<ICharacter> chosenCharacters) {
-        Collections.shuffle(chosenCharacters);
-//        Session.allCharacters = new ArrayList<>();
-//        Session.allCharacters.addAll(chosenCharacters);// TODO is allCharacters necessary???
-
         Log.d("GameSetup", "Assigning players characters");
+
+        Collections.shuffle(chosenCharacters);
 
         if (chosenCharacters.size() == Session.serverAllPlayers.size()) {
 
@@ -393,16 +321,14 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         //Collections.shuffle(Session.leaderOrderList);
 
         if(!Session.serverAllPlayers.isEmpty()){
-//            Session.serverAllPlayers.get(Session.leaderOrderList.get(Session.leaderOrderIterator)).isLeader = true;
-            //Session.serverAllPlayers.get(3).isLeader = true;
 
             for(int i=0; i < Session.serverAllPlayers.size(); i++){
 
-                if(Session.serverAllPlayers.get(i).userName.startsWith("Gearoid")){
-                    Session.serverAllPlayers.get(i).isLeader = true;
-                    Log.d("GameSetup", "assigning Gearoid as leader");
-
-                }
+//                if(Session.serverAllPlayers.get(i).userName.startsWith("Gearoid")){
+//                    Session.serverAllPlayers.get(i).isLeader = true;
+//                    Log.d("GameSetup", "assigning Gearoid as leader");
+//
+//                }
 
                 Log.d("GameSetup", "leaderOrderList - " +  Session.leaderOrderList.get(i));
             }

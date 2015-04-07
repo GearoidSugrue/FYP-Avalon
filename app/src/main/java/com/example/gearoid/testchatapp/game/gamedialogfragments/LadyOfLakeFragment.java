@@ -197,6 +197,7 @@ public class LadyOfLakeFragment extends DialogFragment {
 
         isFinished = true;
         Player player = adapterChosenPlayer.getItem(0);
+        playerIndex = player.playerID;
         final ImageView chosenPlayer = (ImageView) mContentView.findViewById(R.id.imageView_ladyOfLakeloyaltyCard);
         TextView result = (TextView) mContentView.findViewById(R.id.textView_ladyOfLakeResult);
 
