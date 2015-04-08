@@ -42,7 +42,6 @@ public class GameFinishedFragment extends DialogFragment {
 
         GameFinishedFragment frag = new GameFinishedFragment();
 
-        // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putBoolean("GAME_RESULT", gameResult);
         args.putIntArray("EVIL_PLAYER_POS", evilPlayersPositions);
@@ -79,7 +78,7 @@ public class GameFinishedFragment extends DialogFragment {
         for (int i = 0; i < victoriousPlayerPos.length; i++) {
             Log.d("GameFinishedFragment", "adding player to adapterVictoriousPlayers. int[" + i + "] = " + victoriousPlayerPos[i]);
 
-            if(victoriousPlayerPos[i] == -1){ //TODO delete this. Testing Purpose only...
+            if(victoriousPlayerPos[i] == -1){
                 victoriousPlayerPos[i] = 1;
             }
             victoriousPlayersArray.add(Session.allPlayers.get(victoriousPlayerPos[i]));
@@ -88,7 +87,7 @@ public class GameFinishedFragment extends DialogFragment {
         for (int i = 0; i < defeatedPlayerPos.length; i++) {
             Log.d("GameFinishedFragment", "adding player to adapterDefeatedPlayers. int[" + i + "] = " + defeatedPlayerPos[i]);
 
-            if(defeatedPlayerPos[i] == -1){ //TODO delete this. Testing Purpose only...
+            if(defeatedPlayerPos[i] == -1){
                 defeatedPlayerPos[i] = 1;
             }
             defeatedPlayersArray.add(Session.allPlayers.get(defeatedPlayerPos[i]));

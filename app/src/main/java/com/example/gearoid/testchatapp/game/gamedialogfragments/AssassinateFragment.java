@@ -45,12 +45,6 @@ public class AssassinateFragment extends DialogFragment {
 
         AssassinateFragment frag = new AssassinateFragment();
 
-//        Bundle args = new Bundle();
-        //args.putSerializable("BOARD", currentBoard);
-//        args.putInt("TEAM_SIZE", teamSize);
-//        args.putInt("QUEST_NUM", questNumber);
-//        frag.setArguments(args);
-
         return frag;
     }
 
@@ -62,10 +56,6 @@ public class AssassinateFragment extends DialogFragment {
 
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);
-
-//        Bundle extras = getArguments();
-//        teamSize = extras.getInt("TEAM_SIZE");
-//        questNumber = extras.getInt("QUEST_NUM");
 
         chosenPlayerArray = new ArrayList<>();
 
@@ -87,7 +77,6 @@ public class AssassinateFragment extends DialogFragment {
         chosenPlayerView = (ListView) rootView.findViewById(R.id.listview_chosenPlayerToAssassinate);
         candidatePlayersView = (ListView) rootView.findViewById(R.id.listview_assassinCandidates);
 
-        // randomiseCardOrder();
         return rootView;
     }
 
@@ -106,8 +95,6 @@ public class AssassinateFragment extends DialogFragment {
 
         setListViewOnclickListeners();
         setImageViewOnClickListeners();
-
-        //int deviceConfig = getActivity().getResources().getConfiguration().orientation;
 
         if (adapterCandidatePlayers.getCount() > 3) {
             View item = adapterCandidatePlayers.getView(0, null, candidatePlayersView);
@@ -218,9 +205,7 @@ public class AssassinateFragment extends DialogFragment {
         result.setLayoutParams(params);
 
         candidatePlayersView.setVisibility(View.GONE);
-//
-//        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (3.5 * item.getMeasuredHeight()));
-//        visiblePlayersView.setLayoutParams(params);
+
     }
 
 

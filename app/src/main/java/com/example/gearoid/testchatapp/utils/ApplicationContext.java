@@ -67,7 +67,7 @@ public class ApplicationContext extends Application {
         this.mActivityTransitionTimerTask = new TimerTask() {
             public void run() {
                 ApplicationContext.this.wasInBackground = true;
-                Log.d("ApplicationContext", "User has left app");
+                Log.d("ApplicationContext", "User has left the app");
 
                 if(PlayerConnection.getInstance().playerID >= 0){
                     Packet.Packet_PlayerHasLeftApp packet = (Packet.Packet_PlayerHasLeftApp) PacketFactory.createPack(PacketFactory.PacketType.PLAYER_LEFT);
@@ -75,7 +75,6 @@ public class ApplicationContext extends Application {
 
                     client_sendPacketToServer(packet);
                 }
-
             }
         };
 

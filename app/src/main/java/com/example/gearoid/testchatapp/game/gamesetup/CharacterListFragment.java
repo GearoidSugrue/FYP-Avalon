@@ -44,12 +44,6 @@ public class CharacterListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {//Called after GameSetupActivity onCreate is called
         super.onActivityCreated(savedInstanceState);
 
-//        if(!isOptionalCharacterList) {
-//            TextView tv = (TextView) mContentView.findViewById(R.id.textview_characterListTitle);
-//            tv.setTypeface(null, Typeface.BOLD);
-//            tv.setTextColor(Color.BLACK);
-//        }
-
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
             @Override
@@ -57,7 +51,6 @@ public class CharacterListFragment extends ListFragment {
                                            int position, long id) {
                 //TODO Do stuff...
                 ICharacter character = (ICharacter) getListAdapter().getItem(position);
-                //((DeviceActionListener) getActivity()).showDetails(device);
                 Log.d("Fragment Characters", "Character long clicked:" + character.getCharacterName());
                 ((CharacterListFragListener) getActivity()).displayCharacterCard(character.getCharacterName());
 
@@ -70,8 +63,6 @@ public class CharacterListFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContentView = inflater.inflate(R.layout.character_list, null);
-        //mContentView.setBackground(getResources().getDrawable(R.drawable.misc_blueloyalty));
-        //mContentView.getBackground().setAlpha(120);
 
         return mContentView;
     }
@@ -80,7 +71,6 @@ public class CharacterListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         ICharacter character = (ICharacter) getListAdapter().getItem(position);
-        //((DeviceActionListener) getActivity()).showDetails(device);
         Log.d("Fragment Characters", "Character clicked:" + character.getCharacterName());
 
         ((CharacterListFragListener) getActivity()).characterSelected(position, isOptionalCharacterList, listAdapter);
@@ -139,22 +129,14 @@ public class CharacterListFragment extends ListFragment {
                 }
 
             }
-            //v.setBackgroundColor(Color.argb(255, 255, 192, 192));
             return v;
         }
     }
-
-//    public void setTitleText(String text){
-//        TextView view = (TextView) mContentView.findViewById(R.id.textview_characterListTitle);
-//        view.setText(text);
-//    }
 
     public interface CharacterListFragListener {
 
         void characterSelected(int position, boolean isOptionalList, CharacterListAdapter listAdapter);
         void displayCharacterCard(String characterName);
-
-
     }
 
 }

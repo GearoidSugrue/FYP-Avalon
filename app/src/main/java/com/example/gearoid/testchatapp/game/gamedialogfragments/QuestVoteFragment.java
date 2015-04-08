@@ -41,7 +41,6 @@ public class QuestVoteFragment extends DialogFragment {
     public static QuestVoteFragment newInstance(int[] teamMembersPos, boolean isGood, int questNumber) {
         QuestVoteFragment frag = new QuestVoteFragment();
 
-        // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putIntArray("TEAM_MEMBERS", teamMembersPos);
         args.putBoolean("IS_GOOD", isGood);
@@ -55,9 +54,8 @@ public class QuestVoteFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //characterName = getArguments().getString("character");
         Log.d("QuestVoteFrag", "onCreate called");
+
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);
 

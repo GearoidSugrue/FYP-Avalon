@@ -45,13 +45,9 @@ public class TeamVoteFragment extends DialogFragment {
     int voteCount;
 
 
-
-
-
     public static TeamVoteFragment newInstance(int[] playerPositions, int questNumber, int voteNumber) {
         TeamVoteFragment frag = new TeamVoteFragment();
 
-        // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putIntArray("PLAYER_POS", playerPositions);
         args.putInt("QUEST_NUM", questNumber);

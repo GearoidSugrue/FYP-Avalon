@@ -28,22 +28,18 @@ import java.util.ArrayList;
  */
 public class Session {
 
-    //Client
     public static Connection myConnection;
 
-    //Server
     public static ListenerServer serverListener;
     public static ListenerClient clientListener;
 
-    public static ArrayList<PlayerConnection> serverAllPlayerConnections; //Won't be instantiated until Session object is created TODO fix serverAllPlayers ArrayList
+    public static ArrayList<PlayerConnection> serverAllPlayerConnections;
     public static ArrayList<Player> serverAllPlayers;
-    public static ArrayList<Player> allPlayers; //Won't be instantiated until Session object is created TODO fix serverAllPlayers ArrayList
+    public static ArrayList<Player> allPlayers;
 
-    //public static ArrayList<Player> leaderOrderAllPlayers;
     public static ArrayList<Integer> leaderOrderList;
     public static int leaderOrderIterator;
 
-    //public static ArrayList<ICharacter> allCharacters;
     public static GameLogicFunctions.Board currentBoard;
     public static GameLogicFunctions.Quest currentQuest = GameLogicFunctions.Quest.FIRST;
     public static int voteCount = 0;
@@ -60,13 +56,9 @@ public class Session {
     public static PowerManager powerManager;
     public static BroadcastReceiver mReceiver;
 
-
-    //public static GameLogicFunctions.Quest quest1Result;
-
     public static ArrayList<Packet.Packet_TeamVoteReply> server_teamVoteReplies;
     public static int[] server_currentProposedTeam;
     public static ArrayList<Packet.Packet_QuestVoteReply> server_questVoteReplies;
-
 
     public static GameBoardFragment gameBoardFrag;
 
@@ -123,10 +115,7 @@ public class Session {
         currentQuest = GameLogicFunctions.Quest.FIRST;
         isGameIntialised = false;
 
-//        ServerInstance.getInstance();
-//        ServerInstance.server.getServer().start();
         ServerInstance.getServerInstance().getServer().start();
-
     }
 
     public static void join(final String hostAddress) {

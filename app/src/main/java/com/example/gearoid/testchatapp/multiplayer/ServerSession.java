@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ServerSession {
 
     //Server
-    public ArrayList<PlayerConnection> allPlayerConnections; //Won't be instantiated until Session object is created
+    public ArrayList<PlayerConnection> allPlayerConnections;
     //public static HashMap<Player, Connection> playerConnections;
 
     public ServerSession() {//Find a better way??..

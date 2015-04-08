@@ -43,7 +43,6 @@ public class SelectTeamFragment extends DialogFragment {
         SelectTeamFragment frag = new SelectTeamFragment();
 
         Bundle args = new Bundle();
-        //args.putSerializable("BOARD", currentBoard);
         args.putInt("TEAM_SIZE", teamSize);
         args.putInt("QUEST_NUM", questNumber);
         frag.setArguments(args);

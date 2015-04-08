@@ -1,5 +1,6 @@
 package com.example.gearoid.testchatapp;
 
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -16,10 +17,14 @@ import android.content.DialogInterface;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.game.gamedialogfragments.GameFinishedFragment;
+import com.example.gearoid.testchatapp.game.gamedialogfragments.InstructionsFragment;
 import com.example.gearoid.testchatapp.utils.ApplicationContext;
 import com.example.gearoid.testchatapp.utils.SharedPrefManager;
-import com.example.gearoid.testchatapp.wifidirect.peerdiscovery.WiFiDirectActivity;
 import com.example.gearoid.testchatapp.wifidirect.servicediscovery.WiFiDirectServiceActivity;
+
+import static com.example.gearoid.testchatapp.game.GameLogicFunctions.getEvilAllegiancePositions;
+import static com.example.gearoid.testchatapp.game.GameLogicFunctions.getGoodAllegiancePositions;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -30,9 +35,6 @@ public class MainActivity extends ActionBarActivity {
         setTitle(R.string.app_name);
         setContentView(R.layout.activity_main);
 
-//        Tool
-
-
         initializeButtons();
 
         String userName = SharedPrefManager.getStringDefaults("USERNAME", this);
@@ -41,19 +43,6 @@ public class MainActivity extends ActionBarActivity {
         }
         setTextView_PlayerName();
 
-        //run();
-    }
-
-    private void run() {//????
-        Class activity;
-        try {
-            activity = Class.forName("com.example.gearoid.testchatapp." + "ChatClientAndServer");
-            Intent openActivity = new Intent(MainActivity.this, activity);
-            startActivity(openActivity);
-            finish();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     private void initializeButtons() {
@@ -96,37 +85,25 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.game_guide) {
+            displayGameGuideFragment();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void startJoinWiFiActivity() {
-        WiFiDirectActivity.groupOwnerIntent = 0; //doesn't want to be group owner
-        Intent intent = new Intent(this, WiFiDirectActivity.class);
-        //intent.putExtra("USER_LIST", userList);
-        startActivity(intent);
-    }
-
-    public void startHostWiFiActivity() {
-        WiFiDirectActivity.groupOwnerIntent = 15; //wants to be group owner
-        Intent intent = new Intent(this, WiFiDirectActivity.class);
-        //intent.putExtra("USER_LIST", userList);
-        startActivity(intent);
+    public void displayGameGuideFragment(){
+        final DialogFragment newFragment = InstructionsFragment.newInstance();
+        newFragment.show(getFragmentManager(), "gameguidedialog");
     }
 
     public void startJoinServiceActivity() {
         SharedPrefManager.setDefaults("HOST", false, getApplicationContext());
 
-        WiFiDirectActivity.groupOwnerIntent = 0; //doesn't want to be group owner
         Intent intent = new Intent(this, WiFiDirectServiceActivity.class);
         intent.putExtra("isHost", false);
         startActivity(intent);
@@ -135,7 +112,6 @@ public class MainActivity extends ActionBarActivity {
     public void startHostServiceActivity() {
         SharedPrefManager.setDefaults("HOST", true, getApplicationContext());
 
-        WiFiDirectActivity.groupOwnerIntent = 15; //wants to be group owner
         Intent intent = new Intent(this, WiFiDirectServiceActivity.class);
         intent.putExtra("isHost", true);
         startActivity(intent);
@@ -149,8 +125,7 @@ public class MainActivity extends ActionBarActivity {
         alert.setNegativeButton(android.R.string.cancel, null);
 
         final LayoutInflater inflater = this.getLayoutInflater();
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
+
         alert.setView(inflater.inflate(R.layout.dialog_edit_name, null));
 
         AlertDialog dialog = alert.create();
@@ -235,6 +210,4 @@ public class MainActivity extends ActionBarActivity {
         final String userName = SharedPrefManager.getStringDefaults("USERNAME", this);
         textView.setText(userName);
     }
-
-
 }

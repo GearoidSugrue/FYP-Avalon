@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.example.gearoid.testchatapp.utils.ApplicationContext;
 import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.utils.SharedPrefManager;
-import com.example.gearoid.testchatapp.wifidirect.peerdiscovery.WiFiDirectActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +26,8 @@ import java.util.List;
 /**
  * Created by gearoid on 27/02/15.
  */
-
 /**
- * A simple ListFragment that shows the available services as published by the
+ * A ListFragment that shows the available services as published by the
  * peers
  */
 public class WiFiDirectServicesList extends ListFragment implements WifiP2pManager.PeerListListener {
@@ -59,7 +57,7 @@ public class WiFiDirectServicesList extends ListFragment implements WifiP2pManag
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         listAdapter = new WiFiDevicesAdapter(getActivity(), android.R.layout.simple_list_item_2, android.R.id.text1,
-                peers); //Was new ArrayList<WiFiP2pService>()
+                peers);
         this.setListAdapter(listAdapter);
     }
 
@@ -138,13 +136,13 @@ public class WiFiDirectServicesList extends ListFragment implements WifiP2pManag
     }
 
     public int checkIfDeviceAlreadyAdded(String deviceAddress, String deviceName) {//Not sure if working
-        Log.d(WiFiDirectActivity.TAG, "Checking if device has already been added to list");
+        Log.d("WiFiDirectServiceList", "Checking if device has already been added to list");
 
         for (int j = 0; j < peers.size(); j++) {
-            Log.d(WiFiDirectActivity.TAG, peers.get(j).device.deviceName + ", " + peers.get(j).device.deviceAddress);
+            Log.d("WiFiDirectServiceList", peers.get(j).device.deviceName + ", " + peers.get(j).device.deviceAddress);
 
             if (peers.get(j).device.deviceAddress.equalsIgnoreCase(deviceAddress) && peers.get(j).device.deviceName.equals(deviceName)) {
-                Log.d(WiFiDirectActivity.TAG, "Found a match: " + peers.get(j).device.deviceName);
+                Log.d("WiFiDirectServiceList", "Found a match: " + peers.get(j).device.deviceName);
                 return j;
             }
         }
@@ -160,22 +158,17 @@ public class WiFiDirectServicesList extends ListFragment implements WifiP2pManag
 
     @Override
     public void onPeersAvailable(WifiP2pDeviceList peerList) {
-        Log.d(WiFiDirectActivity.TAG, "onPeersAvailable called...");
+        Log.d("WiFiDirectServiceList", "onPeersAvailable called...");
 
-        // Out with the old, in with the new.
         allNearbyPeers.clear();
         allNearbyPeers.addAll(peerList.getDeviceList());
 
-        // If an AdapterView is backed by this data, notify it
-        // of the change.  For instance, if you have a ListView of available
-        // peers, trigger an update.
-        //((WiFiPeerListAdapter) getListAdapter()).notifyDataSetChanged();
         if (allNearbyPeers.size() == 0) {
-            Log.d(WiFiDirectActivity.TAG, "No devices found");
+            Log.d("WiFiDirectServiceList", "No devices found");
             return;
         }
-        //updatePeerDetails();//............................................................
-        Log.d(WiFiDirectActivity.TAG, "Found devices: " + allNearbyPeers.size());
+        //updatePeerDetails();
+        Log.d("WiFiDirectServiceList", "Found devices: " + allNearbyPeers.size());
     }
 
     public void clearPeers() {
@@ -188,7 +181,7 @@ public class WiFiDirectServicesList extends ListFragment implements WifiP2pManag
         for (int i = 0; i < peers.size(); i++) {
             WiFiP2pService p = peers.get(i);
             if (p.device.status != WifiP2pDevice.CONNECTED || myDevice.status != WifiP2pDevice.CONNECTED) {
-                Log.d(WiFiDirectActivity.TAG, "Device is not connected. Removing from list." + p.device.deviceName);
+                Log.d("WiFiDirectServiceList", "Device is not connected. Removing from list." + p.device.deviceName);
                 peers.remove(i);
             }
         }
@@ -210,18 +203,16 @@ public class WiFiDirectServicesList extends ListFragment implements WifiP2pManag
         TextView statusView = (TextView) mContentView.findViewById(R.id.my_device_status);
 
         if (device != null) {
-            Log.d(WiFiDirectActivity.TAG, "updateThisDevice: " + device.deviceName + " = " + getDeviceStatus(device.status));
+            Log.d("WiFiDirectServiceList", "updateThisDevice: " + device.deviceName + " = " + getDeviceStatus(device.status));
             this.myDevice = device;
             friendlyNameView.setText(SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext()));
             nameView.setText(device.deviceName);
 
-            //TODO seprate device status into 2, host and player. move to functions and call from reciever.
             if (SharedPrefManager.getBooleanDefaults("HOST", ApplicationContext.getContext())) {
                 TextView label_status = (TextView) mContentView.findViewById(R.id.textview_label_status);
                 label_status.setVisibility(View.GONE);
                 statusView.setVisibility(View.GONE);
-//                label_status.setText("Players Connected:");
-//                statusView.setText("" + getNumberOfConnectedDevices());
+
             } else if (device.status == WifiP2pDevice.CONNECTED) {
                 statusView.setText("Connected to Host");// - " + SharedPrefManager.getStringDefaults("HOST_NAME", ApplicationContext.getContext()));
 
@@ -238,7 +229,7 @@ public class WiFiDirectServicesList extends ListFragment implements WifiP2pManag
     }
 
     public void setOtherDeviceStatusToConnected(){
-        Log.d(WiFiDirectActivity.TAG, "setOtherDeviceStatusToConnected: ");
+        Log.d("WiFiDirectServiceList", "setOtherDeviceStatusToConnected: ");
 
         if(otherDeviceStatusText != null){
             otherDeviceStatusText.setText("Connected");
@@ -268,7 +259,7 @@ public class WiFiDirectServicesList extends ListFragment implements WifiP2pManag
         mContentView.findViewById(R.id.discoveryProgressBar).setVisibility(View.VISIBLE);
     }
 
-    public static String getDeviceStatus(int statusCode) {//Move...
+    public static String getDeviceStatus(int statusCode) {
         switch (statusCode) {
             case WifiP2pDevice.CONNECTED:
                 return "Connected";

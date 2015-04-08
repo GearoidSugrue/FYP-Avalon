@@ -5,7 +5,6 @@ import com.esotericsoftware.kryonet.Connection;
 
 public class PlayerConnection {
 
-    //PlayerConnectionID playerConId = new PlayerConnectionID();
 
     public static PlayerConnection instance;
 

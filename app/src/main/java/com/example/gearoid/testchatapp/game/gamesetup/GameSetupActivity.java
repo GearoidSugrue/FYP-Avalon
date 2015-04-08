@@ -49,6 +49,8 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
     CharacterListFragment.CharacterListAdapter evilListAdapter;
     CharacterListFragment.CharacterListAdapter optionalListAdapter;
 
+    int numOfPlayersTest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +58,6 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.game_setup_toolbar);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setTitle("Game Setup");
 
         Intent intent = getIntent();
 
@@ -65,7 +65,14 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         initializeCheckbox();
 
         int numOfPlayers = intent.getIntExtra("PLAYER_COUNT", 5);
-        calculateGlobalValues(5);
+
+        numOfPlayersTest = numOfPlayers; //Testing purposes
+
+        if(numOfPlayers < 5){
+            numOfPlayers = 5;
+        }
+
+        calculateGlobalValues(numOfPlayers);
 
         getSupportActionBar().setTitle("Game Setup: " + playerCount + " Players");
 
@@ -243,11 +250,12 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         if (goodListAdapter.getCount() < goodCount || evilListAdapter.getCount() < evilCount) {
             ApplicationContext.showToast("Not enough characters!");
         } else {
-            Player p1 = new Player(); //TODO Testing purpose. Delete when done.
 
-            p1.userName = "Tester1";
-
-            Session.serverAllPlayers.add(p1);
+            if(numOfPlayersTest < 5){//Testing purposes.
+                Player testPlayer1 = new Player();
+                testPlayer1.userName = "Tester1";
+                Session.serverAllPlayers.add(testPlayer1);
+            }
 
             checkAndAssignLadyOfLake();
             assignAllPlayersCharacters(getCombinedGoodAndEvilList());
@@ -318,17 +326,11 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
             Log.d("GameSetup", "leaderOrderList - " +  Session.leaderOrderList.get(i));
         }
 
-        //Collections.shuffle(Session.leaderOrderList);
+        Collections.shuffle(Session.leaderOrderList);
 
         if(!Session.serverAllPlayers.isEmpty()){
 
             for(int i=0; i < Session.serverAllPlayers.size(); i++){
-
-//                if(Session.serverAllPlayers.get(i).userName.startsWith("Gearoid")){
-//                    Session.serverAllPlayers.get(i).isLeader = true;
-//                    Log.d("GameSetup", "assigning Gearoid as leader");
-//
-//                }
 
                 Log.d("GameSetup", "leaderOrderList - " +  Session.leaderOrderList.get(i));
             }

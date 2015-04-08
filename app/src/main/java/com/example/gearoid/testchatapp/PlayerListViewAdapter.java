@@ -43,9 +43,6 @@ public class PlayerListViewAdapter extends ArrayAdapter<Player> {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             v = inflater.inflate(R.layout.row_players, null);
 
-//            LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(
-//                    Context.LAYOUT_INFLATER_SERVICE);
-//            v = vi.inflate(R.layout.row_devices, null);
         }
         if (items.size() > 0) {
             Player player = items.get(position);
@@ -75,16 +72,9 @@ public class PlayerListViewAdapter extends ArrayAdapter<Player> {
                 }
                 if (top != null) {
                     top.setText(player.userName);
-                    //top.setTextColor(Color.BLACK);
                 }
             }
-//                        v.setBackground(getResources().getDrawable(R.drawable.misc_redloyaltystrip));
-//                        v.getBackground().setAlpha(150);
-//                        v.getBackground().setColorFilter(Color.argb(70, 255, 0, 0), PorterDuff.Mode.DARKEN);
-//
-
         }
-        //v.setBackgroundColor(Color.argb(255, 255, 192, 192));
         return v;
     }
 

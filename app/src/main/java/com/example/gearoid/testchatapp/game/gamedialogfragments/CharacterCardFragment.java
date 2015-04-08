@@ -19,14 +19,9 @@ public class CharacterCardFragment extends DialogFragment {
 
     String characterName;
 
-    /**
-     * Create a new instance of MyDialogFragment, providing "num"
-     * as an argument.
-     */
     public static CharacterCardFragment newInstance(String name) {
         CharacterCardFragment frag = new CharacterCardFragment();
 
-        // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putString("character", name);
         frag.setArguments(args);
@@ -64,6 +59,4 @@ public class CharacterCardFragment extends DialogFragment {
         }
         return rootView;
     }
-
-
 }

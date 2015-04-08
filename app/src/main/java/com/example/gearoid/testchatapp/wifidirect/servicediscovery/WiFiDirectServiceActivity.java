@@ -98,7 +98,6 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wifi_direct_service);
 
-        //crashes app if manifest file does not include what theme is being used
         Toolbar toolbar = (Toolbar) findViewById(R.id.wifidirect_service_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -111,13 +110,12 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         TextView statusTextView = (TextView) findViewById(R.id.status_text);
         statusTextView.setMovementMethod(new ScrollingMovementMethod());
 
-        // add necessary intent values to be matched.
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_DISCOVERY_CHANGED_ACTION);//Not really needed
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_DISCOVERY_CHANGED_ACTION);
 
 
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
@@ -136,8 +134,6 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             tb.setBackgroundColor(getResources().getColor(R.color.GreenDark));
 
             initialiseConnectedPlayersList();
-
-            //CreateGroup here???
 
         } else {
             getSupportActionBar().setTitle("Joining Game");
@@ -212,7 +208,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
     }
 
     /**
-     * Adds local service too the WifiP2pManager
+     * Adds local service to the WifiP2pManager
      */
     private void startRegistration() {
 
@@ -232,18 +228,11 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                 record.put("available", "true");
             }
 
-            // Service information.  Pass it an instance name, service type
-            // _protocol._transportlayer , and the map containing
-            // information other devices will want once they connect to this one.
-
             if (isHost) {
                 serviceInfo = WifiP2pDnsSdServiceInfo.newInstance(SERVICE_INSTANCE_HOST, "_presence._tcp", record);
             } else {
                 serviceInfo = WifiP2pDnsSdServiceInfo.newInstance(SERVICE_INSTANCE_JOIN, "_presence._tcp", record);//may need to change full domain
             }
-            //may need to change full domain
-            //
-            // addLocalService(serviceInfo);
 
             manager.addLocalService(channel, serviceInfo, new WifiP2pManager.ActionListener() {
                 @Override
@@ -645,7 +634,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 //                    try {
 //                        sleep(1200);
 //                        if (ClientInstance.getKryoClientInstance().getClient().isConnected()) {
-//                            Packet.Packet00_ClientDetails testPacket = (Packet.Packet00_ClientDetails) PacketFactory.createPacket("Client Details");
+//                            Packet.Packet00_ClientDetails testPacket = (Packet.Packet00_ClientDetails) PacketFactory.testing_createPacket("Client Details");
 //                            testPacket.playerName = SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext());
 //                            ApplicationContext.showToast("[C] Sending Test Packet...");
 //                            ClientInstance.getKryoClientInstance().getClient().sendTCP(testPacket);
@@ -678,7 +667,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 //                    try {
 //                        sleep(1500);
 //                        if (ClientInstance.getKryoClientInstance().getClient().isConnected()) {
-//                            Packet.Packet00_ClientDetails testPacket = (Packet.Packet00_ClientDetails) PacketFactory.createPacket("Client Details");
+//                            Packet.Packet00_ClientDetails testPacket = (Packet.Packet00_ClientDetails) PacketFactory.testing_createPacket("Client Details");
 //                            testPacket.playerName = SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext());
 //                            ApplicationContext.showToast("[C] Sending Test Packet...");
 //                            ClientInstance.getKryoClientInstance().getClient().sendTCP(testPacket);

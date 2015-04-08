@@ -52,12 +52,6 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         AssassinateFragment.AssassinateDialogListener, LadyOfLakeFragment.LadyOfLakeDialogListener, GameFinishedFragment.GameFinishedDialogListener, QuestResultFragment.QuestResultDialogListener,
         ListenerServer.IGameActivityServerListener, ListenerClient.IActivityClientListener {
 
-
-    //    public Board currentBoard;
-//    public Quest currentQuest;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,11 +67,9 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         } else {
             mainToolbar = (Toolbar) findViewById(R.id.game_toolbar);
             setSupportActionBar(mainToolbar);
-            //getSupportActionBar().setTitle("Quest " + currentQuest.getValue());
         }
         //todo change standard color...
 
-        //mainToolbar.setBackgroundColor(getResources().getColor(R.color.RedWine));
 
         initialiseFragments();
         initialiseButtons();
@@ -114,8 +106,6 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             checkGameStateAndUpdateScreen();
             registerBroadcastReceiverForScreenChange();
 
-//            gameToolbarText = "Quest " + currentQuest.getValue();
-//            gameStatusText = "View Character";
         }
         isGameIntialised = true;
 
@@ -124,28 +114,6 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         updateTitleText(gameToolbarText);
     }
 
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_game, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
     @Override
     public void onResume() {
@@ -174,7 +142,6 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         super.onResume();
 
 
-        //ApplicationContext.showToast("onStart");
     }
 
     @Override
@@ -212,7 +179,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         mReceiver = new ScreenReceiver();
-        registerReceiver(mReceiver, filter);
+        registerReceiver(mReceiver, filter); //TODO implement unregister() in on pause or on destroy....
 
         powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
     }
@@ -362,27 +329,17 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
             case TEAM_SELECT:
                 setTeamSelectState();
                 break;
-//            case TEAM_VOTE:
-//                setTeamVoteState();
-//                break;
-////            case TEAM_VOTE_RESULT:
-//                setTeamVoteResultState();
-//                break;
+
             case QUEST_VOTE:
                 setQuestVoteState();
                 break;
-//            case QUEST_VOTE_RESULT:
-//                setQuestVoteResultState();
-//                break;
+
             case LADY_OF_LAKE:
                 setLadyOfLakeState();
                 break;
             case ASSASSIN:
                 setAssassinState();
                 break;
-//            case FINISHED:
-//                setFinishedState();
-//                break;
 
             default:
                 Log.d("GameActivity", "Error checking game states!");
@@ -397,7 +354,6 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
 
         updateTitleText("Quest " + currentQuest.getValue() + " - Vote " + voteCount);
 
-        //TODO fix leader and quest
 
         if (getCurrentLeaderID() == getUserPlayer().playerID) { //getUserPlayer().isLeader) {
             updateGameStatusText("Your the Leader (Select a team)");
@@ -408,8 +364,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
 
         } else {
             updateGameStatusText("Waiting for " + Session.allPlayers.get(getCurrentLeaderID()).userName + " (The Leader) to select a team");
-//            setButtonLayoutGone(teamSelectFrag);
-//            isTeamSelectFragVisible = false;
+
             updateTitleAndStatusColor(viewCharacterTitleColor, viewCharacterStatusColor);
             updateStandardTitleAndStatusColor(viewCharacterTitleColor, viewCharacterStatusColor);
         }
@@ -798,7 +753,6 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
     public void server_OnGameFinishedReplyReceived(Packet.Packet_GameFinishedReply gameInfo) {
         Log.d("GameActivity", "server_OnGameFinishedReplyReceived from ListenerServer");
 
-        //TODO ...
 
     }
 
@@ -830,13 +784,12 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
                 startNewQuest(resultInfo.result);
             }
         }
-        //Save result + check if game is finished + if not start new quest...etc...
 
     }
 
     @Override
-    public void client_OnMessagePacketReceived(String message) {
-        Log.d("GameActivity", "client_OnMessagePacketReceived from ListenerClient");
+    public void client_OnMessagePacketReceived(String message) {//For test purposes
+        Log.d("GameActivity", "client_OnMessagePacketReceived from ListenerClient: Message: " + message);
 
 
     }
@@ -1051,7 +1004,7 @@ public class GameActivity extends ActionBarActivity implements TeamVoteFragment.
 
         updateTitleText("Quest " + currentQuest.getValue() + " - Vote " + 1);
 
-        // checkGameStateAndUpdateScreen(); //TODO check if this works
+        // checkGameStateAndUpdateScreen();
 
     }
 

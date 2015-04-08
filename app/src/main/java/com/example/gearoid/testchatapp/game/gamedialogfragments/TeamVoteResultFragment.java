@@ -24,7 +24,6 @@ import java.util.ArrayList;
  */
 public class TeamVoteResultFragment extends DialogFragment {
 
-
     View mContentView = null;
     int[] playerApprovePos;
     int[] playerRejectPos;
@@ -42,7 +41,6 @@ public class TeamVoteResultFragment extends DialogFragment {
     public static TeamVoteResultFragment newInstance(boolean isAccepted, int[] playerApprovePositions, int[] playerRejectPositions, int questNumber, int voteNumber) {
         TeamVoteResultFragment frag = new TeamVoteResultFragment();
 
-        // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putBoolean("IS_ACCEPTED", isAccepted);
         args.putIntArray("PLAYER_APPROVE_POS", playerApprovePositions);
@@ -58,7 +56,6 @@ public class TeamVoteResultFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //characterName = getArguments().getString("character");
         Log.d("TeamVoteResultFragment", "onCreate called");
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);

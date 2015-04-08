@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="1000dp"
+    android:minHeight="1000dp">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/frag_instructions_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/MidnightBlue"
+        android:layout_gravity="center"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_gravity="center_horizontal"
+        android:text="Page 1"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@color/MidnightBlueLight"
+        android:textColor="@color/White"
+        android:id="@+id/textView_instructionsLabel" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/imageView_instructions"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/misc_loyaltyback"
+        android:visibility="visible"
+        android:adjustViewBounds="true"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:gravity="center_horizontal"
+        android:background="@color/MidnightBlueLight" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:layout_weight="0">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Previous Page"
+            android:textAllCaps="true"
+            android:textColor="@color/MidnightBlueLight"
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/button_previousPage"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:background="@color/MidnightBlueLight" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Next Page"
+            android:textAllCaps="true"
+            android:textColor="@color/MidnightBlueLight"
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/button_nextPage"/>
+    </LinearLayout>
+
+
+</LinearLayout>

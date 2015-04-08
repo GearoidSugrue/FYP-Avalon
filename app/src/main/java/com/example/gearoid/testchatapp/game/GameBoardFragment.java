@@ -36,9 +36,6 @@ public class GameBoardFragment extends Fragment {
 
         setRetainInstance(true);
 
-//        gameBoard = (GameLogicFunctions.Board) getActivity().getIntent().getSerializableExtra("BOARD");
-//        Log.d("gameBoardFrag", "Got activity intent" + gameBoard);
-
         gameBoard = Session.currentBoard;
 
         ImageView boardImage = (ImageView) mContentView.findViewById(R.id.imageView_gameBoardLayer);
@@ -47,10 +44,6 @@ public class GameBoardFragment extends Fragment {
 
         goodToken = getResources().getDrawable(R.drawable.token_goodrounded);
         evilToken = getResources().getDrawable(R.drawable.token_evilrounded);
-
-        //token1.setImageDrawable(goodToken);
-
-        //boardImage.setBackground(getBoardImage(gameBoard));
 
     }
 

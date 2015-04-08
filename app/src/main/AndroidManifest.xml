@@ -47,7 +47,7 @@
                 android:value="com.example.gearoid.testchatapp.wifidirect.servicediscovery.WiFiDirectServiceActivity" />
         </activity>
         <activity
-            android:name=".wifidirect.peerdiscovery.WiFiDirectActivity"
+            android:name="com.example.gearoid.gamelogicapp.peerdiscovery.WiFiDirectActivity"
             android:label="@string/title_activity_wi_fi_direct"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"

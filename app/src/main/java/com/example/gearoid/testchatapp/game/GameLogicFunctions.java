@@ -304,11 +304,10 @@ public class GameLogicFunctions {
 
         startNewTeamSelectPhase(getNextQuest(currentQuest));
 
-        //currentQuest = getNextQuest(currentQuest);
         Packet.Packet_StartNextQuest packetStartNextQuest = (Packet.Packet_StartNextQuest) PacketFactory.createPack(PacketFactory.PacketType.START_NEXT_QUEST);
         packetStartNextQuest.previousQuestResult = previousQuestResult;
 
-        server_sendToEveryone(packetStartNextQuest); //check this for race conditions with team select state
+        server_sendToEveryone(packetStartNextQuest);
 
     }
 
@@ -323,7 +322,6 @@ public class GameLogicFunctions {
 
         server_questVoteReplies = new ArrayList<>();
 
-        //server_sendToSelectedPlayers(proposedTeam, packetQuestVote);
         server_sendToEveryone(packetQuestVote);
     }
 
@@ -352,7 +350,10 @@ public class GameLogicFunctions {
     public void clientRestartGame(){
         Log.d("GameLogicFunctions", "restartGame");
 
-
+        currentQuest = Quest.FIRST;
+        voteCount = 0;
+        Session.currentGameState = Session.GameState.TEAM_SELECT;
+        Session.clientQuestResults = new ArrayList<>();
 
 
 

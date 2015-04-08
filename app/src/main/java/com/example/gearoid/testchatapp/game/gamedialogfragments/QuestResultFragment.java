@@ -72,7 +72,6 @@ public class QuestResultFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //characterName = getArguments().getString("character");
         Log.d("QuestResultFragment", "onCreate called");
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);
@@ -113,7 +112,7 @@ public class QuestResultFragment extends DialogFragment {
 
         Toolbar mActionBarToolbar = (Toolbar) rootView.findViewById(R.id.frag_questVoteResult_toolbar);
         mActionBarToolbar.setTitle("Quest " + quest.getValue() + " Result" + leaderText);
-        mActionBarToolbar.setLogo(getResources().getDrawable(R.drawable.icon_questvote));
+        mActionBarToolbar.setLogo(getResources().getDrawable(R.drawable.icon_questmember));
 
         success = getResources().getDrawable(R.drawable.misc_success);
         fail = getResources().getDrawable(R.drawable.misc_fail);
@@ -123,7 +122,6 @@ public class QuestResultFragment extends DialogFragment {
         image3 = (ImageView) rootView.findViewById(R.id.imageView_questVote3);
         image4 = (ImageView) rootView.findViewById(R.id.imageView_questVote4);
         image5 = (ImageView) rootView.findViewById(R.id.imageView_questVote5);
-        //image6 = (ImageView) rootView.findViewById(R.id.imageView_questVote6);
 
         int voteCount = votes.length;
 
@@ -163,7 +161,6 @@ public class QuestResultFragment extends DialogFragment {
         resultTextview = (TextView) mContentView.findViewById(R.id.textView_questResult);
 
         int adapterCount = adapterTeamMembers.getCount();
-        //int deviceConfig = getActivity().getResources().getConfiguration().orientation;
 
         View item = adapterTeamMembers.getView(0, null, teamMembersView);
         item.measure(0, 0);

@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.character.good.Percival;
 import com.example.gearoid.testchatapp.game.DrawableFactory;
 import com.example.gearoid.testchatapp.game.GameLogicFunctions;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
@@ -34,21 +35,12 @@ public class PlayerCharacterFragment extends DialogFragment {
     PlayerListViewAdapter adapterVisiblePlayers;
     ArrayList<Player> visiblePlayersArray;
     String characterName;
+    Player userPlayer;
 
     public static PlayerCharacterFragment newInstance() {
-
         Log.d("PlayerCharacterFragment", "Creating instance of a PlayerCharacterFragment fragment");
 
         PlayerCharacterFragment frag = new PlayerCharacterFragment();
-
-//        Player.getInstance().character = CharacterFactory.createPlayer(CharacterFactory.CharacterType.MERLIN); //TODO delete this...
-//        Player.getInstance().character.setCharacterName("Merlin");
-
-//        Bundle args = new Bundle();
-        //args.putSerializable("BOARD", currentBoard);
-//        args.putInt("TEAM_SIZE", teamSize);
-//        args.putInt("QUEST_NUM", questNumber);
-//        frag.setArguments(args);
 
         return frag;
     }
@@ -62,13 +54,9 @@ public class PlayerCharacterFragment extends DialogFragment {
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);
 
-//        Bundle extras = getArguments();
-//        teamSize = extras.getInt("TEAM_SIZE");
-//        questNumber = extras.getInt("QUEST_NUM");
-
-        ICharacter playerCharacter = GameLogicFunctions.getUserPlayer().character;
-        Log.d("PlayerCharacterFragment", "Trying to get Characater name: " + playerCharacter.getShortDescription());
-        characterName = playerCharacter.getCharacterName();
+        userPlayer = GameLogicFunctions.getUserPlayer();
+        Log.d("PlayerCharacterFragment", "Trying to get Characater name: " + userPlayer.character.getCharacterName());
+        characterName = userPlayer.character.getCharacterName();
 
         visiblePlayersArray = new ArrayList<>();
 
@@ -76,8 +64,13 @@ public class PlayerCharacterFragment extends DialogFragment {
 
             Player otherPlayer = Session.allPlayers.get(i);
 
-            if (otherPlayer.character.isVisibleTo(playerCharacter)) {
-                Log.d("PlayerCharacterFragment", otherPlayer.character + " is visible to player (" + playerCharacter + ")");
+            if (otherPlayer.character.isVisibleTo(userPlayer.character) && otherPlayer.playerID != userPlayer.playerID ) {
+                Log.d("PlayerCharacterFragment", otherPlayer.character.getCharacterName() + " is visible to userPlayer (" + userPlayer.character.getCharacterName() + ")");
+
+                if(userPlayer.character instanceof Percival == false){
+                    otherPlayer.userName = otherPlayer.userName + " - Evil";
+                }
+
                 visiblePlayersArray.add(otherPlayer);
             }
         }
@@ -147,9 +140,7 @@ public class PlayerCharacterFragment extends DialogFragment {
                 int action = motionevent.getAction();
                 if (action == MotionEvent.ACTION_DOWN) {
                     Log.i("PlayerCharacter", "ImageView - MotionEvent.ACTION_DOWN");
-                    //mHandler.removeCallbacks(mUpdateTaskup);
-//                    mHandler.postAtTime(mUpdateTaskup,
-//                            SystemClock.uptimeMillis() + 50);
+
                     ImageView playerCharacter = (ImageView) mContentView.findViewById(R.id.imageView_playerCharacterCard);
                     playerCharacter.setImageDrawable(DrawableFactory.getDrawable(getResources(), characterName));
 
@@ -162,6 +153,12 @@ public class PlayerCharacterFragment extends DialogFragment {
                     } else {
                         noVisiblePlayers.setVisibility(View.VISIBLE);
                     }
+
+                    if(userPlayer.character instanceof Percival) {
+                        TextView visiblePlayersLabel = (TextView) mContentView.findViewById(R.id.textView_playersVisableLabel);
+                        visiblePlayersLabel.setText("Merlin's Identity");
+                    }
+
                 } else if (action == MotionEvent.ACTION_UP) {
                     Log.i("PlayerCharacter", "ImageView - MotionEvent.ACTION_UP");
 
@@ -178,20 +175,15 @@ public class PlayerCharacterFragment extends DialogFragment {
                         noVisiblePlayers.setVisibility(View.INVISIBLE);
                     }
 
-                    // mHandler.removeCallbacks(mUpdateTaskup);
-                }//end else
+                    if(userPlayer.character instanceof Percival) {
+                        TextView visiblePlayersLabel = (TextView) mContentView.findViewById(R.id.textView_playersVisableLabel);
+                        visiblePlayersLabel.setText("Player Identities Visible To You");
+                    }
+
+                }
                 return false;
             }
         });
-
-//        chosenPlayer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//
-//            }
-//        });
-
     }
 
     public void initializeButtons() {
@@ -201,7 +193,6 @@ public class PlayerCharacterFragment extends DialogFragment {
         dismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 closeDialog();
             }
         });

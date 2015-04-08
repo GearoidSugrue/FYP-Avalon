@@ -23,7 +23,6 @@ public class SharedPrefManager {
         editor.commit();
     }
 
-    //Are the below methods necessary???
     public static boolean getBooleanDefaults(final String key, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getBoolean(key, false);

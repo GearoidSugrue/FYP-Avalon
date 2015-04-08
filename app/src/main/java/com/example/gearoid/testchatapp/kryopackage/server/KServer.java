@@ -28,19 +28,12 @@ public class KServer {
         Session.serverListener = ListenerServer.initialize();
 
 		server.addListener(Session.serverListener);
-		
-//		ClientNetListener netListener = new ClientNetListener();
-//		netListener.init(client);
-//		client.addListener(netListener);
 
 		try {
 			server.bind(KRegisterAndPort.TCP_PORT, KRegisterAndPort.UDP_PORT);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		//server.start();
-
 	}
 
     public Server getServer(){
@@ -61,11 +54,9 @@ public class KServer {
 		for (int i = 0; i < connectionIDs.size(); i++) {
 			server.sendToTCP(connectionIDs.get(i), obj);
 		}
-		server.getConnections();//What this for????
+		server.getConnections();
 		
 	}
-
-
 
 	 public Connection[] getConnections(){
 		 Connection[] connections = server.getConnections();

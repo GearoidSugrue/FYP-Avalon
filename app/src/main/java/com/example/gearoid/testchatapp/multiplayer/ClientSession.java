@@ -29,9 +29,9 @@ public class ClientSession {
                     try {
                         PlayerConnection.getInstance().userName = SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext());//TODO find better way to do this
                         ClientInstance.getKryoClientInstance().connectToServer(hostAddress);
-                        Log.d("Session", "Starting Host's Kryo Client ");
+                        Log.d("Session", "Starting Kryo Client ");
                     } catch (Exception e) {
-                        Log.d("Session", "Error Starting Host's Kryo Client ");
+                        Log.d("Session", "Error Starting Kryo Client ");
                         e.printStackTrace();
                     }
                 }

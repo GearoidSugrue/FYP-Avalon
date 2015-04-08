@@ -44,15 +44,7 @@ public class LadyOfLakeFragment extends DialogFragment {
 
         Log.d("LadyOfLakeFragment", "Creating instance of a SelectTeamFragment fragment");
 
-        LadyOfLakeFragment frag = new LadyOfLakeFragment();
-
-//        Bundle args = new Bundle();
-        //args.putSerializable("BOARD", currentBoard);
-//        args.putInt("TEAM_SIZE", teamSize);
-//        args.putInt("QUEST_NUM", questNumber);
-//        frag.setArguments(args);
-
-        return frag;
+        return new LadyOfLakeFragment();
     }
 
 
@@ -63,10 +55,6 @@ public class LadyOfLakeFragment extends DialogFragment {
 
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);
-
-//        Bundle extras = getArguments();
-//        teamSize = extras.getInt("TEAM_SIZE");
-//        questNumber = extras.getInt("QUEST_NUM");
 
         chosenPlayerArray = new ArrayList<>();
 
@@ -88,7 +76,6 @@ public class LadyOfLakeFragment extends DialogFragment {
         chosenPlayerView = (ListView) rootView.findViewById(R.id.listview_chosenLadyOfLakePlayer);
         candidatePlayersView = (ListView) rootView.findViewById(R.id.listview_ladyOfLakeCandidates);
 
-        // randomiseCardOrder();
         return rootView;
     }
 
@@ -107,8 +94,6 @@ public class LadyOfLakeFragment extends DialogFragment {
 
         setListViewOnclickListeners();
         setImageViewOnClickListeners();
-
-        //int deviceConfig = getActivity().getResources().getConfiguration().orientation;
 
         if (adapterCandidatePlayers.getCount() > 3) {
             View item = adapterCandidatePlayers.getView(0, null, candidatePlayersView);
@@ -222,7 +207,6 @@ public class LadyOfLakeFragment extends DialogFragment {
 
         candidatePlayersView.setVisibility(View.GONE);
 
-        //visiblePlayersView.setVisibility(View.INVISIBLE);
     }
 
 
