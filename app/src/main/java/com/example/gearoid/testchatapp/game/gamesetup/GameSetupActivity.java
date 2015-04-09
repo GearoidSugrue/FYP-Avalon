@@ -253,7 +253,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
 
             if(numOfPlayersTest < 5){//Testing purposes.
                 Player testPlayer1 = new Player();
-                testPlayer1.userName = "Tester1";
+                testPlayer1.userName = "Chris";
                 Session.serverAllPlayers.add(testPlayer1);
             }
 

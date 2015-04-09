@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -49,8 +50,7 @@ public class InstructionsFragment extends DialogFragment {
 
         mContentView = rootView;
 
-        Toolbar mActionBarToolbar = (Toolbar) rootView.findViewById(R.id.frag_instructions_toolbar);
-        mActionBarToolbar.setTitle("Game Guide");
+        initializeToolbar();
 
         pageImage = (ImageView) mContentView.findViewById(R.id.imageView_instructions);
         instructionsLabel = (TextView) mContentView.findViewById(R.id.textView_instructionsLabel);
@@ -64,44 +64,48 @@ public class InstructionsFragment extends DialogFragment {
         super.onActivityCreated(savedInstanceState);
         Log.d("InstructionsFragment", "onCreateView called");
 
-        initializeButtons();
     }
 
+    public void initializeToolbar() {
+        Log.d("InstructionsFragment", "initializeToolbar called");
 
+        Toolbar mActionBarToolbar = (Toolbar) mContentView.findViewById(R.id.frag_instructions_toolbar);
+        mActionBarToolbar.setTitle("Game Guide");
+        mActionBarToolbar.setOnMenuItemClickListener(
+                new Toolbar.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        // Handle the menu item
+                        int id = item.getItemId();
 
-    public void initializeButtons() {
+                        //noinspection SimplifiableIfStatement
+                        if (id == R.id.previous_page) {
 
-        Button previousPage = (Button) mContentView.findViewById(R.id.button_previousPage);
-        Button nextPage = (Button) mContentView.findViewById(R.id.button_nextPage);
+                            if(pageNumber > 1){
+                                pageNumber--;
+                                updatePage(pageNumber);
+                            } else {
+                                ApplicationContext.showToast("Already at the beginning");
+                            }
 
-        previousPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                            return true;
+                        } else if (id == R.id.next_page) {
+                            if(pageNumber < 8){
+                                pageNumber++;
+                                updatePage(pageNumber);
+                            } else {
+                                ApplicationContext.showToast("End of Guide");
+                            }
+                        }
 
-                if(pageNumber > 1){
-                    pageNumber--;
-                    updatePage(pageNumber);
-                } else {
-                    ApplicationContext.showToast("Already at the beginning");
-                }
-            }
-        });
+                        return true;
+                    }
+                });
 
-        nextPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(pageNumber < 8){
-                    pageNumber++;
-                    updatePage(pageNumber);
-                } else {
-                    ApplicationContext.showToast("End of Guide");
-                }
-
-            }
-        });
+        mActionBarToolbar.inflateMenu(R.menu.menu_guidetoolbar);
 
     }
+
 
     public void updatePage(int pageNumber){
         instructionsLabel.setText("Page " + pageNumber);
@@ -115,11 +119,11 @@ public class InstructionsFragment extends DialogFragment {
             case 1: return getResources().getDrawable(R.drawable.instructions_page1);
             case 2: return getResources().getDrawable(R.drawable.instructions_page2);
             case 3: return getResources().getDrawable(R.drawable.instructions_page3);
-            case 4: return getResources().getDrawable(R.drawable.instructions_page1);
-            case 5: return getResources().getDrawable(R.drawable.instructions_page1);
-            case 6: return getResources().getDrawable(R.drawable.instructions_page1);
-            case 7: return getResources().getDrawable(R.drawable.instructions_page1);
-            case 8: return getResources().getDrawable(R.drawable.instructions_page1);
+            case 4: return getResources().getDrawable(R.drawable.instructions_page4);
+            case 5: return getResources().getDrawable(R.drawable.instructions_page5);
+            case 6: return getResources().getDrawable(R.drawable.instructions_page6);
+            case 7: return getResources().getDrawable(R.drawable.instructions_page7);
+            case 8: return getResources().getDrawable(R.drawable.instructions_page8);
         }
         return getResources().getDrawable(R.drawable.instructions_page1);
     }

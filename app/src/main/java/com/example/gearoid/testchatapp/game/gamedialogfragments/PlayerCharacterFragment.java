@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.character.evil.EvilCharacter;
+import com.example.gearoid.testchatapp.character.good.Merlin;
 import com.example.gearoid.testchatapp.character.good.Percival;
 import com.example.gearoid.testchatapp.game.DrawableFactory;
 import com.example.gearoid.testchatapp.game.GameLogicFunctions;
@@ -67,9 +69,7 @@ public class PlayerCharacterFragment extends DialogFragment {
             if (otherPlayer.character.isVisibleTo(userPlayer.character) && otherPlayer.playerID != userPlayer.playerID ) {
                 Log.d("PlayerCharacterFragment", otherPlayer.character.getCharacterName() + " is visible to userPlayer (" + userPlayer.character.getCharacterName() + ")");
 
-                if(userPlayer.character instanceof Percival == false){
-                    otherPlayer.userName = otherPlayer.userName + " - Evil";
-                }
+//
 
                 visiblePlayersArray.add(otherPlayer);
             }
@@ -154,9 +154,12 @@ public class PlayerCharacterFragment extends DialogFragment {
                         noVisiblePlayers.setVisibility(View.VISIBLE);
                     }
 
+                    TextView visiblePlayersLabel = (TextView) mContentView.findViewById(R.id.textView_playersVisableLabel);
+
                     if(userPlayer.character instanceof Percival) {
-                        TextView visiblePlayersLabel = (TextView) mContentView.findViewById(R.id.textView_playersVisableLabel);
                         visiblePlayersLabel.setText("Merlin's Identity");
+                    } else if(userPlayer.character instanceof EvilCharacter || userPlayer.character instanceof Merlin){
+                        visiblePlayersLabel.setText("Evil Players");
                     }
 
                 } else if (action == MotionEvent.ACTION_UP) {
@@ -175,8 +178,9 @@ public class PlayerCharacterFragment extends DialogFragment {
                         noVisiblePlayers.setVisibility(View.INVISIBLE);
                     }
 
-                    if(userPlayer.character instanceof Percival) {
-                        TextView visiblePlayersLabel = (TextView) mContentView.findViewById(R.id.textView_playersVisableLabel);
+                    TextView visiblePlayersLabel = (TextView) mContentView.findViewById(R.id.textView_playersVisableLabel);
+
+                    if(userPlayer.character instanceof Percival || userPlayer.character instanceof EvilCharacter || userPlayer.character instanceof Merlin) {
                         visiblePlayersLabel.setText("Player Identities Visible To You");
                     }
 

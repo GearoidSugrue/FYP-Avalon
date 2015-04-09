@@ -112,7 +112,7 @@ public class QuestResultFragment extends DialogFragment {
 
         Toolbar mActionBarToolbar = (Toolbar) rootView.findViewById(R.id.frag_questVoteResult_toolbar);
         mActionBarToolbar.setTitle("Quest " + quest.getValue() + " Result" + leaderText);
-        mActionBarToolbar.setLogo(getResources().getDrawable(R.drawable.icon_questmember));
+        mActionBarToolbar.setLogo(getResources().getDrawable(R.drawable.icon_questvote));
 
         success = getResources().getDrawable(R.drawable.misc_success);
         fail = getResources().getDrawable(R.drawable.misc_fail);

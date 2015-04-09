@@ -79,7 +79,7 @@ public class QuestVoteFragment extends DialogFragment {
 
         Toolbar mActionBarToolbar = (Toolbar) rootView.findViewById(R.id.frag_questVote_toolbar);
         mActionBarToolbar.setTitle("Quest " + questNumber);
-        mActionBarToolbar.setLogo(getResources().getDrawable(R.drawable.icon_questvote));
+        mActionBarToolbar.setLogo(getResources().getDrawable(R.drawable.icon_questmember));
 
         image1 = (ImageView) rootView.findViewById(R.id.imageView_questVote1);
         image2 = (ImageView) rootView.findViewById(R.id.imageView_questVote2);

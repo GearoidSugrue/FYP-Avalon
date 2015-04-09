@@ -45,38 +45,4 @@
         android:gravity="center_horizontal"
         android:background="@color/MidnightBlueLight" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom"
-        android:layout_weight="0">
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Previous Page"
-            android:textAllCaps="true"
-            android:textColor="@color/MidnightBlueLight"
-            style="?android:attr/borderlessButtonStyle"
-            android:id="@+id/button_previousPage"/>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="fill_parent"
-            android:gravity="center_horizontal"
-            android:background="@color/MidnightBlueLight" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Next Page"
-            android:textAllCaps="true"
-            android:textColor="@color/MidnightBlueLight"
-            style="?android:attr/borderlessButtonStyle"
-            android:id="@+id/button_nextPage"/>
-    </LinearLayout>
-
-
 </LinearLayout>

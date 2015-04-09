@@ -777,15 +777,11 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_reset_wifi) {
 
-            //TODO test this
             turnWifiOffandOn();
             return true;
         } else if (id == R.id.option_direct_discover) {
@@ -798,8 +794,8 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             if (serviceInfo == null) {
                 startRegistration();
             }
-            //updateThisDevice(mThisDevice);//may need to delete or mod
-            //fragment.updatePeerDetails();//.............
+            //updateThisDevice(mThisDevice);
+            //fragment.updatePeerDetails();
             clearAllServiceRequests(true);
             //manager.requestPeers(channel, (WifiP2pManager.PeerListListener) getFragmentManager().findFragmentById(R.id.frag_service_list));
 
@@ -813,7 +809,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
     }
 
 
-    @Override //ChannelListener
+    @Override
     public void onChannelDisconnected() {
 
         if (manager != null && !retryChannel) {

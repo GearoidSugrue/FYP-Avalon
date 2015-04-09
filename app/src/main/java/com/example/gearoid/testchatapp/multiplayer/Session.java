@@ -112,8 +112,16 @@ public class Session {
         allPlayers = new ArrayList<>();
         serverAllPlayers = new ArrayList<>();
         serverQuestResults = new ArrayList<>();
+        leaderOrderList = new ArrayList<>();
         currentQuest = GameLogicFunctions.Quest.FIRST;
         isGameIntialised = false;
+        serverIsLadyOfLakeOn = false;
+        gameStatusText = "";
+        gameToolbarText = "";
+        voteCount = 0;
+        leaderOrderIterator = 0;
+        currentGameState = GameState.TEAM_SELECT;
+
 
         ServerInstance.getServerInstance().getServer().start();
     }
@@ -126,6 +134,14 @@ public class Session {
             clientQuestResults = new ArrayList<>();
             currentQuest = GameLogicFunctions.Quest.FIRST;
             isGameIntialised = false;
+            serverIsLadyOfLakeOn = false;
+            gameStatusText = "";
+            gameToolbarText = "";
+            voteCount = 0;
+            leaderOrderIterator = 0;
+            currentGameState = GameState.TEAM_SELECT;
+
+
 
             PlayerConnection.getInstance().userName = SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext());//TODO find better way to do this
             PlayerConnection.getInstance().playerID = -1;
