@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,13 +20,17 @@ import com.example.gearoid.testchatapp.utils.ApplicationContext;
  */
 public class InstructionsFragment extends DialogFragment {
 
+    //Constants
+    public static final String TAG = "InstructionsFragment";
+    public static final String TOOLBAR_TITLE = "Game Guide";
+
     View mContentView;
     ImageView pageImage;
     TextView instructionsLabel;
     int pageNumber = 1;
 
     public static InstructionsFragment newInstance() {
-        Log.d("InstructionsFragment", "Creating instance of a InstructionsFragment");
+        Log.d(TAG, "Creating instance of a InstructionsFragment");
 
         return new InstructionsFragment();
     }
@@ -44,7 +47,7 @@ public class InstructionsFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.instructions, container, false);
-        Log.d("InstructionsFragment", "onCreateView called");
+        Log.d(TAG, "onCreateView called");
 
         setRetainInstance(true);
 
@@ -62,15 +65,15 @@ public class InstructionsFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("InstructionsFragment", "onCreateView called");
+        Log.d(TAG, "onActivityCreated called");
 
     }
 
     public void initializeToolbar() {
-        Log.d("InstructionsFragment", "initializeToolbar called");
+        Log.d(TAG, "initializeToolbar called");
 
         Toolbar mActionBarToolbar = (Toolbar) mContentView.findViewById(R.id.frag_instructions_toolbar);
-        mActionBarToolbar.setTitle("Game Guide");
+        mActionBarToolbar.setTitle(TOOLBAR_TITLE);
         mActionBarToolbar.setOnMenuItemClickListener(
                 new Toolbar.OnMenuItemClickListener() {
                     @Override
@@ -85,7 +88,7 @@ public class InstructionsFragment extends DialogFragment {
                                 pageNumber--;
                                 updatePage(pageNumber);
                             } else {
-                                ApplicationContext.showToast("Already at the beginning");
+                                ApplicationContext.showToast(getActivity().getString(R.string.alreadyAtBegining));
                             }
 
                             return true;
@@ -94,7 +97,7 @@ public class InstructionsFragment extends DialogFragment {
                                 pageNumber++;
                                 updatePage(pageNumber);
                             } else {
-                                ApplicationContext.showToast("End of Guide");
+                                ApplicationContext.showToast(getActivity().getString(R.string.endOfGuide));
                             }
                         }
 
@@ -108,7 +111,7 @@ public class InstructionsFragment extends DialogFragment {
 
 
     public void updatePage(int pageNumber){
-        instructionsLabel.setText("Page " + pageNumber);
+        instructionsLabel.setText(getActivity().getString(R.string.page_) + pageNumber);
 
         pageImage.setImageDrawable(getInstructionPageDrawable(pageNumber));
     }

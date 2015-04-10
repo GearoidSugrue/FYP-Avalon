@@ -29,6 +29,9 @@ import static com.example.gearoid.testchatapp.game.GameLogicFunctions.getGoodAll
 
 public class MainActivity extends ActionBarActivity {
 
+    //Constants
+    public static final String GAME_GUIDE_DIALOG = "gameguidedialog";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +40,7 @@ public class MainActivity extends ActionBarActivity {
 
         initializeButtons();
 
-        String userName = SharedPrefManager.getStringDefaults("USERNAME", this);
+        String userName = SharedPrefManager.getStringDefaults(SharedPrefManager.USERNAME, this);
         if (userName.equals("")) {
             showDialogEditName();
         }
@@ -98,22 +101,22 @@ public class MainActivity extends ActionBarActivity {
 
     public void displayGameGuideFragment(){
         final DialogFragment newFragment = InstructionsFragment.newInstance();
-        newFragment.show(getFragmentManager(), "gameguidedialog");
+        newFragment.show(getFragmentManager(), GAME_GUIDE_DIALOG);
     }
 
     public void startJoinServiceActivity() {
-        SharedPrefManager.setDefaults("HOST", false, getApplicationContext());
+        SharedPrefManager.setDefaults(SharedPrefManager.HOST, false, getApplicationContext());
 
         Intent intent = new Intent(this, WiFiDirectServiceActivity.class);
-        intent.putExtra("isHost", false);
+        intent.putExtra(WiFiDirectServiceActivity.IS_HOST, false);
         startActivity(intent);
     }
 
     public void startHostServiceActivity() {
-        SharedPrefManager.setDefaults("HOST", true, getApplicationContext());
+        SharedPrefManager.setDefaults(SharedPrefManager.HOST, true, getApplicationContext());
 
         Intent intent = new Intent(this, WiFiDirectServiceActivity.class);
-        intent.putExtra("isHost", true);
+        intent.putExtra(WiFiDirectServiceActivity.IS_HOST, true);
         startActivity(intent);
     }
 
@@ -136,7 +139,7 @@ public class MainActivity extends ActionBarActivity {
                 Button buttonPos = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
                 Button buttonNeg = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
                 final EditText userInput = (EditText) ((AlertDialog) dialog).findViewById(R.id.username);
-                final String userName = SharedPrefManager.getStringDefaults("USERNAME", getApplicationContext());
+                final String userName = SharedPrefManager.getStringDefaults(SharedPrefManager.USERNAME, getApplicationContext());
 
                 if (userName.equals("")) {
                     userInput.setHint(R.string.name_here);
@@ -160,7 +163,7 @@ public class MainActivity extends ActionBarActivity {
 
                     @Override
                     public void onClick(View view) { //Cancel Button
-                        final String userName = SharedPrefManager.getStringDefaults("USERNAME", getApplicationContext());
+                        final String userName = SharedPrefManager.getStringDefaults(SharedPrefManager.USERNAME, getApplicationContext());
 
                         if (isNameValid(userName)) {
                             dialog.dismiss();
@@ -200,14 +203,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void updateName(String newName) {
-        SharedPrefManager.setDefaults("USERNAME", newName, getApplicationContext());
+        SharedPrefManager.setDefaults(SharedPrefManager.USERNAME, newName, getApplicationContext());
         setTextView_PlayerName();
         ApplicationContext.showToast(getString(R.string.name_saved));
     }
 
     public void setTextView_PlayerName() {
         TextView textView = (TextView) findViewById(R.id.textView_username);
-        final String userName = SharedPrefManager.getStringDefaults("USERNAME", this);
+        final String userName = SharedPrefManager.getStringDefaults(SharedPrefManager.USERNAME, this);
         textView.setText(userName);
     }
 }

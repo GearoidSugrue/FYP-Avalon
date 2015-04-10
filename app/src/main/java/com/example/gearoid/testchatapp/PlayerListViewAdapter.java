@@ -49,7 +49,7 @@ public class PlayerListViewAdapter extends ArrayAdapter<Player> {
             if (player != null) {
                 TextView top = (TextView) v.findViewById(R.id.textview_playerName);
 
-                if (player.isLeader) { //TODO check if else statement is needed to change view back
+                if (player.isLeader) {
                     ImageView leader = (ImageView) v.findViewById(R.id.icon_leader);
                     leader.setVisibility(View.VISIBLE);
                 } else {

@@ -9,6 +9,11 @@ import android.content.Context;
  */
 public class SharedPrefManager {
 
+    //Constants
+    public static final String USERNAME = "USERNAME";
+    public static final String HOST = "HOST";
+
+
     public static <T> void setDefaults(final String key, final T value, Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();

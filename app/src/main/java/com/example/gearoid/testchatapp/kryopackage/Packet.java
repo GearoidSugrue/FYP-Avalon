@@ -41,8 +41,7 @@ public class Packet {
 
     public static class Packet_UpdateGameState extends Packet {public Session.GameState nextGameState;}
 
-    public static class Packet00_ClientDetails  extends Packet { public String playerName = "nobody";}
+    public static class Packet00_ClientDetails  extends Packet { public String playerName = "";}
     public static class Packet2_Message extends Packet {public String message;}
-
     
 }

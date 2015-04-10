@@ -30,6 +30,13 @@ import java.util.Collections;
  */
 public class QuestResultFragment extends DialogFragment {
 
+    //Constants
+    public static final String TAG = "QuestResultFragment";
+    public static final String TEAM_MEMBERS = "TEAM_MEMBERS";
+    public static final String VOTES = "VOTES";
+    public static final String QUEST = "QUEST";
+    public static final String FAILS_REQUIRED = "FAILS_REQUIRED";
+
     View mContentView = null;
     ImageView image1;
     ImageView image2;
@@ -52,15 +59,15 @@ public class QuestResultFragment extends DialogFragment {
     GameLogicFunctions.Quest quest;
 
     public static QuestResultFragment newInstance(int[] teamMembersPos, boolean[] votes, GameLogicFunctions.Quest quest, int failsRequired) {
-        Log.d("QuestResultFragment", "Creating instance of a QuestResultFragment");
+        Log.d(TAG, "Creating instance of a QuestResultFragment");
 
         QuestResultFragment frag = new QuestResultFragment();
 
         Bundle args = new Bundle();
-        args.putIntArray("TEAM_MEMBERS", teamMembersPos);
-        args.putBooleanArray("VOTES", votes);
-        args.putSerializable("QUEST", quest);
-        args.putInt("FAILS_REQUIRED", failsRequired);
+        args.putIntArray(TEAM_MEMBERS, teamMembersPos);
+        args.putBooleanArray(VOTES, votes);
+        args.putSerializable(QUEST, quest);
+        args.putInt(FAILS_REQUIRED, failsRequired);
 
         frag.setArguments(args);
 
@@ -72,17 +79,17 @@ public class QuestResultFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("QuestResultFragment", "onCreate called");
+        Log.d(TAG, "onCreate called");
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);
 
         isLeader = GameLogicFunctions.getUserPlayer().isLeader;
 
         Bundle extras = getArguments();
-        playerPos = extras.getIntArray("TEAM_MEMBERS");
-        votes = extras.getBooleanArray("VOTES");
-        quest = (GameLogicFunctions.Quest) extras.getSerializable("QUEST");
-        failsRequired = extras.getInt("FAILS_REQUIRED");
+        playerPos = extras.getIntArray(TEAM_MEMBERS);
+        votes = extras.getBooleanArray(VOTES);
+        quest = (GameLogicFunctions.Quest) extras.getSerializable(QUEST);
+        failsRequired = extras.getInt(FAILS_REQUIRED);
 
         Collections.shuffle(Arrays.asList(votes)); //TODO fix shuffle
 
@@ -97,7 +104,7 @@ public class QuestResultFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.quest_result, container, false);
-        Log.d("QuestResultFragment", "onCreateView called");
+        Log.d(TAG, "onCreateView called");
 
         mContentView = rootView;
 
@@ -150,10 +157,10 @@ public class QuestResultFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("QuestResultFragment", "onCreateView called");
+        Log.d(TAG, "onActivityCreated called");
 
         initializeButtons();
-        setOnClicklisteners();
+        setOnClickListeners();
 
         adapterTeamMembers = new PlayerListViewAdapter(getActivity(), R.layout.row_players, android.R.id.text1, teamMembersArray);
         teamMembersView.setAdapter(adapterTeamMembers);
@@ -204,13 +211,13 @@ public class QuestResultFragment extends DialogFragment {
 
     }
 
-    public void setOnClicklisteners() {
-        Log.d("QuestResultFragment", "setOnClicklisteners called");
+    public void setOnClickListeners() {
+        Log.d(TAG, "setOnClickListeners called");
 
         image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("QuestResultFragment", "image1 clicked. Result: " + votes[0]);
+                Log.d(TAG, "image1 clicked. Result: " + votes[0]);
 
                 if (!vote1Revealed) {
                     if (isLeader) {
@@ -227,7 +234,7 @@ public class QuestResultFragment extends DialogFragment {
                         QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
                         activity.onQuestVoteResultRevealed(1, votes[0]);
                     } else {
-                        ApplicationContext.showToast("Only The Leader Can Reveal Quest Result");
+                        ApplicationContext.showToast(getActivity().getString(R.string.onlyLeaderCanRevealResults));
                     }
                 }
             }
@@ -236,7 +243,7 @@ public class QuestResultFragment extends DialogFragment {
         image2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("QuestResultFragment", "image2 clicked. Result: " + votes[1]);
+                Log.d(TAG, "image2 clicked. Result: " + votes[1]);
 
                 if (!vote2Revealed) {
                     if (isLeader) {
@@ -252,7 +259,7 @@ public class QuestResultFragment extends DialogFragment {
                         QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
                         activity.onQuestVoteResultRevealed(2, votes[1]);
                     } else {
-                        ApplicationContext.showToast("Only The Leader Can Reveal Quest Result");
+                        ApplicationContext.showToast(getActivity().getString(R.string.onlyLeaderCanRevealResults));
                     }
                 }
             }
@@ -261,7 +268,7 @@ public class QuestResultFragment extends DialogFragment {
         image3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("QuestResultFragment", "image3 clicked. Result: " + votes[2]);
+                Log.d(TAG, "image3 clicked. Result: " + votes[2]);
 
                 if (!vote3Revealed) {
                     if (isLeader) {
@@ -277,7 +284,7 @@ public class QuestResultFragment extends DialogFragment {
                         QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
                         activity.onQuestVoteResultRevealed(3, votes[2]);
                     } else {
-                        ApplicationContext.showToast("Only The Leader Can Reveal Quest Result");
+                        ApplicationContext.showToast(getActivity().getString(R.string.onlyLeaderCanRevealResults));
                     }
                 }
 
@@ -287,7 +294,7 @@ public class QuestResultFragment extends DialogFragment {
         image4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("QuestResultFragment", "image4 clicked. Result: " + votes[3]);
+                Log.d(TAG, "image4 clicked. Result: " + votes[3]);
 
                 if (!vote4Revealed) {
                     if (isLeader) {
@@ -303,7 +310,7 @@ public class QuestResultFragment extends DialogFragment {
                         QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
                         activity.onQuestVoteResultRevealed(4, votes[3]);
                     } else {
-                        ApplicationContext.showToast("Only The Leader Can Reveal Quest Result");
+                        ApplicationContext.showToast(getActivity().getString(R.string.onlyLeaderCanRevealResults));
                     }
                 }
 
@@ -313,7 +320,7 @@ public class QuestResultFragment extends DialogFragment {
         image5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("QuestResultFragment", "image5 clicked. Result: " + votes[4]);
+                Log.d(TAG, "image5 clicked. Result: " + votes[4]);
 
                 if (!vote5Revealed) {
                     if (isLeader) {
@@ -329,7 +336,7 @@ public class QuestResultFragment extends DialogFragment {
                         QuestResultDialogListener activity = (QuestResultDialogListener) getActivity();
                         activity.onQuestVoteResultRevealed(5, votes[4]);
                     } else {
-                        ApplicationContext.showToast("Only The Leader Can Reveal Quest Result");
+                        ApplicationContext.showToast(getActivity().getString(R.string.onlyLeaderCanRevealResults));
                     }
                 }
             }
@@ -342,7 +349,7 @@ public class QuestResultFragment extends DialogFragment {
         if (votesRevealedCount == votes.length) {
             finishGame.setVisibility(View.VISIBLE);
             teamMembersView.setVisibility(View.GONE);
-            revealCardLabel.setText("All Cards Have Been Revealed");
+            revealCardLabel.setText(getActivity().getString(R.string.allCardsRevealed));
             isFinished = true;
 
             int fails = 0;
@@ -354,7 +361,7 @@ public class QuestResultFragment extends DialogFragment {
 
             if (fails >= failsRequired) {
                 questResult = false;
-                resultTextview.setText("Quest Failed");
+                resultTextview.setText(getActivity().getString(R.string.questFailed));
                 resultTextview.setTextColor(getResources().getColor(R.color.RedWine));
             } else {
                 questResult = true;

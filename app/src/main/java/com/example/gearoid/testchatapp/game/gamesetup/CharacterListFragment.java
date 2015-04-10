@@ -26,6 +26,9 @@ import java.util.List;
  */
 public class CharacterListFragment extends ListFragment {
 
+    //Constants
+    public static final String TAG = "CharacterListFragment";
+
     CharacterListAdapter listAdapter = null;
     View mContentView = null;
     private  List<ICharacter> characterList =  new ArrayList<ICharacter>();
@@ -49,9 +52,8 @@ public class CharacterListFragment extends ListFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View v,
                                            int position, long id) {
-                //TODO Do stuff...
                 ICharacter character = (ICharacter) getListAdapter().getItem(position);
-                Log.d("Fragment Characters", "Character long clicked:" + character.getCharacterName());
+                Log.d(TAG, "Character long clicked:" + character.getCharacterName());
                 ((CharacterListFragListener) getActivity()).displayCharacterCard(character.getCharacterName());
 
 
@@ -71,7 +73,7 @@ public class CharacterListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         ICharacter character = (ICharacter) getListAdapter().getItem(position);
-        Log.d("Fragment Characters", "Character clicked:" + character.getCharacterName());
+        Log.d(TAG, "Character clicked:" + character.getCharacterName());
 
         ((CharacterListFragListener) getActivity()).characterSelected(position, isOptionalCharacterList, listAdapter);
 
@@ -117,7 +119,7 @@ public class CharacterListFragment extends ListFragment {
                     bottom.setTextColor(Color.rgb(55, 55, 55));
                 }
                 if(isOptionalCharacterList) {
-                    if (character instanceof EvilCharacter) {//TODO ensure that this is only done on optional list
+                    if (character instanceof EvilCharacter) {
                         v.setBackground(getResources().getDrawable(R.drawable.misc_redloyaltystrip));
                         v.getBackground().setAlpha(150);
                         v.getBackground().setColorFilter(Color.argb(70, 255, 0, 0), PorterDuff.Mode.DARKEN);

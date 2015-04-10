@@ -58,10 +58,6 @@ public class KRegisterAndPort {
         kryo.register(Packet_PlayerHasLeftApp.class);
         kryo.register(Packet_PlayerHasReturnedToApp.class);
 
-
-        kryo.register(Packet00_ClientDetails.class);
-        kryo.register(Packet2_Message.class);
-
         kryo.register(ICharacter.class);
         kryo.register(GoodCharacter.class);
         kryo.register(EvilCharacter.class);
@@ -86,5 +82,9 @@ public class KRegisterAndPort {
         kryo.register(java.util.ArrayList.class);
         kryo.register(int[].class);
         kryo.register(boolean[].class);
+
+
+        kryo.register(Packet00_ClientDetails.class);
+        kryo.register(Packet2_Message.class);
     }
 }

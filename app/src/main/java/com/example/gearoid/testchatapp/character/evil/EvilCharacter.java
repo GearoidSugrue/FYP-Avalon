@@ -6,22 +6,8 @@ import com.example.gearoid.testchatapp.character.good.Merlin;
 
 public class EvilCharacter implements ICharacter {
 
-	boolean isLeader = false;
-	boolean hasLadyOfLake = false;
-    public boolean isOnQuest = false;
     String characterName = ConstantsChara.MINION_OF_MORDRED;
     String shortDescription = "Minion of Mordred";
-	String playerName = "";
-
-	@Override
-	public void setPlayerName(String playerName) {
-		this.playerName = playerName;		
-	}
-	
-	@Override
-	public String getPlayerName() {
-		return this.playerName;
-	}
 
     @Override
     public void setCharacterName(String name) {
@@ -55,13 +41,5 @@ public class EvilCharacter implements ICharacter {
         return false;
     }
 
-    @Override
-    public void setIsOnQuest(boolean isOnQuest) {
-        this.isOnQuest = isOnQuest;
-    }
 
-    @Override
-    public boolean getIsOnQuest() {
-        return this.isOnQuest;
-    }
 }

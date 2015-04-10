@@ -3,7 +3,6 @@ package com.example.gearoid.testchatapp.kryopackage.server;
 import android.util.Log;
 
 import com.example.gearoid.testchatapp.utils.ApplicationContext;
-import com.example.gearoid.testchatapp.kryopackage.ConstantsKryo;
 import com.example.gearoid.testchatapp.kryopackage.Packet.*;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -100,7 +99,6 @@ public class ListenerServer extends Listener {
                 }
 
                 con.sendTCP(sendPacket);
-                //Add to specific position using the thread safe ID generated earlier
             }
 
         }
@@ -168,7 +166,7 @@ public class ListenerServer extends Listener {
                 gameActivity.server_OnMessagePacketReceived(userName);
             }
 
-            Packet2_Message reply = (Packet2_Message) PacketFactory.testing_createPacket(ConstantsKryo.MESSAGE);
+            Packet2_Message reply = (Packet2_Message) PacketFactory.testing_createPacket(PacketFactory.MESSAGE);
             reply.message = "Your Packet arrived successfully!";
             con.sendTCP(reply);
         }

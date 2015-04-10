@@ -37,7 +37,7 @@ public class ListenerClient extends Listener {
 
     private Client client;
     IActivityClientListener activity;
-    final AtomicInteger reconnectCount = new AtomicInteger();//Necessary???
+    final AtomicInteger reconnectCount = new AtomicInteger();
 
     public interface IActivityClientListener {
         void client_OnMessagePacketReceived(String message);
@@ -88,7 +88,7 @@ public class ListenerClient extends Listener {
         // if (reconnectCount.getAndIncrement() < 10) {
         new Thread() {
             public void run() {
-                if (reconnectCount.getAndIncrement() < 5) {//Move out side thread??? Not working at the moment.
+                if (reconnectCount.getAndIncrement() < 5) {
 
                     try {
                         System.out.println("[Client " + client.getID() + ", "
@@ -215,7 +215,7 @@ public class ListenerClient extends Listener {
                     + con.getID() + " " + con.toString() + " connection: "
                     + message);
 
-            if (message.equalsIgnoreCase("Start")) {//TODO fix this..
+            if (message.equalsIgnoreCase("Start")) {
                 Intent i = new Intent(ApplicationContext.getContext(), GameSetupActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 ApplicationContext.getContext().startActivity(i);

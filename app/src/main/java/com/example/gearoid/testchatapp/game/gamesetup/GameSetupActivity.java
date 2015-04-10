@@ -17,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.character.ConstantsChara;
 import com.example.gearoid.testchatapp.utils.ApplicationContext;
 import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.character.CharacterFactory;
@@ -37,6 +38,13 @@ import java.util.Random;
 
 
 public class GameSetupActivity extends ActionBarActivity implements CharacterListFragment.CharacterListFragListener {
+
+    //Constants
+    public static final String TAG = "GameSetup";
+    public static final String PLAYER_COUNT = "PLAYER_COUNT";
+    public static final String DIALOG = "dialog";
+
+
 
     GameLogicFunctions.Board currentBoard;
     int playerCount = 5, evilCount = 2, goodCount = 3;
@@ -64,7 +72,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         initializeButtons();
         initializeCheckbox();
 
-        int numOfPlayers = intent.getIntExtra("PLAYER_COUNT", 5);
+        int numOfPlayers = intent.getIntExtra(PLAYER_COUNT, 5);
 
         numOfPlayersTest = numOfPlayers; //Testing purposes
 
@@ -103,7 +111,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
                 evilListAdapter.notifyDataSetChanged();
 
             } else {
-                ApplicationContext.showToast("Side full. Remove a character first.");
+                ApplicationContext.showToast(getString(R.string.sideFullRemoveCharacter));
             }
         } else {
             listAdapter.remove(character);
@@ -118,7 +126,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
     public void displayCharacterCard(String characterName) {//from GameSetupCharacterListFragment.CharacterListFragListener
 
         DialogFragment newFragment = CharacterCardFragment.newInstance(characterName);
-        newFragment.show(getFragmentManager(), "dialog");
+        newFragment.show(getFragmentManager(), DIALOG);
     }
 
 
@@ -141,7 +149,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         checkBox_ladyOfLake.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d("GameSetup", "Lady of Lake toggled: " + isChecked);
+                Log.d(TAG, "Lady of Lake toggled: " + isChecked);
                 if (isChecked) {
                     ladyOfLake = true;
                 } else {
@@ -153,8 +161,8 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         checkBox_ladyOfLake.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Log.d("GameSetup", "Lady of Lake long pressed");
-                displayCharacterCard("Lady of Lake");
+                Log.d(TAG, "Lady of Lake long pressed");
+                displayCharacterCard(ConstantsChara.LADY_OF_LAKE);
                 return true;
             }
         });
@@ -162,9 +170,9 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
 
     public void setFragTitles(){
         TextView goodFragTitle = (TextView) findViewById(R.id.textView_GoodCharactersLabel);
-        goodFragTitle.setText(goodCount + " Good Characters");
+        goodFragTitle.setText(goodCount + getString(R.string._goodCharacters));
         TextView evilFragTitle = (TextView) findViewById(R.id.textView_EvilCharactersLabel);
-        evilFragTitle.setText(evilCount + " Evil Characters");
+        evilFragTitle.setText(evilCount + getString(R.string._evilCharacters));
     }
 
     private void initializeFragments() {
@@ -196,7 +204,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
     public void setUpGoodCharacterList() {
         ICharacter merlin = CharacterFactory.createPlayer(CharacterFactory.CharacterType.MERLIN);
 
-        Log.d("GameSetup", "Attempting to add a ICharacter to list");
+        Log.d(TAG, "Attempting to add a ICharacter to list");
         goodListAdapter.add(merlin);
         fillRemainingGoodListPlaces();
     }
@@ -222,7 +230,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         int listCount = goodListAdapter.getCount();
         for (int i = 0; i < goodCount - listCount; i++) {
             ICharacter knight = CharacterFactory.createPlayer(CharacterFactory.CharacterType.KNIGHT);
-            knight.setCharacterName("Knight " + (i + 1));
+            knight.setCharacterName(ConstantsChara.KNIGHT_OF_ARTHUR + " " + (i + 1));
             goodListAdapter.add(knight);
         }
         goodListAdapter.notifyDataSetChanged();
@@ -232,7 +240,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
         int listCount = evilListAdapter.getCount();
         for (int i = 0; i < evilCount - listCount; i++) {
             ICharacter minion = CharacterFactory.createPlayer(CharacterFactory.CharacterType.MINION);
-            minion.setCharacterName("Minion " + (i + 1));
+            minion.setCharacterName(ConstantsChara.MINION_OF_MORDRED + " " + (i + 1));
             evilListAdapter.add(minion);
         }
         evilListAdapter.notifyDataSetChanged();
@@ -248,7 +256,7 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
     public void startGameActivity() {
 
         if (goodListAdapter.getCount() < goodCount || evilListAdapter.getCount() < evilCount) {
-            ApplicationContext.showToast("Not enough characters!");
+            ApplicationContext.showToast(getString(R.string.notEnoughCharacters));
         } else {
 
             if(numOfPlayersTest < 5){//Testing purposes.
@@ -274,10 +282,10 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
     }
 
     public void checkAndAssignLadyOfLake(){
-        Log.d("GameSetup", "Checking if lady of lake has been checked");
+        Log.d(TAG, "Checking if lady of lake has been checked");
 
         if(ladyOfLake){
-            Log.d("GameSetup", "Assigning lady of lake");
+            Log.d(TAG, "Assigning lady of lake");
             Session.serverIsLadyOfLakeOn = true;
 
             Random ran = new Random();
@@ -304,14 +312,14 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
     }
 
     public static void assignAllPlayersCharacters(ArrayList<ICharacter> chosenCharacters) {
-        Log.d("GameSetup", "Assigning players characters");
+        Log.d(TAG, "Assigning players characters");
 
         Collections.shuffle(chosenCharacters);
 
         if (chosenCharacters.size() == Session.serverAllPlayers.size()) {
 
             for (int i = 0; i < Session.serverAllPlayers.size(); i++) {
-                Log.d("GameSetup", "Character: " + chosenCharacters.get(i).getCharacterName());
+                Log.d(TAG, "Character: " + chosenCharacters.get(i).getCharacterName());
                 Session.serverAllPlayers.get(i).character = chosenCharacters.get(i);
             }
         }
@@ -323,18 +331,18 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
 
         for(int i=0; i < Session.serverAllPlayers.size(); i++){
             Session.leaderOrderList.add(i);
-            Log.d("GameSetup", "leaderOrderList - " +  Session.leaderOrderList.get(i));
+            Log.d(TAG, "leaderOrderList - " +  Session.leaderOrderList.get(i));
         }
 
         Collections.shuffle(Session.leaderOrderList);
 
-        if(!Session.serverAllPlayers.isEmpty()){
-
-            for(int i=0; i < Session.serverAllPlayers.size(); i++){
-
-                Log.d("GameSetup", "leaderOrderList - " +  Session.leaderOrderList.get(i));
-            }
-        }
+//        if(!Session.serverAllPlayers.isEmpty()){
+//
+//            for(int i=0; i < Session.serverAllPlayers.size(); i++){
+//
+//                Log.d(TAG, "leaderOrderList - " +  Session.leaderOrderList.get(i));
+//            }
+//        }
 
 //        Session.leaderOrderAllPlayers = new ArrayList<Player>();
 //        Session.leaderOrderAllPlayers.addAll(Session.serverAllPlayers);

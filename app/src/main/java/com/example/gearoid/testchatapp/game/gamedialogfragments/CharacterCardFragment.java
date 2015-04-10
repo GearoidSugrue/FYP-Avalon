@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.character.ConstantsChara;
 import com.example.gearoid.testchatapp.game.DrawableFactory;
 import com.example.gearoid.testchatapp.R;
 
@@ -17,13 +18,16 @@ import com.example.gearoid.testchatapp.R;
  */
 public class CharacterCardFragment extends DialogFragment {
 
+    //Constants
+    public static final String CHARACTER_NAME = "character";
+
     String characterName;
 
     public static CharacterCardFragment newInstance(String name) {
         CharacterCardFragment frag = new CharacterCardFragment();
 
         Bundle args = new Bundle();
-        args.putString("character", name);
+        args.putString(CHARACTER_NAME, name);
         frag.setArguments(args);
 
         return frag;
@@ -33,7 +37,7 @@ public class CharacterCardFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        characterName = getArguments().getString("character");
+        characterName = getArguments().getString(CHARACTER_NAME);
 
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
 
@@ -48,7 +52,7 @@ public class CharacterCardFragment extends DialogFragment {
         ImageView image = (ImageView) rootView.findViewById(R.id.imageView_characterCard);
         image.setBackgroundColor(Color.BLACK);
 
-        if (characterName.equalsIgnoreCase("Lady of Lake")){
+        if (characterName.equalsIgnoreCase(ConstantsChara.LADY_OF_LAKE)){
             image.setImageDrawable(DrawableFactory.getDrawable(getResources(), characterName));
             TextView description = (TextView) rootView.findViewById(R.id.textView_characterDescription);
             description.setVisibility(View.VISIBLE);

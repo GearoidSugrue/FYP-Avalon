@@ -49,10 +49,38 @@
     <string name="title_activity_game">GameActivity</string>
     <string name="title_activity_game_screen">Game Activity...</string>
 
-
-
-
-
+    <string name="alreadyUsedLadyOfLake">This player has used The Lady of The Lake</string>
+    <string name="redLoyaltyCard">Red Loyalty Card</string>
+    <string name="blueLoyaltyCard">Blue Loyalty Card</string>
+    <string name="close">Close</string>
+    <string name="playerIsGood">Player is Good</string>
+    <string name="page_">Page </string>
+    <string name="endOfGuide">End of Guide</string>
+    <string name="alreadyAtBegining">Already at the beginning</string>
+    <string name="evil_victory_text">Minion\'s of Mordred Win</string>
+    <string name="assassinationSuccessful">Assassination Successful</string>
+    <string name="players_visible_text">Player Identities Visible To You</string>
+    <string name="onlyLeaderCanRevealResults">Only The Leader Can Reveal Quest Result</string>
+    <string name="allCardsRevealed">All Cards Have Been Revealed</string>
+    <string name="questFailed">Quest Failed</string>
+    <string name="mustVoteSuccess">Must Vote Success</string>
+    <string name="teamFullTapToRemove">Team Full. Tap To Remove Members.</string>
+    <string name="teamNotFull">Team Not Full!</string>
+    <string name="finalInBrackets">(Final)</string>
+    <string name="teamRejected">Team Rejected</string>
+    <string name="sideFullRemoveCharacter">Side full. Remove a character first.</string>
+    <string name="_goodCharacters"> Good Characters</string>
+    <string name="_evilCharacters"> Evil Characters</string>
+    <string name="notEnoughCharacters">Not enough characters!</string>
+    <string name="wifiDirectDisabledReEnable">WiFi Direct Disabled! Re-enable.</string>
+    <string name="connectedToHost">Connected to Host</string>
+    <string name="alreadyConnectedToHost">Already Connected to a Host!</string>
+    <string name="disconnectBeforeChangingHost">Disconnect before changing Host</string>
+    <string name="alreadySentConnectRequest">Already sent connection request</string>
+    <string name="tryDisconnectAndDiscoverAgain">Try Disconnect and Discover again</string>
+    <string name="Connecting">Connecting</string>
+    <string name="Connected">Connected</string>
+    <string name="gameFinished">Game Finished</string>
 
 
 </resources>

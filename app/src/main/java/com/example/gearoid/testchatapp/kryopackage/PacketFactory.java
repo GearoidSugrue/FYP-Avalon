@@ -6,6 +6,12 @@ import com.example.gearoid.testchatapp.kryopackage.Packet.*;
 
 public class PacketFactory {
 
+    //Constants used during testing
+    public static final String TAG = "PacketFactory";
+    public static final String CLIENT_DETAILS = "Client Details";
+    public static final String MESSAGE = "Message";
+
+
     public enum PacketType {
         REQUEST_DETAILS, SEND_DETAILS, START_GAME, LADYOFLAKE_UPDATE, UPDATE_GAMESTATE, TEAM_VOTE,
         TEAM_VOTE_RESULT, QUEST_VOTE,  QUEST_VOTE_RESULT, SELECT_TEAM, GAME_FINISHED,
@@ -41,17 +47,17 @@ public class PacketFactory {
             case PLAYER_RETURNED: return new Packet_PlayerHasReturnedToApp();
 
             default:
-                Log.e("PacketFactory", "Packet name not found! Returning NULL!"); return null;
+                Log.e(TAG, "Packet name not found!"); return new Packet2_Message();
         }
     }
 
 
 	public static Packet testing_createPacket(String packetName){
 
-        if (packetName.equalsIgnoreCase(ConstantsKryo.CLIENT_DETAILS)) {
+        if (packetName.equalsIgnoreCase(CLIENT_DETAILS)) {
                 return new Packet00_ClientDetails();
 
-		} else if (packetName.equalsIgnoreCase(ConstantsKryo.MESSAGE)) {
+		} else if (packetName.equalsIgnoreCase(MESSAGE)) {
             return new Packet2_Message();
 		}
 		

@@ -57,12 +57,15 @@ import static com.example.gearoid.testchatapp.multiplayer.Session.serverListener
 public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFiDirectServicesList.DeviceClickListener, WifiP2pManager.ConnectionInfoListener,
         WifiP2pManager.ChannelListener, ListenerServer.IConnectionActivityServerListener {
 
+    //Constants
+    public static final String TAG = "wifidirectservice";
+    public static final String IS_HOST = "isHost";
+
     public static int groupOwnerIntent;//15 highest intention to be group owner. May be ignored if a device remembers previous group.
     boolean isHost = false;
     PlayerListViewAdapter adapterConnectedPlayers;
     ListView connectedPlayersView;
 
-    public static final String TAG = "wifidirectservice";
     private WifiP2pManager manager;
     private boolean isWifiP2pEnabled = false;
     private boolean retryChannel = false;
@@ -103,7 +106,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        isHost = intent.getBooleanExtra("isHost", false);
+        isHost = intent.getBooleanExtra(IS_HOST, false);
 
         statusTxtView = (TextView) findViewById(R.id.status_text);
 
@@ -192,7 +195,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
                     Intent intent = new Intent(ApplicationContext.getContext(), GameSetupActivity.class);
                     int numberOfConnections = Session.serverAllPlayerConnections.size();
                     Log.d(TAG, "Number of devices connected to KryoServer is: " + numberOfConnections);
-                    intent.putExtra("PLAYER_COUNT", numberOfConnections); //TODO Fix this. Pass in number of connected devices
+                    intent.putExtra(GameSetupActivity.PLAYER_COUNT, numberOfConnections);
                     startActivity(intent);
 
                 }
@@ -681,9 +684,6 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
         }
     }
 
-    /**
-     * register the BroadcastReceiver with the intent values to be matched
-     */
     @Override
     public void onResume() {
         super.onResume();
@@ -737,7 +737,7 @@ public class WiFiDirectServiceActivity extends ActionBarActivity implements WiFi
             case WifiP2pManager.NO_SERVICE_REQUESTS:
                 return "NO_SERVICE_REQUESTS";
             default:
-                return "UNKNOWN - ERRORCODE: " + errorCode;
+                return "UNKNOWN - ERROR CODE: " + errorCode;
         }
     }
 

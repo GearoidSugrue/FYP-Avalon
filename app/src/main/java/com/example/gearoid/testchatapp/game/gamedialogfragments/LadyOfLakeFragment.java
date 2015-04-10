@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.character.ConstantsChara;
 import com.example.gearoid.testchatapp.utils.ApplicationContext;
 import com.example.gearoid.testchatapp.game.DrawableFactory;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
@@ -30,6 +31,9 @@ import java.util.ArrayList;
 public class LadyOfLakeFragment extends DialogFragment {
 
 
+    //Constants
+    public static final String TAG = "LadyOfLakeFragment";
+
     View mContentView = null;
     ListView chosenPlayerView;
     ListView candidatePlayersView;
@@ -41,8 +45,7 @@ public class LadyOfLakeFragment extends DialogFragment {
     int playerIndex = 0;
 
     public static LadyOfLakeFragment newInstance() {
-
-        Log.d("LadyOfLakeFragment", "Creating instance of a SelectTeamFragment fragment");
+        Log.d(TAG, "Creating instance of a LadyOfLakeFragment fragment");
 
         return new LadyOfLakeFragment();
     }
@@ -51,7 +54,7 @@ public class LadyOfLakeFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("LadyOfLakeFragment", "onCreate called");
+        Log.d(TAG, "onCreate called");
 
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);
@@ -65,12 +68,12 @@ public class LadyOfLakeFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.ladyoflake, container, false);
-        Log.d("LadyOfLakeFragment", "onCreateView called");
+        Log.d(TAG, "onCreateView called");
 
         mContentView = rootView;
 
         Toolbar mActionBarToolbar = (Toolbar) rootView.findViewById(R.id.frag_ladyOfLake_toolbar);
-        mActionBarToolbar.setTitle("Lady of the Lake");
+        mActionBarToolbar.setTitle(ConstantsChara.LADY_OF_LAKE);
         mActionBarToolbar.setLogo(getResources().getDrawable(R.drawable.icon_ladyoflake));
 
         chosenPlayerView = (ListView) rootView.findViewById(R.id.listview_chosenLadyOfLakePlayer);
@@ -82,7 +85,7 @@ public class LadyOfLakeFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("LadyOfLakeFragment", "onCreateView called");
+        Log.d(TAG, "onActivityCreated called");
 
         initializeButtons();
 
@@ -111,7 +114,7 @@ public class LadyOfLakeFragment extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Player player = (Player) parent.getItemAtPosition(position);
-                Log.d("LadyOfLakeFragment", "Player clicked:" + player.userName);
+                Log.d(TAG, "Player clicked:" + player.userName);
 
                 if (!isFinished) {
                     if(!player.hasUsedLadyOfLake) {
@@ -120,7 +123,7 @@ public class LadyOfLakeFragment extends DialogFragment {
                         final ImageView chosenPlayer = (ImageView) mContentView.findViewById(R.id.imageView_ladyOfLakeloyaltyCard);
                         chosenPlayer.setVisibility(View.VISIBLE);
                     } else {
-                        ApplicationContext.showToast("This player has used The Lady of The Lake");
+                        ApplicationContext.showToast(getActivity().getString(R.string.alreadyUsedLadyOfLake));
                     }
                 }
             }
@@ -131,7 +134,7 @@ public class LadyOfLakeFragment extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Player player = (Player) parent.getItemAtPosition(position);
-                Log.d("LadyOfLakeFragment", "Player clicked:" + player.userName);
+                Log.d(TAG, "Player clicked:" + player.userName);
 
                 if (!isFinished) {
                     adapterChosenPlayer.remove(player);
@@ -187,15 +190,15 @@ public class LadyOfLakeFragment extends DialogFragment {
         TextView result = (TextView) mContentView.findViewById(R.id.textView_ladyOfLakeResult);
 
         if (player.character instanceof EvilCharacter) {
-            chosenPlayer.setImageDrawable(DrawableFactory.getDrawable(getResources(), "Red Loyalty Card"));
+            chosenPlayer.setImageDrawable(DrawableFactory.getDrawable(getResources(), getActivity().getString(R.string.redLoyaltyCard)));
         } else {
-            chosenPlayer.setImageDrawable(DrawableFactory.getDrawable(getResources(), "Blue Loyalty Card"));
-            result.setText("Player is Good");
+            chosenPlayer.setImageDrawable(DrawableFactory.getDrawable(getResources(), getActivity().getString(R.string.blueLoyaltyCard)));
+            result.setText(getActivity().getString(R.string.playerIsGood));
             result.setTextColor(getResources().getColor(R.color.SlateBlue));
         }
 
         Button finishGame = (Button) mContentView.findViewById(R.id.button_cancelLadyOfLake);
-        finishGame.setText("Close");
+        finishGame.setText(getActivity().getString(R.string.close));
 
         result.setVisibility(View.VISIBLE);
 

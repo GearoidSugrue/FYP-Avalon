@@ -24,6 +24,15 @@ import java.util.ArrayList;
  */
 public class TeamVoteResultFragment extends DialogFragment {
 
+    //Constants
+    public static final String TAG = "TeamVoteResultFragment";
+    public static final String IS_ACCEPTED = "IS_ACCEPTED";
+    public static final String PLAYER_APPROVE_POS = "PLAYER_APPROVE_POS";
+    public static final String PLAYER_REJECT_POS = "PLAYER_REJECT_POS";
+    public static final String QUEST = "QUEST";
+    public static final String VOTE_NUM = "VOTE_NUM";
+
+
     View mContentView = null;
     int[] playerApprovePos;
     int[] playerRejectPos;
@@ -39,44 +48,45 @@ public class TeamVoteResultFragment extends DialogFragment {
 
 
     public static TeamVoteResultFragment newInstance(boolean isAccepted, int[] playerApprovePositions, int[] playerRejectPositions, int questNumber, int voteNumber) {
+        Log.d(TAG, "Creating instance of a teamvoteResult fragment");
+
         TeamVoteResultFragment frag = new TeamVoteResultFragment();
 
         Bundle args = new Bundle();
-        args.putBoolean("IS_ACCEPTED", isAccepted);
-        args.putIntArray("PLAYER_APPROVE_POS", playerApprovePositions);
-        args.putIntArray("PLAYER_REJECT_POS", playerRejectPositions);
-        args.putInt("QUEST_NUM", questNumber);
-        args.putInt("VOTE_NUM", voteNumber);
+        args.putBoolean(IS_ACCEPTED, isAccepted);
+        args.putIntArray(PLAYER_APPROVE_POS, playerApprovePositions);
+        args.putIntArray(PLAYER_REJECT_POS, playerRejectPositions);
+        args.putInt(QUEST, questNumber);
+        args.putInt(VOTE_NUM, voteNumber);
         frag.setArguments(args);
-        Log.d("TeamVoteResultFragment", "Creating instance of a teamvoteResult fragment");
         return frag;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate called");
 
-        Log.d("TeamVoteResultFragment", "onCreate called");
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);
 
         Bundle extras = getArguments();
-        isAccepted = extras.getBoolean("IS_ACCEPTED");
-        playerApprovePos = extras.getIntArray("PLAYER_APPROVE_POS");
-        playerRejectPos = extras.getIntArray("PLAYER_REJECT_POS");
-        questNumber = extras.getInt("QUEST_NUM");
-        voteNumber = extras.getInt("VOTE_NUM");
+        isAccepted = extras.getBoolean(IS_ACCEPTED);
+        playerApprovePos = extras.getIntArray(PLAYER_APPROVE_POS);
+        playerRejectPos = extras.getIntArray(PLAYER_REJECT_POS);
+        questNumber = extras.getInt(QUEST);
+        voteNumber = extras.getInt(VOTE_NUM);
 
         approvedPlayersArray = new ArrayList<>();
         rejectedPlayersArray = new ArrayList<>();
 
         for (int i = 0; i < playerApprovePos.length; i++) {
-            Log.d("TeamVoteResultFragment", "adding player to adapterVictoriousPlayers. int[" + i + "] = " + playerApprovePos[i]);
+            Log.d(TAG, "adding player to adapterVictoriousPlayers. int[" + i + "] = " + playerApprovePos[i]);
             approvedPlayersArray.add(Session.allPlayers.get(playerApprovePos[i]));
         }
 
         for (int i = 0; i < playerRejectPos.length; i++) {
-            Log.d("TeamVoteResultFragment", "adding player to adapterDefeatedPlayers. int[" + i + "] = " + playerRejectPos[i]);
+            Log.d(TAG, "adding player to adapterDefeatedPlayers. int[" + i + "] = " + playerRejectPos[i]);
             rejectedPlayersArray.add(Session.allPlayers.get(playerRejectPos[i]));
         }
 
@@ -85,7 +95,7 @@ public class TeamVoteResultFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.team_vote_result, container, false);
-        Log.d("TeamVoteResultFragment", "onCreateView called");
+        Log.d(TAG, "onCreateView called");
 
         mContentView = rootView;
 
@@ -98,7 +108,7 @@ public class TeamVoteResultFragment extends DialogFragment {
 
         if (!isAccepted) {
             TextView voteResult = (TextView) rootView.findViewById(R.id.textView_voteResult);
-            voteResult.setText("Team Rejected");
+            voteResult.setText(getActivity().getString(R.string.teamRejected));
             voteResult.setTextColor(getResources().getColor(R.color.WineRedLight));
         }
 
@@ -108,8 +118,7 @@ public class TeamVoteResultFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        Log.d("TeamVoteResultFragment", "onCreateView called");
+        Log.d(TAG, "onActivityCreated called");
 
         initializeButtons();
 

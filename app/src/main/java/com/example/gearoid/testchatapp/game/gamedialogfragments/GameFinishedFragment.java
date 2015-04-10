@@ -24,6 +24,13 @@ import java.util.ArrayList;
  */
 public class GameFinishedFragment extends DialogFragment {
 
+    //Constants
+    public static final String TAG = "GameFinishedFragment";
+    public static final String TOOLBAR_TITLE = "Game Finished";
+    public static final String GAME_RESULT = "Game Result";
+    public static final String EVIL_PLAYER_POS = "Evil Pos";
+    public static final String GOOD_PLAYER_POS = "Good Pos";
+
 
     View mContentView = null;
     int[] victoriousPlayerPos;
@@ -38,14 +45,14 @@ public class GameFinishedFragment extends DialogFragment {
 
 
     public static GameFinishedFragment newInstance(boolean gameResult, int[] evilPlayersPositions, int[] goodPlayersPositions) {
-        Log.d("GameFinishedFragment", "Creating instance of a GameFinishedFragment");
+        Log.d(TAG, "Creating instance of a GameFinishedFragment");
 
         GameFinishedFragment frag = new GameFinishedFragment();
 
         Bundle args = new Bundle();
-        args.putBoolean("GAME_RESULT", gameResult);
-        args.putIntArray("EVIL_PLAYER_POS", evilPlayersPositions);
-        args.putIntArray("GOOD_PLAYER_POS", goodPlayersPositions);
+        args.putBoolean(GAME_RESULT, gameResult);
+        args.putIntArray(EVIL_PLAYER_POS, evilPlayersPositions);
+        args.putIntArray(GOOD_PLAYER_POS, goodPlayersPositions);
         frag.setArguments(args);
 
         return frag;
@@ -54,15 +61,15 @@ public class GameFinishedFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("GameFinishedFragment", "onCreate called");
+        Log.d(TAG, "onCreate called");
 
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);
 
         Bundle extras = getArguments();
-        gameResult = extras.getBoolean("GAME_RESULT");
-        int[] evilPlayers = extras.getIntArray("EVIL_PLAYER_POS");
-        int[] goodPlayers= extras.getIntArray("GOOD_PLAYER_POS");
+        gameResult = extras.getBoolean(GAME_RESULT);
+        int[] evilPlayers = extras.getIntArray(EVIL_PLAYER_POS);
+        int[] goodPlayers= extras.getIntArray(GOOD_PLAYER_POS);
 
         if(gameResult){
             victoriousPlayerPos = goodPlayers;
@@ -76,7 +83,7 @@ public class GameFinishedFragment extends DialogFragment {
         defeatedPlayersArray = new ArrayList<>();
 
         for (int i = 0; i < victoriousPlayerPos.length; i++) {
-            Log.d("GameFinishedFragment", "adding player to adapterVictoriousPlayers. int[" + i + "] = " + victoriousPlayerPos[i]);
+            Log.d(TAG, "adding player to adapterVictoriousPlayers. int[" + i + "] = " + victoriousPlayerPos[i]);
 
             if(victoriousPlayerPos[i] == -1){
                 victoriousPlayerPos[i] = 1;
@@ -85,7 +92,7 @@ public class GameFinishedFragment extends DialogFragment {
         }
 
         for (int i = 0; i < defeatedPlayerPos.length; i++) {
-            Log.d("GameFinishedFragment", "adding player to adapterDefeatedPlayers. int[" + i + "] = " + defeatedPlayerPos[i]);
+            Log.d(TAG, "adding player to adapterDefeatedPlayers. int[" + i + "] = " + defeatedPlayerPos[i]);
 
             if(defeatedPlayerPos[i] == -1){
                 defeatedPlayerPos[i] = 1;
@@ -99,12 +106,12 @@ public class GameFinishedFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.game_finished, container, false);
-        Log.d("GameFinishedFragment", "onCreateView called");
+        Log.d(TAG, "onCreateView called");
 
         mContentView = rootView;
 
         Toolbar mActionBarToolbar = (Toolbar) rootView.findViewById(R.id.frag_gameFinished_toolbar);
-        mActionBarToolbar.setTitle("Game Finished");
+        mActionBarToolbar.setTitle(TOOLBAR_TITLE);
 
         if(gameResult){
             mActionBarToolbar.setLogo(getResources().getDrawable(R.drawable.icon_blueloyaltycard));
@@ -117,7 +124,7 @@ public class GameFinishedFragment extends DialogFragment {
 
         if (!gameResult) {
             TextView voteResult = (TextView) rootView.findViewById(R.id.textView_gameResult);
-            voteResult.setText("Minion's of Mordred Win");
+            voteResult.setText(getActivity().getString(R.string.evil_victory_text));
             voteResult.setTextColor(getResources().getColor(R.color.WineRedLight));
         }
 
@@ -128,7 +135,7 @@ public class GameFinishedFragment extends DialogFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Log.d("GameFinishedFragment", "onCreateView called");
+        Log.d(TAG, "onActivityCreated called");
 
         initializeButtons();
 

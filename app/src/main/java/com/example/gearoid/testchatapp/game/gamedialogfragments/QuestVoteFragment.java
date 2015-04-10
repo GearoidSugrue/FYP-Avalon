@@ -26,6 +26,12 @@ import java.util.Random;
  */
 public class QuestVoteFragment extends DialogFragment {
 
+    //Constants
+    public static final String TAG = "QuestVoteFragment";
+    public static final String TEAM_MEMBERS = "TEAM_MEMBERS";
+    public static final String IS_GOOD = "IS_GOOD";
+    public static final String QUEST = "QUEST";
+
     View mContentView = null;
     ImageView image1;
     ImageView image2;
@@ -39,14 +45,15 @@ public class QuestVoteFragment extends DialogFragment {
     int questNumber;
 
     public static QuestVoteFragment newInstance(int[] teamMembersPos, boolean isGood, int questNumber) {
+        Log.d(TAG, "Creating instance of a QuestVoteFragment fragment");
+
         QuestVoteFragment frag = new QuestVoteFragment();
 
         Bundle args = new Bundle();
-        args.putIntArray("TEAM_MEMBERS", teamMembersPos);
-        args.putBoolean("IS_GOOD", isGood);
-        args.putInt("QUEST_NUM", questNumber);
+        args.putIntArray(TEAM_MEMBERS, teamMembersPos);
+        args.putBoolean(IS_GOOD, isGood);
+        args.putInt(QUEST, questNumber);
         frag.setArguments(args);
-        Log.d("QuestVoteFragment", "Creating instance of a QuestVoteFragment fragment");
         return frag;
     }
 
@@ -54,20 +61,20 @@ public class QuestVoteFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("QuestVoteFrag", "onCreate called");
+        Log.d(TAG, "onCreate called");
 
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);
 
         Bundle extras = getArguments();
-        playerPos = extras.getIntArray("TEAM_MEMBERS");
-        isGood = extras.getBoolean("IS_GOOD", false);
-        questNumber = extras.getInt("QUEST_NUM");
+        playerPos = extras.getIntArray(TEAM_MEMBERS);
+        isGood = extras.getBoolean(IS_GOOD, false);
+        questNumber = extras.getInt(QUEST);
 
         teamMembersArray = new ArrayList<>();
 
         for(int i=0; i < playerPos.length; i++){
-            Log.d("QuestVoteFrag", "adding player to adapterTeamMembers. int[" + i + "] = " + playerPos[i]);
+            Log.d(TAG, "adding player to adapterTeamMembers. int[" + i + "] = " + playerPos[i]);
             teamMembersArray.add(Session.allPlayers.get(playerPos[i]));
         }
     }
@@ -95,7 +102,7 @@ public class QuestVoteFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("QuestVoteFrag", "onCreateView called");
+        Log.d(TAG, "onActivityCreated called");
 
         adapterTeamMembers = new PlayerListViewAdapter(getActivity(), R.layout.row_players, android.R.id.text1, teamMembersArray);
         teamMembersView.setAdapter(adapterTeamMembers);
@@ -118,11 +125,11 @@ public class QuestVoteFragment extends DialogFragment {
     }
 
     public void randomiseCardOrder() {//TODO add isGood check
-        Log.d("QuestVoteFrag", "randomiseCardOrder called");
+        Log.d(TAG, "randomiseCardOrder called");
 
         Random randomGenerator = new Random();
         int randNum = randomGenerator.nextInt(2);
-        Log.d("QuestVoteFrag", "randomiseCardOrder: random num = " + randNum);
+        Log.d(TAG, "randomiseCardOrder: random num = " + randNum);
 
         if (Math.random() > 0.5) {
             isImage1Sucess = true;
@@ -139,19 +146,19 @@ public class QuestVoteFragment extends DialogFragment {
     }
 
     public void setOnClicklisteners() {
-        Log.d("QuestVoteFrag", "setOnClicklisteners called");
+        Log.d(TAG, "setOnClickListeners called");
 
         image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("QuestVoteFrag", "image1 clicked. Result: " + isImage1Sucess);
+                Log.d(TAG, "image1 clicked. Result: " + isImage1Sucess);
 
                 if(!isGood){
                     returnVoteResultAndClose(isImage1Sucess);
                 } else if(isImage1Sucess){
                     returnVoteResultAndClose(isImage1Sucess);
                 } else {
-                    ApplicationContext.showToast("Must Vote Success");
+                    ApplicationContext.showToast(getActivity().getString(R.string.mustVoteSuccess));
                 }
             }
         });
@@ -159,13 +166,13 @@ public class QuestVoteFragment extends DialogFragment {
         image2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("QuestVoteFrag", "image2 clicked. Result: " + isImage1Sucess);
+                Log.d(TAG, "image2 clicked. Result: " + isImage1Sucess);
                 if(!isGood){
                     returnVoteResultAndClose(isImage2Sucess);
                 } else if(isImage2Sucess){
                     returnVoteResultAndClose(isImage2Sucess);
                 } else {
-                    ApplicationContext.showToast("Must Vote Success");
+                    ApplicationContext.showToast(getActivity().getString(R.string.mustVoteSuccess));
                 }
             }
         });
@@ -173,7 +180,7 @@ public class QuestVoteFragment extends DialogFragment {
     }
 
     public void returnVoteResultAndClose(boolean voteResult) {
-        Log.d("QuestVoteFrag", "returnVoteResultAndClose called. Vote Result: " + voteResult);
+        Log.d(TAG, "returnVoteResultAndClose called. Vote Result: " + voteResult);
 
         QuestVoteDialogListener activity = (QuestVoteDialogListener) getActivity();
         activity.onQuestVoteSelected(voteResult); //Returns result of the vote to the GameActivity

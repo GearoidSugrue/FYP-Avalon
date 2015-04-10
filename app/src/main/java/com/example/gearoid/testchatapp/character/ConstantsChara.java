@@ -16,4 +16,5 @@ public class ConstantsChara {
 	public static final String ASSASSIN = "Assassin";
 	public static final String KNIGHT_OF_ARTHUR = "Knight";
 	public static final String MINION_OF_MORDRED = "Minion";
+    public static final String LADY_OF_LAKE = "Lady of the Lake";
 }

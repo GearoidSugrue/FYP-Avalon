@@ -23,6 +23,9 @@ import static com.example.gearoid.testchatapp.multiplayer.Session.voteCount;
  */
 public class GameLogicFunctions {
 
+    //Constants
+    public static final String TAG = "GameLogicFunctions";
+
     public enum Board {
         FIVE, SIX, SEVEN, EIGHT, NINE, TEN;
     }
@@ -99,7 +102,7 @@ public class GameLogicFunctions {
     }
 
     public static int calculatePlayersRequiredForQuest(Board board, Quest questNumber) { //Returns the number of players that go on a particular quest
-        Log.d("GameLogicFunctions", "calculatePlayersRequiredForQuest: " + GameLogicFunctions.getBoardConfiguration(board)[(questNumber.getValue() - 1)]);
+        Log.d(TAG, "calculatePlayersRequiredForQuest: " + GameLogicFunctions.getBoardConfiguration(board)[(questNumber.getValue() - 1)]);
         return GameLogicFunctions.getBoardConfiguration(board)[(questNumber.getValue() - 1)];
     }
 
@@ -275,7 +278,7 @@ public class GameLogicFunctions {
     }
 
     public static Quest getNextQuest(Quest currentQuest){
-        Log.d("GameLogicFunctions", "Getting next Quest. CurrentQuest: " + currentQuest);
+        Log.d(TAG, "Getting next Quest. CurrentQuest: " + currentQuest);
 
         switch (currentQuest){
             case FIRST: return Quest.SECOND;
@@ -300,7 +303,7 @@ public class GameLogicFunctions {
 
 
     public static void startNewQuest(boolean previousQuestResult){
-        Log.d("GameLogicFunctions", "startNewQuest. old Quest: " + currentQuest);
+        Log.d(TAG, "startNewQuest. old Quest: " + currentQuest);
 
         startNewTeamSelectPhase(getNextQuest(currentQuest));
 
@@ -312,7 +315,7 @@ public class GameLogicFunctions {
     }
 
     public static void sendPlayersOnQuest(Quest currentQuest, int[] proposedTeam){
-        Log.d("GameLogicFunctions", "sendPlayersOnQuest. Current Quest: " + currentQuest);
+        Log.d(TAG, "sendPlayersOnQuest. Current Quest: " + currentQuest);
 
         updateAllPlayersGameState(Session.GameState.QUEST_VOTE);
 
@@ -326,7 +329,7 @@ public class GameLogicFunctions {
     }
 
     public static void endGame(boolean result){
-        Log.d("GameLogicFunctions", "endGame. Result: " + result);
+        Log.d(TAG, "endGame. Result: " + result);
 
         if(result){
             updateAllPlayersGameState(Session.GameState.ASSASSIN);
@@ -340,7 +343,7 @@ public class GameLogicFunctions {
     }
 
     public static void updateAllPlayersGameState(Session.GameState nextGameState){
-        Log.d("GameLogicFunctions", "updateAllPlayersGameState. NextState: " + nextGameState);
+        Log.d(TAG, "updateAllPlayersGameState. NextState: " + nextGameState);
 
         Packet.Packet_UpdateGameState packetGameState = (Packet.Packet_UpdateGameState) PacketFactory.createPack(PacketFactory.PacketType.UPDATE_GAMESTATE);
         packetGameState.nextGameState = nextGameState;
@@ -348,20 +351,17 @@ public class GameLogicFunctions {
     }
 
     public void clientRestartGame(){
-        Log.d("GameLogicFunctions", "restartGame");
+        Log.d(TAG, "restartGame");
 
         currentQuest = Quest.FIRST;
         voteCount = 0;
         Session.currentGameState = Session.GameState.TEAM_SELECT;
         Session.clientQuestResults = new ArrayList<>();
 
-
-
-
     }
 
     public void clientQuitGame(){
-        Log.d("GameLogicFunctions", "quitGame");
+        Log.d(TAG, "quitGame");
 
         PlayerConnection.getInstance().playerID = -1;
         Session.allPlayers = new ArrayList<>();
@@ -371,9 +371,6 @@ public class GameLogicFunctions {
         Session.clientQuestResults = new ArrayList<>();
         Session.serverIsLadyOfLakeOn = false;
         Session.isGameIntialised = false;
-
-
-
 
 
     }

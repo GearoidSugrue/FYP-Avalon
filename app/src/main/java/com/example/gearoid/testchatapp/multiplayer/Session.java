@@ -28,6 +28,9 @@ import java.util.ArrayList;
  */
 public class Session {
 
+    //Constants
+    public static final String TAG = "Session";
+
     public static Connection myConnection;
 
     public static ListenerServer serverListener;
@@ -98,7 +101,7 @@ public class Session {
 
 
     public enum GameState {
-        TEAM_SELECT, QUEST_VOTE, LADY_OF_LAKE, ASSASSIN, //FINISHED
+        TEAM_SELECT, QUEST_VOTE, LADY_OF_LAKE, ASSASSIN,
     }
 
     public Session() {
@@ -141,18 +144,16 @@ public class Session {
             leaderOrderIterator = 0;
             currentGameState = GameState.TEAM_SELECT;
 
-
-
-            PlayerConnection.getInstance().userName = SharedPrefManager.getStringDefaults("USERNAME", ApplicationContext.getContext());//TODO find better way to do this
+            PlayerConnection.getInstance().userName = SharedPrefManager.getStringDefaults(SharedPrefManager.USERNAME, ApplicationContext.getContext());//TODO find better way to do this
             PlayerConnection.getInstance().playerID = -1;
             Thread thread = new Thread() {//The host is also a player!!
                 @Override
                 public void run() {
                     try {
                         ClientInstance.getKryoClientInstance().connectToServer(hostAddress);
-                        Log.d("Session", "Starting Host's Kryo Client ");
+                        Log.d(TAG, "Starting Host's Kryo Client ");
                     } catch (Exception e) {
-                        Log.d("Session", "Error Starting Host's Kryo Client ");
+                        Log.d(TAG, "Error Starting Host's Kryo Client ");
                         e.printStackTrace();
                     }
                 }
@@ -168,10 +169,10 @@ public class Session {
             @Override
             public void run() {
                 try {
-                    Log.d("Session", "Sending Object to Server");
+                    Log.d(TAG, "Sending Object to Server");
                     ClientInstance.getKryoClientInstance().getClient().sendTCP(obj);
                 } catch (Exception e) {
-                    Log.d("Session", "Error Sending Object to Server. Player Name: " + PlayerConnection.getInstance().playerID );
+                    Log.d(TAG, "Error Sending Object to Server. Player Name: " + PlayerConnection.getInstance().playerID );
                     e.printStackTrace();
                 }
             }
@@ -185,10 +186,10 @@ public class Session {
             @Override
             public void run() {
                 try {
-                    Log.d("Session", "Server: Sending Object to everyone");
+                    Log.d(TAG, "Server: Sending Object to everyone");
                     ServerInstance.server.getServer().sendToAllTCP(obj);
                 } catch (Exception e) {
-                    Log.d("Session", "Error Sending Object to everyone");
+                    Log.d(TAG, "Error Sending Object to everyone");
                     e.printStackTrace();
                 }
             }
@@ -197,7 +198,7 @@ public class Session {
     }
 
     public static void server_sendToSelectedPlayers(int[] playerIDs, final Object obj) {
-        Log.d("Session", "Server: Sending Object to selected players");
+        Log.d(TAG, "Server: Sending Object to selected players");
 
         for (int i = 0; i < playerIDs.length; i++) {
 
@@ -207,10 +208,10 @@ public class Session {
                 @Override
                 public void run() {
                     try {
-                        Log.d("Session", "Server: Sending Object to Player: " + conID);
+                        Log.d(TAG, "Server: Sending Object to Player: " + conID);
                         ServerInstance.server.getServer().sendToTCP(conID, obj);
                     } catch (Exception e) {
-                        Log.d("Session", "Error Sending Object to Player: " + conID);
+                        Log.d(TAG, "Error Sending Object to Player: " + conID);
                         e.printStackTrace();
                     }
                 }
@@ -220,17 +221,17 @@ public class Session {
     }
 
     public static void server_sendToPlayer(final int playerID, final Object obj) {
-        Log.d("Session", "Server: Sending Object to player: " + playerID);
+        Log.d(TAG, "Server: Sending Object to player: " + playerID);
 
 
         Thread thread = new Thread() {
             @Override
             public void run() {
                 try {
-                    Log.d("Session", "Server: Sending Object to Player: " + playerID);
+                    Log.d(TAG, "Server: Sending Object to Player: " + playerID);
                     ServerInstance.server.getServer().sendToTCP(Session.serverAllPlayerConnections.get(playerID).playerConnection.getID(), obj);
                 } catch (Exception e) {
-                    Log.d("Session", "Error Sending Object to Player: " + playerID);
+                    Log.d(TAG, "Error Sending Object to Player: " + playerID);
                     e.printStackTrace();
                 }
             }

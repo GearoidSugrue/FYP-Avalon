@@ -26,6 +26,12 @@ import java.util.Random;
  */
 public class TeamVoteFragment extends DialogFragment {
 
+    //Constants
+    public static final String TAG = "TeamVoteFrag";
+    public static final String PLAYER_POS = "PLAYER_POS";
+    public static final String QUEST = "QUEST";
+    public static final String VOTE_NUM = "VOTE_NUM";
+
     View mContentView = null;
     ImageView image1;
     ImageView image2;
@@ -46,14 +52,15 @@ public class TeamVoteFragment extends DialogFragment {
 
 
     public static TeamVoteFragment newInstance(int[] playerPositions, int questNumber, int voteNumber) {
+        Log.d(TAG, "Creating instance of a teamvote fragment");
+
         TeamVoteFragment frag = new TeamVoteFragment();
 
         Bundle args = new Bundle();
-        args.putIntArray("PLAYER_POS", playerPositions);
-        args.putInt("QUEST_NUM", questNumber);
-        args.putInt("VOTE_NUM", voteNumber);
+        args.putIntArray(PLAYER_POS, playerPositions);
+        args.putInt(QUEST, questNumber);
+        args.putInt(VOTE_NUM, voteNumber);
         frag.setArguments(args);
-        Log.d("TeamVoteFrag", "Creating instance of a teamvote fragment");
         return frag;
     }
 
@@ -62,22 +69,22 @@ public class TeamVoteFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate called");
 
-        Log.d("TeamVoteFrag", "onCreate called");
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);
 
         Bundle extras = getArguments();
-        playerPos = extras.getIntArray("PLAYER_POS");
-        questNumber = extras.getInt("QUEST_NUM");
-        voteCount = extras.getInt("VOTE_NUM");
+        playerPos = extras.getIntArray(PLAYER_POS);
+        questNumber = extras.getInt(QUEST);
+        voteCount = extras.getInt(VOTE_NUM);
 
         proposedPlayersArray = new ArrayList<>();
         currentLeaderArray = new ArrayList<>();
         nextLeaderArray = new ArrayList<>();
 
         for(int i=0; i < playerPos.length; i++){
-            Log.d("TeamVoteFrag", "adding player to adapterVictoriousPlayers. int[" + i + "] = " + playerPos[i]);
+            Log.d(TAG, "adding player to adapterVictoriousPlayers. int[" + i + "] = " + playerPos[i]);
             proposedPlayersArray.add(Session.allPlayers.get(playerPos[i]));
         }
 
@@ -88,13 +95,13 @@ public class TeamVoteFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.team_vote, container, false);
-        Log.d("TeamVoteFrag", "onCreateView called");
+        Log.d(TAG, "onCreateView called");
 
         Toolbar mActionBarToolbar = (Toolbar) rootView.findViewById(R.id.frag_teamVote_toolbar);
         String lastVote = "";
 
         if (voteCount == 5){
-            lastVote = "(Final)";
+            lastVote = getActivity().getString(R.string.finalInBrackets);
         }
 
         mActionBarToolbar.setTitle("Quest " + questNumber + " - Vote " + voteCount + lastVote);
@@ -116,8 +123,8 @@ public class TeamVoteFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
+        Log.d(TAG, "onActivityCreated called");
 
-        Log.d("TeamVoteFrag", "onCreateView called");
         adapterProposedTeam = new PlayerListViewAdapter(getActivity(), R.layout.row_players, android.R.id.text1, proposedPlayersArray);
         proposedPlayerView.setAdapter(adapterProposedTeam);
 
@@ -146,11 +153,11 @@ public class TeamVoteFragment extends DialogFragment {
     }
 
     public void randomiseTokenOrder(){
-        Log.d("TeamVoteFrag", "randomiseCardOrder called");
+        Log.d(TAG, "randomiseCardOrder called");
 
         Random randomGenerator = new Random();
         int randNum = randomGenerator.nextInt(2);
-        Log.d("TeamVoteFrag", "randomiseCardOrder: random num = " + randNum);
+        Log.d(TAG, "randomiseCardOrder: random num = " + randNum);
 
         if(Math.random() > 0.5){
             image1Approve = true;
@@ -167,12 +174,12 @@ public class TeamVoteFragment extends DialogFragment {
     }
 
     public void setOnClicklisteners(){
-        Log.d("TeamVoteFrag", "setOnClicklisteners called");
+        Log.d(TAG, "setOnClickListeners called");
 
         image1.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("TeamVoteFrag", "image1 clicked. Result: "+ image1Approve);
+                Log.d(TAG, "image1 clicked. Result: "+ image1Approve);
                 returnVoteResultAndClose(image1Approve);
             }
         });
@@ -180,7 +187,7 @@ public class TeamVoteFragment extends DialogFragment {
         image2.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("TeamVoteFrag", "image2 clicked. Result: "+ image1Approve);
+                Log.d(TAG, "image2 clicked. Result: "+ image1Approve);
                 returnVoteResultAndClose(image2Approve);
             }
         });
@@ -188,7 +195,7 @@ public class TeamVoteFragment extends DialogFragment {
     }
 
     public void returnVoteResultAndClose(boolean voteResult){
-        Log.d("TeamVoteFrag", "returnVoteResultAndClose called. Vote Result: " + voteResult);
+        Log.d(TAG, "returnVoteResultAndClose called. Vote Result: " + voteResult);
 
 
         TeamVoteDialogListener activity = (TeamVoteDialogListener) getActivity();

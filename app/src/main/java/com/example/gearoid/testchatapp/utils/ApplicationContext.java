@@ -22,6 +22,9 @@ import static com.example.gearoid.testchatapp.multiplayer.Session.client_sendPac
  */
 public class ApplicationContext extends Application {
 
+    //Constants
+    public static final String TAG = "ApplicationContext";
+
     //Instance of the current application.
     private static ApplicationContext instance;
 
@@ -67,11 +70,11 @@ public class ApplicationContext extends Application {
         this.mActivityTransitionTimerTask = new TimerTask() {
             public void run() {
                 ApplicationContext.this.wasInBackground = true;
-                Log.d("ApplicationContext", "User has left the app");
+                Log.d(TAG, "User has left the app");
 
                 if(PlayerConnection.getInstance().playerID >= 0){
                     Packet.Packet_PlayerHasLeftApp packet = (Packet.Packet_PlayerHasLeftApp) PacketFactory.createPack(PacketFactory.PacketType.PLAYER_LEFT);
-                    packet.playerName = SharedPrefManager.getStringDefaults("USERNAME", getApplicationContext());
+                    packet.playerName = SharedPrefManager.getStringDefaults(SharedPrefManager.USERNAME, getApplicationContext());
 
                     client_sendPacketToServer(packet);
                 }

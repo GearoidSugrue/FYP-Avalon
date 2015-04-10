@@ -38,8 +38,8 @@ public class CharacterFactory {
                 return new Morgana();
 
             default:
-                Log.e("CharacterFactory", "Packet name not found!!! Returning NULL!");
-                return null;
+                Log.e("CharacterFactory", "Packet name not found! Returning NULL!");
+                return new GoodCharacter();
         }
 
     }

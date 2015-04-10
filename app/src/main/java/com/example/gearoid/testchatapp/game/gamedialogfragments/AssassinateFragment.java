@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.example.gearoid.testchatapp.game.DrawableFactory;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
@@ -28,6 +27,9 @@ import java.util.ArrayList;
  */
 public class AssassinateFragment extends DialogFragment {
 
+    //Constants
+    public static final String TAG = "AssassinateFragment";
+    public static final String TOOLBAR_TITLE = "Assassinate Merlin";
 
     View mContentView = null;
     ListView chosenPlayerView;
@@ -37,22 +39,19 @@ public class AssassinateFragment extends DialogFragment {
     ArrayList<Player> chosenPlayerArray;
     ArrayList<Player> candidatePlayersArray;
     boolean isFinished = false;
-    boolean isSucess = false;
+    boolean isSuccess = false;
 
     public static AssassinateFragment newInstance() {
+        Log.d(TAG, "Creating instance of a AssassinateFragment");
 
-        Log.d("AssassinateFragment", "Creating instance of a SelectTeamFragment fragment");
-
-        AssassinateFragment frag = new AssassinateFragment();
-
-        return frag;
+        return new AssassinateFragment();
     }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("AssassinateFragment", "onCreate called");
+        Log.d(TAG, "onCreate called");
 
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);
@@ -66,12 +65,12 @@ public class AssassinateFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.assassin_endgame, container, false);
-        Log.d("AssassinateFragment", "onCreateView called");
+        Log.d(TAG, "onCreateView called");
 
         mContentView = rootView;
 
         Toolbar mActionBarToolbar = (Toolbar) rootView.findViewById(R.id.frag_assassin_toolbar);
-        mActionBarToolbar.setTitle("Assassinate Merlin");
+        mActionBarToolbar.setTitle(TOOLBAR_TITLE);
         mActionBarToolbar.setLogo(getResources().getDrawable(R.drawable.icon_assassin));
 
         chosenPlayerView = (ListView) rootView.findViewById(R.id.listview_chosenPlayerToAssassinate);
@@ -83,7 +82,7 @@ public class AssassinateFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("AssassinateFragment", "onCreateView called");
+        Log.d(TAG, "onCreateView called");
 
         initializeButtons();
 
@@ -112,7 +111,7 @@ public class AssassinateFragment extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Player player = (Player) parent.getItemAtPosition(position);
-                Log.d("AssassinateFragment", "Player clicked:" + player.userName);
+                Log.d(TAG, "Player clicked:" + player.userName);
 
                 if(!isFinished) {
                     adapterChosenPlayer.clear();
@@ -128,7 +127,7 @@ public class AssassinateFragment extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Player player = (Player) parent.getItemAtPosition(position);
-                Log.d("AssassinateFragment", "Player clicked:" + player.userName);
+                Log.d(TAG, "Player clicked:" + player.userName);
 
                 if(!isFinished) {
                     adapterChosenPlayer.remove(player);
@@ -165,7 +164,7 @@ public class AssassinateFragment extends DialogFragment {
 
                 if(isFinished) {
                     AssassinateDialogListener activity = (AssassinateDialogListener) getActivity();
-                    activity.onAssassination(isSucess);
+                    activity.onAssassination(isSuccess);
                     closeDialog();
                 }
             }
@@ -180,17 +179,17 @@ public class AssassinateFragment extends DialogFragment {
         Player player = adapterChosenPlayer.getItem(0);
 
         if (player.character instanceof Merlin) {
-            isSucess = true;
-            result.setText("Assassination Successful");
+            isSuccess = true;
+            result.setText(getActivity().getString(R.string.assassinationSuccessful));
         } else {
-            isSucess = false;
+            isSuccess = false;
         }
 
         result.setVisibility(View.VISIBLE);
 
         final ImageView chosenPlayer = (ImageView) mContentView.findViewById(R.id.imageView_assassinChosenPlayer);
-        Log.d("Assassinate", "Trying to get drawable for player: " +  player.userName);
-        Log.d("Assassinate", "Trying to get drawable for character: " +  player.character.getCharacterName());
+        Log.d(TAG, "Trying to get drawable for player: " +  player.userName);
+        Log.d(TAG, "Trying to get drawable for character: " +  player.character.getCharacterName());
 
         chosenPlayer.setImageDrawable(DrawableFactory.getDrawable(getResources(), player.character.getCharacterName()));
 

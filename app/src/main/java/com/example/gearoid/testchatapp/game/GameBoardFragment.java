@@ -17,6 +17,9 @@ import com.example.gearoid.testchatapp.multiplayer.Session;
  */
 public class GameBoardFragment extends Fragment {
 
+    //Constants
+    public static final String TAG = "gameBoardFrag";
+
     private View mContentView = null;
     private GameLogicFunctions.Board gameBoard;
 
@@ -32,7 +35,7 @@ public class GameBoardFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("gameBoardFrag", "onActivityCreated called");
+        Log.d(TAG, "onActivityCreated called");
 
         setRetainInstance(true);
 
@@ -50,7 +53,7 @@ public class GameBoardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContentView = inflater.inflate(R.layout.boardlayers, null);
-        Log.d("gameBoardFrag", "onCreateView called");
+        Log.d(TAG, "onCreateView called");
 
         token1 = (ImageView) mContentView.findViewById(R.id.ImageView_Token01);
         token2 = (ImageView) mContentView.findViewById(R.id.ImageView_Token02);
@@ -64,7 +67,7 @@ public class GameBoardFragment extends Fragment {
     }
 
     public void setQuestResultTokensVisible() {
-        Log.d("gameBoardFrag", "setQuestResultTokensVisible called");
+        Log.d(TAG, "setQuestResultTokensVisible called");
 
         if (Session.clientQuestResults != null) {
 
@@ -100,7 +103,7 @@ public class GameBoardFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.d("GameBoardFragment", "runOnUiThread: GameBoardFragment.setQuestResult(...) ");
+                Log.d(TAG, "runOnUiThread: GameBoardFragment.setQuestResult(...) ");
 
                 if (result) {
                     token.setImageDrawable(goodToken);

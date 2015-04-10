@@ -26,6 +26,11 @@ import java.util.ArrayList;
  */
 public class SelectTeamFragment extends DialogFragment {
 
+    //Constants
+    public static final String TAG = "SelectTeamFragment";
+    public static final String TEAM_SIZE = "TEAM_SIZE";
+    public static final String QUEST = "QUEST";
+
     View mContentView = null;
     ListView chosenTeamView;
     ListView candidatePlayersView;
@@ -38,13 +43,13 @@ public class SelectTeamFragment extends DialogFragment {
 
     public static SelectTeamFragment newInstance(int teamSize, int questNumber) {
 
-        Log.d("SelectTeamFragment", "Creating instance of a SelectTeamFragment fragment");
+        Log.d(TAG, "Creating instance of a SelectTeamFragment fragment");
 
         SelectTeamFragment frag = new SelectTeamFragment();
 
         Bundle args = new Bundle();
-        args.putInt("TEAM_SIZE", teamSize);
-        args.putInt("QUEST_NUM", questNumber);
+        args.putInt(TEAM_SIZE, teamSize);
+        args.putInt(QUEST, questNumber);
         frag.setArguments(args);
 
         return frag;
@@ -54,14 +59,14 @@ public class SelectTeamFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("SelectTeamFragment", "onCreate called");
+        Log.d(TAG, "onCreate called");
 
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);
 
         Bundle extras = getArguments();
-        teamSize = extras.getInt("TEAM_SIZE");
-        questNumber = extras.getInt("QUEST_NUM");
+        teamSize = extras.getInt(TEAM_SIZE);
+        questNumber = extras.getInt(QUEST);
 
         chosenTeamArray = new ArrayList<>();
 
@@ -72,7 +77,7 @@ public class SelectTeamFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.select_team, container, false);
-        Log.d("SelectTeamFragment", "onCreateView called");
+        Log.d(TAG, "onCreateView called");
 
         mContentView = rootView;
 
@@ -92,7 +97,7 @@ public class SelectTeamFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("SelectTeamFragment", "onCreateView called");
+        Log.d(TAG, "onActivityCreated called");
 
         initializeButtons();
 
@@ -125,13 +130,13 @@ public class SelectTeamFragment extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Player player = (Player) parent.getItemAtPosition(position);
-                Log.d("SelectTeam Fragment", "Player clicked:" + player.userName);
+                Log.d(TAG, "Player clicked:" + player.userName);
 
                 if(adapterChosenTeam.getCount() < teamSize){
                     adapterChosenTeam.add(player);
                     adapterCandidatePlayers.remove(player);
                 } else {
-                    ApplicationContext.showToast("Team Full. Tap To Remove Members.");
+                    ApplicationContext.showToast(getActivity().getString(R.string.teamFullTapToRemove));
                 }
             }
         });
@@ -141,7 +146,7 @@ public class SelectTeamFragment extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Player player = (Player) parent.getItemAtPosition(position);
-                Log.d("SelectTeam Fragment", "Player clicked:" + player.userName);
+                Log.d(TAG, "Player clicked:" + player.userName);
 
                 adapterChosenTeam.remove(player);
                 adapterCandidatePlayers.add(player);
@@ -172,7 +177,7 @@ public class SelectTeamFragment extends DialogFragment {
 
                     for(int i=0; i < chosenTeamSize; i++){
                         chosenTeamArr[i] = adapterChosenTeam.getItem(i).playerID;
-                        Log.d("SelectTeam Fragment", "Chosen Player " + i + ": " + chosenTeamArr[i]);
+                        Log.d(TAG, "Chosen Player " + i + ": " + chosenTeamArr[i]);
                     }
 
                     TeamSelectDialogListener activity = (TeamSelectDialogListener) getActivity();
@@ -180,7 +185,7 @@ public class SelectTeamFragment extends DialogFragment {
 
                     closeDialog();
                 } else {
-                    ApplicationContext.showToast("Team Not Full!");
+                    ApplicationContext.showToast(getActivity().getString(R.string.teamNotFull));
                 }
             }
         });

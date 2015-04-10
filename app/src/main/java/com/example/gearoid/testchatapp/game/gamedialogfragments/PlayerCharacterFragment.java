@@ -32,6 +32,10 @@ import java.util.ArrayList;
  */
 public class PlayerCharacterFragment extends DialogFragment {
 
+    //Constants
+    public static final String TAG = "PlayerCharacterFragment";
+    public static final String TOOLBAR_TITLE = "Your Character";
+
     View mContentView = null;
     ListView visiblePlayersView;
     PlayerListViewAdapter adapterVisiblePlayers;
@@ -40,24 +44,22 @@ public class PlayerCharacterFragment extends DialogFragment {
     Player userPlayer;
 
     public static PlayerCharacterFragment newInstance() {
-        Log.d("PlayerCharacterFragment", "Creating instance of a PlayerCharacterFragment fragment");
+        Log.d(TAG, "Creating instance of a PlayerCharacterFragment fragment");
 
-        PlayerCharacterFragment frag = new PlayerCharacterFragment();
-
-        return frag;
+        return new PlayerCharacterFragment();
     }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("PlayerCharacterFragment", "onCreate called");
+        Log.d(TAG, "onCreate called");
 
         int style = DialogFragment.STYLE_NO_TITLE, theme = 0;
         setStyle(style, theme);
 
         userPlayer = GameLogicFunctions.getUserPlayer();
-        Log.d("PlayerCharacterFragment", "Trying to get Characater name: " + userPlayer.character.getCharacterName());
+        Log.d(TAG, "Trying to get Character name: " + userPlayer.character.getCharacterName());
         characterName = userPlayer.character.getCharacterName();
 
         visiblePlayersArray = new ArrayList<>();
@@ -67,9 +69,7 @@ public class PlayerCharacterFragment extends DialogFragment {
             Player otherPlayer = Session.allPlayers.get(i);
 
             if (otherPlayer.character.isVisibleTo(userPlayer.character) && otherPlayer.playerID != userPlayer.playerID ) {
-                Log.d("PlayerCharacterFragment", otherPlayer.character.getCharacterName() + " is visible to userPlayer (" + userPlayer.character.getCharacterName() + ")");
-
-//
+                Log.d(TAG, otherPlayer.character.getCharacterName() + " is visible to userPlayer (" + userPlayer.character.getCharacterName() + ")");
 
                 visiblePlayersArray.add(otherPlayer);
             }
@@ -79,12 +79,12 @@ public class PlayerCharacterFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.player_character, container, false);
-        Log.d("PlayerCharacterFragment", "onCreateView called");
+        Log.d(TAG, "onCreateView called");
 
         mContentView = rootView;
 
         Toolbar mActionBarToolbar = (Toolbar) rootView.findViewById(R.id.frag_playerCharacter_toolbar);
-        mActionBarToolbar.setTitle("Your Character");
+        mActionBarToolbar.setTitle(TOOLBAR_TITLE);
         mActionBarToolbar.setLogo(getResources().getDrawable(R.drawable.icon_characterback));
 
         visiblePlayersView = (ListView) rootView.findViewById(R.id.listview_playersVisable);
@@ -95,7 +95,7 @@ public class PlayerCharacterFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("PlayerCharacterFragment", "onCreateView called");
+        Log.d(TAG, "onActivityCreated called");
 
         initializeButtons();
 
@@ -181,7 +181,7 @@ public class PlayerCharacterFragment extends DialogFragment {
                     TextView visiblePlayersLabel = (TextView) mContentView.findViewById(R.id.textView_playersVisableLabel);
 
                     if(userPlayer.character instanceof Percival || userPlayer.character instanceof EvilCharacter || userPlayer.character instanceof Merlin) {
-                        visiblePlayersLabel.setText("Player Identities Visible To You");
+                        visiblePlayersLabel.setText(getActivity().getString(R.string.players_visible_text));
                     }
 
                 }
