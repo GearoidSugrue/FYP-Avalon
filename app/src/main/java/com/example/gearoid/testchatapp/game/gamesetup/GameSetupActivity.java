@@ -1,15 +1,13 @@
 package com.example.gearoid.testchatapp.game.gamesetup;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.app.DialogFragment;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -17,20 +15,19 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.gearoid.testchatapp.character.ConstantsChara;
-import com.example.gearoid.testchatapp.utils.ApplicationContext;
 import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.character.CharacterFactory;
+import com.example.gearoid.testchatapp.character.ConstantsChara;
+import com.example.gearoid.testchatapp.character.ICharacter;
 import com.example.gearoid.testchatapp.character.evil.EvilCharacter;
 import com.example.gearoid.testchatapp.character.good.GoodCharacter;
-import com.example.gearoid.testchatapp.character.ICharacter;
 import com.example.gearoid.testchatapp.game.GameLogicFunctions;
 import com.example.gearoid.testchatapp.game.gamedialogfragments.CharacterCardFragment;
 import com.example.gearoid.testchatapp.kryopackage.Packet;
 import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
 import com.example.gearoid.testchatapp.multiplayer.Player;
 import com.example.gearoid.testchatapp.multiplayer.Session;
-import com.example.gearoid.testchatapp.singletons.ServerInstance;
+import com.example.gearoid.testchatapp.utils.ApplicationContext;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -170,9 +167,9 @@ public class GameSetupActivity extends ActionBarActivity implements CharacterLis
 
     public void setFragTitles(){
         TextView goodFragTitle = (TextView) findViewById(R.id.textView_GoodCharactersLabel);
-        goodFragTitle.setText(goodCount + getString(R.string._goodCharacters));
+        goodFragTitle.setText(goodCount + " " + getString(R.string._goodCharacters));
         TextView evilFragTitle = (TextView) findViewById(R.id.textView_EvilCharactersLabel);
-        evilFragTitle.setText(evilCount + getString(R.string._evilCharacters));
+        evilFragTitle.setText(evilCount + " " + getString(R.string._evilCharacters));
     }
 
     private void initializeFragments() {

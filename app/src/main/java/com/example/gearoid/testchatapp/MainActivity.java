@@ -1,8 +1,10 @@
 package com.example.gearoid.testchatapp;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.os.Bundle;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -12,19 +14,13 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.gearoid.testchatapp.game.gamedialogfragments.GameFinishedFragment;
 import com.example.gearoid.testchatapp.game.gamedialogfragments.InstructionsFragment;
 import com.example.gearoid.testchatapp.utils.ApplicationContext;
 import com.example.gearoid.testchatapp.utils.SharedPrefManager;
 import com.example.gearoid.testchatapp.wifidirect.servicediscovery.WiFiDirectServiceActivity;
-
-import static com.example.gearoid.testchatapp.game.GameLogicFunctions.getEvilAllegiancePositions;
-import static com.example.gearoid.testchatapp.game.GameLogicFunctions.getGoodAllegiancePositions;
 
 
 public class MainActivity extends ActionBarActivity {

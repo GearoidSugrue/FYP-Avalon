@@ -14,14 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.PlayerListViewAdapter;
+import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.character.evil.EvilCharacter;
 import com.example.gearoid.testchatapp.character.good.Merlin;
 import com.example.gearoid.testchatapp.character.good.Percival;
 import com.example.gearoid.testchatapp.game.DrawableFactory;
 import com.example.gearoid.testchatapp.game.GameLogicFunctions;
-import com.example.gearoid.testchatapp.PlayerListViewAdapter;
-import com.example.gearoid.testchatapp.R;
-import com.example.gearoid.testchatapp.character.ICharacter;
 import com.example.gearoid.testchatapp.multiplayer.Player;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 

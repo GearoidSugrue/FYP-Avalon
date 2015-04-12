@@ -2,15 +2,27 @@ package com.example.gearoid.testchatapp.kryopackage.server;
 
 import android.util.Log;
 
-import com.example.gearoid.testchatapp.utils.ApplicationContext;
-import com.example.gearoid.testchatapp.kryopackage.Packet.*;
-
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet00_ClientDetails;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet2_Message;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_AssassinateReply;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_GameFinishedReply;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_LadyOfLakeReply;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_PlayerHasLeftApp;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_PlayerHasReturnedToApp;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_QuestVoteReply;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_QuestVoteResultFinished;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_QuestVoteResultRevealed;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_RequestDetails;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_SelectTeamReply;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_SendDetails;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_TeamVoteReply;
 import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
 import com.example.gearoid.testchatapp.multiplayer.Player;
-import com.example.gearoid.testchatapp.singletons.PlayerConnection;
 import com.example.gearoid.testchatapp.multiplayer.Session;
+import com.example.gearoid.testchatapp.singletons.PlayerConnection;
+import com.example.gearoid.testchatapp.utils.ApplicationContext;
 
 
 /**

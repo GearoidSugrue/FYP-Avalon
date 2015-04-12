@@ -16,12 +16,10 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceInfo;
 import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceRequest;
 import android.os.Bundle;
-
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,18 +29,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.gearoid.testchatapp.utils.ApplicationContext;
-import com.example.gearoid.testchatapp.game.gamesetup.GameSetupActivity;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
-import com.example.gearoid.testchatapp.utils.SharedPrefManager;
+import com.example.gearoid.testchatapp.game.gamesetup.GameSetupActivity;
 import com.example.gearoid.testchatapp.kryopackage.KRegisterAndPort;
 import com.example.gearoid.testchatapp.kryopackage.server.ListenerServer;
-import com.example.gearoid.testchatapp.kryopackage.Packet;
-import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
 import com.example.gearoid.testchatapp.multiplayer.Player;
 import com.example.gearoid.testchatapp.multiplayer.Session;
-import com.example.gearoid.testchatapp.singletons.ClientInstance;
+import com.example.gearoid.testchatapp.utils.ApplicationContext;
+import com.example.gearoid.testchatapp.utils.SharedPrefManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -15,8 +15,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.gearoid.testchatapp.R;
-import com.example.gearoid.testchatapp.character.evil.EvilCharacter;
 import com.example.gearoid.testchatapp.character.ICharacter;
+import com.example.gearoid.testchatapp.character.evil.EvilCharacter;
 
 import java.util.ArrayList;
 import java.util.List;

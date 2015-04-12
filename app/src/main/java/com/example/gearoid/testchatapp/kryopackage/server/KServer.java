@@ -1,7 +1,6 @@
 package com.example.gearoid.testchatapp.kryopackage.server;
 
 
-import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import com.example.gearoid.testchatapp.kryopackage.KRegisterAndPort;
 import com.example.gearoid.testchatapp.multiplayer.Session;

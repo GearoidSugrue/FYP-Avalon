@@ -2,33 +2,36 @@ package com.example.gearoid.testchatapp.kryopackage.client;
 
 import android.content.Intent;
 
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import com.example.gearoid.testchatapp.utils.ApplicationContext;
-import com.example.gearoid.testchatapp.game.GameActivity;
-import com.example.gearoid.testchatapp.game.gamesetup.GameSetupActivity;
-import com.example.gearoid.testchatapp.kryopackage.ConstantsKryo;
-import com.example.gearoid.testchatapp.kryopackage.Packet.*;
-
-//import kyroPack.Packet.Packet0_Phase_Leader;
-//import kyroPack.Packet.Packet1_LoginResult;
-//import kyroPack.Packet.Packet3_AllPlayers;
-//import kyroPack.Packet.Packet4_QuestSucessVote;
-//import kyroPack.Packet.Packet5_TeamSelectVote;
-//import kyroPack.Packet.Packet6_ProposedTeam;
-//import kyroPack.Packet.packet10_LadyOfLakeToken;
-//import kyroPack.Packet.packet7_UpdateVoteCounter;
-//import kyroPack.Packet.packet8_UpdateQuestCounter;
-//import kyroPack.Packet.packet9_IsUsingLadyOfLake;
-//import character.ICharacter;
-
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.example.gearoid.testchatapp.game.GameActivity;
+import com.example.gearoid.testchatapp.game.gamesetup.GameSetupActivity;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet00_ClientDetails;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet2_Message;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_GameFinished;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_LadyOfLakeUpdate;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_PlayerHasLeftApp;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_PlayerHasReturnedToApp;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_QuestVote;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_QuestVoteResult;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_QuestVoteResultRevealed;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_RequestDetails;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_SelectTeam;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_SendDetails;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_StartGame;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_StartNextQuest;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_TeamVote;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_TeamVoteResult;
+import com.example.gearoid.testchatapp.kryopackage.Packet.Packet_UpdateGameState;
 import com.example.gearoid.testchatapp.kryopackage.PacketFactory;
-import com.example.gearoid.testchatapp.singletons.PlayerConnection;
 import com.example.gearoid.testchatapp.multiplayer.Session;
+import com.example.gearoid.testchatapp.singletons.PlayerConnection;
+import com.example.gearoid.testchatapp.utils.ApplicationContext;
+
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
+
 
 /**
  * Created by gearoid on 17/01/15.
@@ -202,7 +205,7 @@ public class ListenerClient extends Listener {
             System.out.println("[Client] Received details from " + con.getID() + ", " + con.toString());
             ApplicationContext.showToast("[Client] Received Packet from: " + userName);
 
-            Packet2_Message reply = (Packet2_Message) PacketFactory.testing_createPacket(ConstantsKryo.MESSAGE);
+            Packet2_Message reply = (Packet2_Message) PacketFactory.testing_createPacket(PacketFactory.MESSAGE);
             reply.message = "Your Packet arrived successfully!";
             con.sendTCP(reply);
 

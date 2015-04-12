@@ -14,7 +14,6 @@ import com.example.gearoid.testchatapp.singletons.PlayerConnection;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.example.gearoid.testchatapp.game.GameLogicFunctions.getUserPlayer;
 import static com.example.gearoid.testchatapp.multiplayer.Session.client_sendPacketToServer;
 
 /**

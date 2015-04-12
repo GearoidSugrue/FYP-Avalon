@@ -1,8 +1,8 @@
 package com.example.gearoid.testchatapp.game.gamedialogfragments;
 
+import android.app.DialogFragment;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +12,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.example.gearoid.testchatapp.game.GameLogicFunctions;
 import com.example.gearoid.testchatapp.PlayerListViewAdapter;
 import com.example.gearoid.testchatapp.R;
+import com.example.gearoid.testchatapp.game.GameLogicFunctions;
 import com.example.gearoid.testchatapp.multiplayer.Player;
 import com.example.gearoid.testchatapp.multiplayer.Session;
 

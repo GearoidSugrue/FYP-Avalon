@@ -4,22 +4,20 @@ import android.content.BroadcastReceiver;
 import android.os.PowerManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.esotericsoftware.kryonet.Connection;
-import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.game.GameBoardFragment;
-import com.example.gearoid.testchatapp.utils.ApplicationContext;
 import com.example.gearoid.testchatapp.game.GameLogicFunctions;
-import com.example.gearoid.testchatapp.utils.SharedPrefManager;
+import com.example.gearoid.testchatapp.kryopackage.Packet;
 import com.example.gearoid.testchatapp.kryopackage.client.ListenerClient;
 import com.example.gearoid.testchatapp.kryopackage.server.ListenerServer;
-import com.example.gearoid.testchatapp.kryopackage.Packet;
 import com.example.gearoid.testchatapp.singletons.ClientInstance;
 import com.example.gearoid.testchatapp.singletons.PlayerConnection;
 import com.example.gearoid.testchatapp.singletons.ServerInstance;
+import com.example.gearoid.testchatapp.utils.ApplicationContext;
+import com.example.gearoid.testchatapp.utils.SharedPrefManager;
 
 import java.util.ArrayList;
 

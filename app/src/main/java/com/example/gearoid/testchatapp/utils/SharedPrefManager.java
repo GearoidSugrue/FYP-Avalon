@@ -1,8 +1,8 @@
 package com.example.gearoid.testchatapp.utils;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.content.Context;
 
 /**
  * Created by gearoid on 19/01/15.

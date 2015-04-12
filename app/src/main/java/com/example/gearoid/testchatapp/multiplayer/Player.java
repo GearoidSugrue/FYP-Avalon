@@ -1,6 +1,5 @@
 package com.example.gearoid.testchatapp.multiplayer;
 
-import com.esotericsoftware.kryonet.Connection;
 import com.example.gearoid.testchatapp.character.ICharacter;
 
 /**

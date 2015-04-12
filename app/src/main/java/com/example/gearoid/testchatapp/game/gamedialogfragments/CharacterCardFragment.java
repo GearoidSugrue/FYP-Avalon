@@ -1,17 +1,17 @@
 package com.example.gearoid.testchatapp.game.gamedialogfragments;
 
+import android.app.DialogFragment;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.gearoid.testchatapp.R;
 import com.example.gearoid.testchatapp.character.ConstantsChara;
 import com.example.gearoid.testchatapp.game.DrawableFactory;
-import com.example.gearoid.testchatapp.R;
 
 /**
  * Created by gearoid on 19/03/15.

@@ -42,7 +42,7 @@ public class DrawableFactory {
                 return res.getDrawable(R.drawable.evil_minion2);
             case "Minion 3":
                 return res.getDrawable(R.drawable.evil_minion3);
-            case "Lady of Lake":
+            case ConstantsChara.LADY_OF_LAKE:
                 return res.getDrawable(R.drawable.token_ladyoflake);
             case "Approve Token":
                 return res.getDrawable(R.drawable.token_approve);
