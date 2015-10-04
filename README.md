@@ -11,6 +11,7 @@ Writing a report which comprised of: Project background, research, methodologies
 Creating the app which comprised of: Iterative development using both physical prototypes to show UI design and software prototypes used to test various APIs and technology. I then combined and expanded the prototypes to create the app.
 
 TECHNOLOGY USED:
+
 Java: Programmed in Java, the language Android uses.
 
 Wi-Fi Direct: A standard created by the Wi-Fi Alliance that allows the setting up of a peer-to-peer network with other devices that implement the protocol.
@@ -18,6 +19,7 @@ Wi-Fi Direct: A standard created by the Wi-Fi Alliance that allows the setting u
 Service Discovery: Used in conjunction with Wi-Fi Direct to enable the devices to find each other and filter out non-applicable devices.
 
 KryoNet: An open source Java library that provides an API for dynamic TCP and UDP client/server network using NIO.
+
 Fragments: Used to create many different views in the app.
 
 XML: Used for the layout of the many different UI screens. 
