@@ -6,25 +6,24 @@ The app is local multi-player and uses Wi-Fi Direct, a wireless peer-to-peer tec
 
 THIS PROJECT INCLUDED:
 
-Writing a report which comprised of: Project background, research, methodologies, technology used, design, prototype and final implementation details, evaluation and references.
+  Writing a report which comprised of: Project background, research, methodologies, technology used, design, prototype and final implementation details, evaluation and references.
 
-Creating the app which comprised of: Iterative development using both physical prototypes to show UI design and software prototypes used to test various APIs and technology. I then combined and expanded the prototypes to create the app.
+  Creating the app which comprised of: Iterative development using both physical prototypes to show UI design and software prototypes used to test various APIs and technology. I then combined and expanded the prototypes to create the app.
 
 TECHNOLOGY USED:
+  Java: Programmed in Java, the language Android uses.
 
-Java: Programmed in Java, the language Android uses.
+  Wi-Fi Direct: A standard created by the Wi-Fi Alliance that allows the setting up of a peer-to-peer network with other devices that implement the protocol.
 
-Wi-Fi Direct: A standard created by the Wi-Fi Alliance that allows the setting up of a peer-to-peer network with other devices that implement the protocol.
+  Service Discovery: Used in conjunction with Wi-Fi Direct to enable the devices to find each other and filter out non-applicable devices.
 
-Service Discovery: Used in conjunction with Wi-Fi Direct to enable the devices to find each other and filter out non-applicable devices.
+  KryoNet: An open source Java library that provides an API for dynamic TCP and UDP client/server network using NIO.
 
-KryoNet: An open source Java library that provides an API for dynamic TCP and UDP client/server network using NIO.
+  Fragments: Used to create many different views in the app.
 
-Fragments: Used to create many different views in the app.
+  XML: Used for the layout of the many different UI screens. 
 
-XML: Used for the layout of the many different UI screens. 
-
-Other features: enums, callbacks, intents, broadcasts receivers and input event listeners.
+  Other features: enums, callbacks, intents, broadcasts receivers and input event listeners.
 
 This project vastly improved my Java, Android, XML, research and report writing skills. 
 I also greatly improved my presentation skills as I was required to give full working demonstrations of this app to my lecturers, supervisors, industry officials and classmates. 
